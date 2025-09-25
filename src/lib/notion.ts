@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Value, Tool, NotionPage } from '@/types';
+import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, NotionPage } from '@/types';
 import type { PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion 클라이언트 초기화
@@ -248,7 +248,7 @@ async function queryDatabase(
 ): Promise<any[]> {
     try {
         const config = DATABASE_CONFIGS[databaseKey];
-        if (!config || !config.id) {
+        if (!config?.id) {
             console.warn(`${config?.name || databaseKey} database ID not configured`);
             return [];
         }
@@ -526,14 +526,14 @@ export async function getResumeData(): Promise<ResumeData> {
     }
 }
 
-// Notion API 연결 테스트 (직접 HTTP 요청)
-export async function testNotionConnectionDirect(): Promise<boolean> {
+// Notion API 연결 테스트
+export async function testNotionConnection(): Promise<boolean> {
     try {
         if (!process.env.NOTION_TOKEN) {
             throw new Error('NOTION_TOKEN 환경 변수가 설정되지 않았습니다.');
         }
 
-        console.log('Testing Notion API connection directly...');
+        console.log('Testing Notion API connection...');
         console.log('Token format:', process.env.NOTION_TOKEN.substring(0, 10) + '...');
 
         const response = await fetch('https://api.notion.com/v1/users/me', {
@@ -546,7 +546,6 @@ export async function testNotionConnectionDirect(): Promise<boolean> {
         });
 
         console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -557,17 +556,6 @@ export async function testNotionConnectionDirect(): Promise<boolean> {
         const data = await response.json();
         console.log('Notion API connection successful:', data);
         return true;
-    } catch (error: any) {
-        console.error('Direct Notion API connection failed:', error);
-        throw error;
-    }
-}
-
-// Notion API 연결 테스트
-export async function testNotionConnection(): Promise<boolean> {
-    try {
-        // 먼저 직접 HTTP 요청으로 테스트
-        return await testNotionConnectionDirect();
     } catch (error: any) {
         console.error('Notion API connection failed:', error);
 

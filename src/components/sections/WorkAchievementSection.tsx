@@ -1,29 +1,22 @@
 import TechChips from '@/components/ui/TechChips';
 
-interface AchievementSection {
+interface WorkAchievementSection {
     name: string;
     achievements: string[];
     skills: string[];
 }
 
-interface AchievementSectionProps {
-    sections: AchievementSection[];
+interface WorkAchievementSectionProps {
+    sections: WorkAchievementSection[];
 }
 
-export default function AchievementSection({ sections }: AchievementSectionProps) {
+export default function WorkAchievementSection({ sections }: WorkAchievementSectionProps) {
     return (
         <div>
             {sections.map((section, index) => (
                 <div key={index} className="item">
                     <h3 className="text-item-title">{section.name}</h3>
 
-                    {/* Skills를 Tech Chips로 표시 */}
-                    {/* {section.skills && section.skills.length > 0 && (
-                        <TechChips
-                            technologies={section.skills}
-                            marginBottom="var(--space-sm)"
-                        />
-                    )} */}
 
                     {/* Achievements */}
                     {section.achievements && section.achievements.length > 0 && (
