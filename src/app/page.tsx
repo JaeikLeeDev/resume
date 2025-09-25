@@ -107,7 +107,7 @@ export default function NotionResumePage() {
     });
 
     const transformSkillsData = (skills: any[]) => {
-        return skills.reduce((acc: Array<{ category: string; skills: Array<{ name: string; summary: string }> }>, skill) => {
+        return skills.filter(skill => skill.show === 'show').reduce((acc: Array<{ category: string; skills: Array<{ name: string; summary: string }> }>, skill) => {
             const category = skill.category || 'Other';
             let categoryObj = acc.find(cat => cat.category === category);
 
@@ -128,14 +128,14 @@ export default function NotionResumePage() {
     };
 
     const transformValuesData = (values: any[]) => {
-        return values.map(value => ({
+        return values.filter(value => value.show === 'show').map(value => ({
             title: value.title,
             items: value.description
         }));
     };
 
     const transformToolsData = (tools: any[]) => {
-        return tools.reduce((acc: Array<{ category: string; tools: Array<{ name: string; description: string }> }>, tool) => {
+        return tools.filter(tool => tool.show === 'show').reduce((acc: Array<{ category: string; tools: Array<{ name: string; description: string }> }>, tool) => {
             // tool.category가 실제 카테고리 (Title), tool.name이 도구명 (Select)
             const category = tool.category || 'Other';
             let categoryObj = acc.find(cat => cat.category === category);
@@ -181,102 +181,120 @@ export default function NotionResumePage() {
                     </div>
 
                     {/* 사용한 기술 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">사용한 기술.</h2>
-                        <SkillSection categories={skillsData} />
-                    </div>
+                    {skills.some(skill => skill.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">사용한 기술.</h2>
+                            <SkillSection categories={skillsData} />
+                        </div>
+                    )}
 
                     {/* 핵심 역량 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">핵심 역량.</h2>
-                        <CoreCompetencySection competencies={coreCompetencies} />
-                    </div>
+                    {coreCompetencies.some(competency => competency.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">핵심 역량.</h2>
+                            <CoreCompetencySection competencies={coreCompetencies.filter(comp => comp.show === 'show')} />
+                        </div>
+                    )}
 
                     {/* 업무 경험 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">업무 경험.</h2>
+                    {(experiences.some(exp => exp.show === 'show') || achievementSections.some(ach => ach.show === 'show')) && (
+                        <div className="section">
+                            <h2 className="text-section-title">업무 경험.</h2>
 
-                        {experiences.map((experience: any, index: number) => (
-                            <div key={index} className="item">
-                                <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
-                                <p className="text-meta">{experience.period}</p>
-                                <p className="text-body">{experience.description}</p>
-                            </div>
-                        ))}
+                            {experiences.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
+                                <div key={index} className="item">
+                                    <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
+                                    <p className="text-meta">{experience.period}</p>
+                                    <p className="text-body">{experience.description}</p>
+                                </div>
+                            ))}
 
-                        {/* 성과 섹션들 */}
-                        {achievementSections && achievementSections.length > 0 && (
-                            <WorkAchievementSection sections={achievementSections} />
-                        )}
-                    </div>
+                            {/* 성과 섹션들 */}
+                            {achievementSections && achievementSections.filter(ach => ach.show === 'show').length > 0 && (
+                                <WorkAchievementSection sections={achievementSections.filter(ach => ach.show === 'show')} />
+                            )}
+                        </div>
+                    )}
 
                     {/* 프로젝트 경험 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">프로젝트 경험.</h2>
+                    {projects.some(project => project.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">프로젝트 경험.</h2>
 
-                        {projects.map((project: any, index: number) => (
-                            <ProjectItem
-                                key={index}
-                                name={project.name}
-                                description={project.description}
-                                period={project.period}
-                                skills={project.skills}
-                                features={project.features}
-                                contribution={project.contribution}
-                                github={project.github}
-                                website={project.website}
-                                ios={project.ios}
-                                android={project.android}
-                                post={project.post}
-                            />
-                        ))}
-                    </div>
+                            {projects.filter(project => project.show === 'show').map((project: any, index: number) => (
+                                <ProjectItem
+                                    key={index}
+                                    name={project.name}
+                                    description={project.description}
+                                    period={project.period}
+                                    skills={project.skills}
+                                    features={project.features}
+                                    contribution={project.contribution}
+                                    github={project.github}
+                                    website={project.website}
+                                    ios={project.ios}
+                                    android={project.android}
+                                    post={project.post}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                     {/* 포트폴리오 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">포트폴리오.</h2>
+                    {portfolio.some(item => item.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">포트폴리오.</h2>
 
-                        {portfolio.map((item: any, index: number) => (
-                            <ProjectItem
-                                key={index}
-                                name={item.name}
-                                description={item.description}
-                                period={item.period}
-                                skills={item.skills}
-                                features={item.features}
-                                contribution={item.contribution}
-                                github={item.github}
-                                website={item.website}
-                                ios={item.ios}
-                                android={item.android}
-                                post={item.post}
-                            />
-                        ))}
-                    </div>
+                            {portfolio.filter(item => item.show === 'show').map((item: any, index: number) => (
+                                <ProjectItem
+                                    key={index}
+                                    name={item.name}
+                                    description={item.description}
+                                    period={item.period}
+                                    skills={item.skills}
+                                    features={item.features}
+                                    contribution={item.contribution}
+                                    github={item.github}
+                                    website={item.website}
+                                    ios={item.ios}
+                                    android={item.android}
+                                    post={item.post}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                     {/* 가치관 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">가치관.</h2>
-                        <ValueSection values={valuesData} />
-                    </div>
+                    {values.some(value => value.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">가치관.</h2>
+                            <ValueSection values={valuesData} />
+                        </div>
+                    )}
 
                     {/* 개발 외 툴 활용 역량 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
-                        <ToolSection categories={otherToolsData} />
-                    </div>
+                    {tools.some(tool => tool.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
+                            <ToolSection categories={otherToolsData} />
+                        </div>
+                    )}
 
                     {/* 학력 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">학력.</h2>
-                        <EducationSection education={education} />
-                    </div>
+                    {education.some(edu => edu.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">학력.</h2>
+                            <EducationSection education={education.filter(edu => edu.show === 'show')} />
+                        </div>
+                    )}
 
                     {/* 자격증 및 어학 Section */}
-                    <div className="section">
-                        <h2 className="text-section-title">자격증 및 어학.</h2>
-                        <CertificationSection certifications={certifications} />
-                    </div>
+                    {certifications.some(cert => cert.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">자격증 및 어학.</h2>
+                            <CertificationSection certifications={certifications.filter(cert => cert.show === 'show')} />
+                        </div>
+                    )}
 
                     {/* 병역 Section */}
                     <div className="section">

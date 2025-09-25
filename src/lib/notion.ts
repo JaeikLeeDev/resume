@@ -218,27 +218,31 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     skills: {
         name: 'name',
         category: 'category',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     coreCompetencies: {
         title: 'title',
         description: 'description',
         skills: 'skills',
         examples: 'examples',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     experiences: {
         company: 'company',
         position: 'position',
         period: 'period',
         description: 'description',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     achievementSections: {
         name: 'name',
         achievements: 'achievements',
         skills: 'skills',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     projects: {
         name: 'name',
@@ -252,7 +256,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         android: 'android',
         post: 'post',
         contribution: 'contribution',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     portfolio: {
         name: 'name',
@@ -266,32 +271,37 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         android: 'android',
         post: 'post',
         contribution: 'contribution',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     values: {
         title: 'title',
         description: 'description',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     tools: {
         category: 'category',  // Title 속성
         name: 'name',         // Select 속성
         description: 'description',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     education: {
         institution: 'institution',
         degree: 'degree',
         period: 'period',
         location: 'location',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     certifications: {
         name: 'name',
         date: 'date',
         number: 'number',
         issuer: 'issuer',
-        order: 'order'
+        order: 'order',
+        show: 'show'
     },
     militaryService: {
         name: 'name',
@@ -385,6 +395,7 @@ export async function getSkills(): Promise<Skill[]> {
                 name: extractArray(page.properties.name),
                 category: extractText(page.properties.category) || 'other',
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -403,6 +414,7 @@ export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
                 skills: extractArray(page.properties.skills),
                 examples: extractArray(page.properties.examples),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -414,7 +426,16 @@ export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
 // 업무 경험 가져오기
 export async function getExperiences(): Promise<Experience[]> {
     try {
-        return await queryDatabase('experiences', PROPERTY_MAPPINGS.experiences);
+        return await queryDatabase('experiences', PROPERTY_MAPPINGS.experiences, (page) => {
+            return {
+                company: extractText(page.properties.company),
+                position: extractText(page.properties.position),
+                period: extractText(page.properties.period),
+                description: extractText(page.properties.description),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching experiences:', error);
         return [];
@@ -440,6 +461,7 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
                 achievements: extractArray(page.properties.achievements),
                 skills: skillsArray,
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -451,7 +473,23 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
 // 프로젝트 경험 가져오기
 export async function getProjects(): Promise<Project[]> {
     try {
-        return await queryDatabase('projects', PROPERTY_MAPPINGS.projects);
+        return await queryDatabase('projects', PROPERTY_MAPPINGS.projects, (page) => {
+            return {
+                name: extractText(page.properties.name),
+                description: extractText(page.properties.description),
+                period: extractText(page.properties.period),
+                skills: extractArray(page.properties.skills),
+                features: extractArray(page.properties.features),
+                github: extractText(page.properties.github),
+                website: extractText(page.properties.website),
+                ios: extractText(page.properties.ios),
+                android: extractText(page.properties.android),
+                post: extractText(page.properties.post),
+                contribution: extractText(page.properties.contribution),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching projects:', error);
         return [];
@@ -461,7 +499,23 @@ export async function getProjects(): Promise<Project[]> {
 // 포트폴리오 가져오기
 export async function getPortfolio(): Promise<Portfolio[]> {
     try {
-        return await queryDatabase('portfolio', PROPERTY_MAPPINGS.portfolio);
+        return await queryDatabase('portfolio', PROPERTY_MAPPINGS.portfolio, (page) => {
+            return {
+                name: extractText(page.properties.name),
+                description: extractText(page.properties.description),
+                period: extractText(page.properties.period),
+                skills: extractArray(page.properties.skills),
+                features: extractArray(page.properties.features),
+                github: extractText(page.properties.github),
+                website: extractText(page.properties.website),
+                ios: extractText(page.properties.ios),
+                android: extractText(page.properties.android),
+                post: extractText(page.properties.post),
+                contribution: extractText(page.properties.contribution),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching portfolio:', error);
         return [];
@@ -479,6 +533,7 @@ export async function getValues(): Promise<Value[]> {
                 title: extractText(page.properties.title),
                 description: descriptionArray,
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -490,7 +545,15 @@ export async function getValues(): Promise<Value[]> {
 // 개발 외 툴 가져오기
 export async function getTools(): Promise<Tool[]> {
     try {
-        return await queryDatabase('tools', PROPERTY_MAPPINGS.tools);
+        return await queryDatabase('tools', PROPERTY_MAPPINGS.tools, (page) => {
+            return {
+                name: extractText(page.properties.name),
+                category: extractText(page.properties.category),
+                description: extractText(page.properties.description),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching tools:', error);
         return [];
@@ -500,7 +563,16 @@ export async function getTools(): Promise<Tool[]> {
 // 학력 가져오기
 export async function getEducation(): Promise<Education[]> {
     try {
-        return await queryDatabase('education', PROPERTY_MAPPINGS.education);
+        return await queryDatabase('education', PROPERTY_MAPPINGS.education, (page) => {
+            return {
+                institution: extractText(page.properties.institution),
+                degree: extractText(page.properties.degree),
+                period: extractText(page.properties.period),
+                location: extractText(page.properties.location),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching education:', error);
         return [];
@@ -510,7 +582,16 @@ export async function getEducation(): Promise<Education[]> {
 // 자격증 가져오기
 export async function getCertifications(): Promise<Certification[]> {
     try {
-        return await queryDatabase('certifications', PROPERTY_MAPPINGS.certifications);
+        return await queryDatabase('certifications', PROPERTY_MAPPINGS.certifications, (page) => {
+            return {
+                name: extractText(page.properties.name),
+                date: extractText(page.properties.date),
+                number: extractText(page.properties.number),
+                issuer: extractText(page.properties.issuer),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
+                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
     } catch (error) {
         console.error('Error fetching certifications:', error);
         return [];
