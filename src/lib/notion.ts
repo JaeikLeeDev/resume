@@ -140,6 +140,17 @@ function extractText(property: any): string {
         return property.url || '';
     }
 
+    // 이미지 파일 처리
+    if (property.files && property.files.length > 0) {
+        const file = property.files[0];
+        if (file.type === 'external' && file.external?.url) {
+            return file.external.url;
+        }
+        if (file.type === 'file' && file.file?.url) {
+            return file.file.url;
+        }
+    }
+
     return '';
 }
 
@@ -193,6 +204,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         email: 'email',
         phone: 'phone',
         location: 'location',
+        photo: 'photo',
+        introduction: 'introduction',
         github: 'github',
         linkedin: 'linkedin',
         website: 'website'

@@ -91,6 +91,7 @@ export default function NotionResumePage() {
     const transformContactInfo = (personalInfo: any) => ({
         email: personalInfo.email,
         phone: personalInfo.phone,
+        photo: personalInfo.photo,
         ...(personalInfo.website && {
             blog: {
                 url: personalInfo.website,
@@ -167,21 +168,15 @@ export default function NotionResumePage() {
                     {/* Header Section */}
                     <div style={{ marginBottom: 'var(--space-3xl)' }}>
                         <h1 className="text-hero">{personalInfo.name} 이력서</h1>
-                        <p className="text-item-subtitle">{personalInfo.title}</p>
+                        <p className="text-item-subtitle" style={{ marginBottom: 'var(--space-lg)' }}>{personalInfo.title}</p>
 
                         <ContactInfo {...contactInfo} />
 
-                        <p className="text-body">
-                            스타트업 개발자로 4년간 다양한 기술 스택을 경험했습니다. 임베디드에서 웹, 앱, 머신러닝까지 폭넓은 영역을 다루며 **새로운 기술을 빠르게 습득하고 제품화하는 역량**을 키웠습니다.
-                            <br />
-                            SI 개발 2년간 Flutter, Unity, 머신러닝 등 **서로 다른 기술스택의 제품 4건을 성공적으로 개발**했습니다. 처음 접하는 기술로도 정확한 견적과 일정 예측이 가능합니다.
-                            <br />
-                            업무 능력 향상을 위한 자기 계발을 좋아합니다. 어제 배운 지식이 오늘 회사 제품을 더 낫게 만들 때 짜릿함을 느낍니다.
-                            <br />
-                            대화만큼이나 글을 통한 소통을 중요하게 생각합니다. **Notion으로 문서화하고, 협업**하기를 좋아합니다. 목표 결과물에 대해 팀원 모두가 같은 이해를 갖도록 하는 데 집중합니다.
-                            <br />
-                            UI 및 그래픽디자인 경험이 있습니다. 간단한 디자인 작업이 가능하며 디자이너와 협업시 소통이 원활합니다.
-                        </p>
+                        {personalInfo.introduction && (
+                            <div className="text-body" style={{ whiteSpace: 'pre-line' }}>
+                                {personalInfo.introduction}
+                            </div>
+                        )}
                     </div>
 
                     {/* 사용한 기술 Section */}
