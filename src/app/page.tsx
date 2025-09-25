@@ -8,8 +8,11 @@ import TechChips from '@/components/ui/TechChips';
 import ExperienceItem from '@/components/sections/ExperienceItem';
 import SkillSection from '@/components/sections/SkillSection';
 import ValueSection from '@/components/sections/ValueSection';
+import ToolSection from '@/components/sections/ToolSection';
+import CoreCompetencySection from '@/components/sections/CoreCompetencySection';
+import AchievementSection from '@/components/sections/AchievementSection';
 import { addPageBreakStyles } from '@/lib/pdf';
-import { ResumeData } from '@/lib/notion';
+import { ResumeData } from '@/types';
 
 export default function NotionResumePage() {
     const [resumeData, setResumeData] = useState<ResumeData | null>(null);
@@ -80,7 +83,7 @@ export default function NotionResumePage() {
         );
     }
 
-    const { personalInfo, skills, coreCompetencies, experiences, projects, values, tools } = resumeData;
+    const { personalInfo, skills, coreCompetencies, experiences, achievementSections, projects, portfolio, values, tools } = resumeData;
 
     // Contact information 변환
     const contactInfo = {
@@ -101,51 +104,53 @@ export default function NotionResumePage() {
     };
 
     // Skills 데이터 변환 (Notion에서 직접 카테고리 사용)
-    const skillsData = skills.reduce((acc, skill) => {
+    const skillsData = skills.reduce((acc: Array<{ category: string; skills: Array<{ name: string; summary: string }> }>, skill) => {
         // Notion에서 설정한 카테고리를 그대로 사용
         const category = skill.category || 'Other';
 
-        let categoryObj = acc.find(cat => cat.category === category);
+        let categoryObj = acc.find((cat: { category: string; skills: Array<{ name: string; summary: string }> }) => cat.category === category);
         if (!categoryObj) {
             categoryObj = { category, skills: [] };
             acc.push(categoryObj);
         }
 
-        categoryObj.skills.push({
-            name: skill.name,
-            summary: skill.level
+        // skill.name이 이제 배열이므로 각 기술을 개별 skill로 추가
+        skill.name.forEach((techName: string) => {
+            categoryObj.skills.push({
+                name: techName,
+                summary: '' // level이 제거되었으므로 빈 문자열
+            });
         });
 
         return acc;
-    }, [] as Array<{ category: string; skills: Array<{ name: string; summary: string }> }>);
+    }, []);
 
-    // Core competencies 변환
-    const coreCompetenciesData = coreCompetencies.map(comp => ({
-        title: comp.title,
-        items: comp.examples || [comp.description]
-    }));
+    // Core competencies는 직접 사용 (새로운 CoreCompetencySection 컴포넌트 사용)
 
     // Values 변환
-    const valuesData = values.map(value => ({
+    const valuesData = values.map((value: any) => ({
         title: value.title,
-        items: [value.description]
+        items: value.description
     }));
 
-    // Other tools 변환
-    const otherToolsData = tools.reduce((acc, tool) => {
-        let categoryObj = acc.find(cat => cat.category === tool.category);
+    // Other tools 변환 (category별로 그룹화)
+    const otherToolsData = tools.reduce((acc: Array<{ category: string; tools: Array<{ name: string; description: string }> }>, tool: any) => {
+        // Notion에서 설정한 카테고리를 그대로 사용
+        const category = tool.category || 'Other';
+
+        let categoryObj = acc.find((cat: { category: string; tools: Array<{ name: string; description: string }> }) => cat.category === category);
         if (!categoryObj) {
-            categoryObj = { category: tool.category, skills: [] };
+            categoryObj = { category, tools: [] };
             acc.push(categoryObj);
         }
 
-        categoryObj.skills.push({
+        categoryObj.tools.push({
             name: tool.name,
-            summary: tool.description || ''
+            description: tool.description || ''
         });
 
         return acc;
-    }, [] as Array<{ category: string; skills: Array<{ name: string; summary: string }> }>);
+    }, []);
 
     return (
         <div className="min-h-screen" style={{ background: 'var(--background)' }}>
@@ -182,53 +187,45 @@ export default function NotionResumePage() {
                     {/* 핵심 역량 Section */}
                     <div className="section">
                         <h2 className="text-section-title">핵심 역량.</h2>
-                        <ValueSection values={coreCompetenciesData} />
+                        <CoreCompetencySection competencies={coreCompetencies} />
                     </div>
 
                     {/* 업무 경험 Section */}
                     <div className="section">
                         <h2 className="text-section-title">업무 경험.</h2>
 
-                        {experiences.map((experience, index) => (
+                        {experiences.map((experience: any, index: number) => (
                             <div key={index} className="item">
                                 <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
                                 <p className="text-meta">{experience.period}</p>
-
                                 <p className="text-body">{experience.description}</p>
-
-                                {experience.technologies.length > 0 && (
-                                    <div className="tech-container" style={{ marginBottom: 'var(--space-md)' }}>
-                                        {experience.technologies.map((tech, techIndex) => (
-                                            <span key={techIndex} className="tech-chip">{tech}</span>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {experience.achievements.length > 0 && (
-                                    <ul className="list">
-                                        {experience.achievements.map((achievement, achievementIndex) => (
-                                            <li key={achievementIndex} className="list-item">{achievement}</li>
-                                        ))}
-                                    </ul>
-                                )}
                             </div>
                         ))}
+
+                        {/* 성과 섹션들 */}
+                        {achievementSections && achievementSections.length > 0 && (
+                            <AchievementSection sections={achievementSections} />
+                        )}
                     </div>
 
                     {/* 프로젝트 경험 Section */}
                     <div className="section">
                         <h2 className="text-section-title">프로젝트 경험.</h2>
 
-                        {projects.map((project, index) => (
+                        {projects.map((project: any, index: number) => (
                             <div key={index} className="item">
                                 <h3 className="text-subsection-title">{project.name}</h3>
                                 <p className="text-meta">{project.period}</p>
 
                                 <p className="text-body">{project.description}</p>
 
-                                {project.technologies.length > 0 && (
+                                {project.contribution && (
+                                    <p className="text-meta" style={{ marginTop: '0.125rem', marginBottom: '0.5rem' }}>{project.contribution}</p>
+                                )}
+
+                                {project.skills.length > 0 && (
                                     <div className="tech-container" style={{ marginBottom: 'var(--space-md)' }}>
-                                        {project.technologies.map((tech, techIndex) => (
+                                        {project.skills.map((tech: any, techIndex: number) => (
                                             <span key={techIndex} className="tech-chip">{tech}</span>
                                         ))}
                                     </div>
@@ -236,22 +233,106 @@ export default function NotionResumePage() {
 
                                 {project.features.length > 0 && (
                                     <ul className="list">
-                                        {project.features.map((feature, featureIndex) => (
+                                        {project.features.map((feature: any, featureIndex: number) => (
                                             <li key={featureIndex} className="list-item">{feature}</li>
                                         ))}
                                     </ul>
                                 )}
 
-                                {(project.github || project.demo) && (
+                                {(project.github || project.website || project.ios || project.android || project.post) && (
                                     <p className="text-meta" style={{ marginTop: 'var(--space-sm)' }}>
                                         {project.github && (
                                             <>
                                                 <a href={project.github} className="link" target="_blank" rel="noopener noreferrer">GitHub</a>
-                                                {project.demo && ' | '}
+                                                {(project.website || project.ios || project.android || project.post) && ' | '}
                                             </>
                                         )}
-                                        {project.demo && (
-                                            <a href={project.demo} className="link" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                                        {project.website && (
+                                            <>
+                                                <a href={project.website} className="link" target="_blank" rel="noopener noreferrer">Website</a>
+                                                {(project.ios || project.android || project.post) && ' | '}
+                                            </>
+                                        )}
+                                        {project.ios && (
+                                            <>
+                                                <a href={project.ios} className="link" target="_blank" rel="noopener noreferrer">iOS</a>
+                                                {(project.android || project.post) && ' | '}
+                                            </>
+                                        )}
+                                        {project.android && (
+                                            <>
+                                                <a href={project.android} className="link" target="_blank" rel="noopener noreferrer">Android</a>
+                                                {project.post && ' | '}
+                                            </>
+                                        )}
+                                        {project.post && (
+                                            <a href={project.post} className="link" target="_blank" rel="noopener noreferrer">Post</a>
+                                        )}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* 포트폴리오 Section */}
+                    <div className="section">
+                        <h2 className="text-section-title">포트폴리오.</h2>
+
+                        {portfolio.map((item: any, index: number) => (
+                            <div key={index} className="item">
+                                <h3 className="text-subsection-title">{item.name}</h3>
+                                <p className="text-meta">{item.period}</p>
+
+                                <p className="text-body">{item.description}</p>
+
+                                {item.contribution && (
+                                    <p className="text-meta" style={{ marginTop: '0.125rem', marginBottom: '0.5rem' }}>{item.contribution}</p>
+                                )}
+
+                                {item.skills.length > 0 && (
+                                    <div className="tech-container" style={{ marginBottom: 'var(--space-md)' }}>
+                                        {item.skills.map((tech: any, techIndex: number) => (
+                                            <span key={techIndex} className="tech-chip">{tech}</span>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {item.features.length > 0 && (
+                                    <ul className="list">
+                                        {item.features.map((feature: any, featureIndex: number) => (
+                                            <li key={featureIndex} className="list-item">{feature}</li>
+                                        ))}
+                                    </ul>
+                                )}
+
+                                {(item.github || item.website || item.ios || item.android || item.post) && (
+                                    <p className="text-meta" style={{ marginTop: 'var(--space-sm)' }}>
+                                        {item.github && (
+                                            <>
+                                                <a href={item.github} className="link" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                                {(item.website || item.ios || item.android || item.post) && ' | '}
+                                            </>
+                                        )}
+                                        {item.website && (
+                                            <>
+                                                <a href={item.website} className="link" target="_blank" rel="noopener noreferrer">Website</a>
+                                                {(item.ios || item.android || item.post) && ' | '}
+                                            </>
+                                        )}
+                                        {item.ios && (
+                                            <>
+                                                <a href={item.ios} className="link" target="_blank" rel="noopener noreferrer">iOS</a>
+                                                {(item.android || item.post) && ' | '}
+                                            </>
+                                        )}
+                                        {item.android && (
+                                            <>
+                                                <a href={item.android} className="link" target="_blank" rel="noopener noreferrer">Android</a>
+                                                {item.post && ' | '}
+                                            </>
+                                        )}
+                                        {item.post && (
+                                            <a href={item.post} className="link" target="_blank" rel="noopener noreferrer">Post</a>
                                         )}
                                     </p>
                                 )}
@@ -268,7 +349,7 @@ export default function NotionResumePage() {
                     {/* 개발 외 툴 활용 역량 Section */}
                     <div className="section">
                         <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
-                        <SkillSection categories={otherToolsData} />
+                        <ToolSection categories={otherToolsData} />
                     </div>
 
                 </div>

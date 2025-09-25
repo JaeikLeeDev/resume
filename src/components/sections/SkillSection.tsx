@@ -1,5 +1,7 @@
+import TechChips from '@/components/ui/TechChips';
+
 interface Skill {
-  name: string;
+  name: string[];
   summary: string;
 }
 
@@ -17,15 +19,13 @@ export default function SkillSection({ categories }: SkillSectionProps) {
     <div>
       {categories.map((category, categoryIndex) => (
         <div key={categoryIndex} className="item">
-          <h3 className="text-item-title">{category.category}</h3>
-          
-          {category.skills.map((skill, skillIndex) => (
-            <div key={skillIndex} className="skill-item">
-              <span className="text-item-subtitle">{skill.name}</span>
-              <span className="skill-separator">|</span>
-              <span className="text-body" style={{ marginBottom: 0 }}>{skill.summary}</span>
-            </div>
-          ))}
+          {/* <h3 className="text-item-title">{category.category}</h3> */}
+
+          {/* 기술들을 TechChips로 표시 */}
+          <TechChips
+            technologies={category.skills.flatMap(skill => skill.name)}
+            marginBottom="var(--space-md)"
+          />
         </div>
       ))}
     </div>

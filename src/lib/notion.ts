@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, Project, Value, Tool, NotionPage } from '@/types';
+import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Value, Tool, NotionPage } from '@/types';
 import type { PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion 클라이언트 초기화
@@ -41,9 +41,19 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
         name: 'Experiences',
         required: false
     },
+    achievementSections: {
+        id: process.env.NOTION_ACHIEVEMENT_SECTIONS_DB_ID || '',
+        name: 'Achievement Sections',
+        required: false
+    },
     projects: {
         id: process.env.NOTION_PROJECTS_DB_ID || '',
         name: 'Projects',
+        required: false
+    },
+    portfolio: {
+        id: process.env.NOTION_PORTFOLIO_DB_ID || '',
+        name: 'Portfolio',
         required: false
     },
     values: {
@@ -86,11 +96,17 @@ function extractText(property: any): string {
     if (!property) return '';
 
     if (property.title) {
-        return property.title[0]?.text?.content || '';
+        return property.title
+            .map((item: any) => item.text?.content || '')
+            .join('')
+            .trim();
     }
 
     if (property.rich_text) {
-        return property.rich_text[0]?.text?.content || '';
+        return property.rich_text
+            .map((item: any) => item.text?.content || '')
+            .join('')
+            .trim();
     }
 
     if (property.select) {
@@ -121,7 +137,19 @@ function extractArray(property: any): string[] {
     }
 
     if (property.rich_text) {
-        return property.rich_text.map((item: any) => item.text.content);
+        // Rich text의 경우 전체 텍스트를 하나로 합치고 세미콜론으로 분할
+        const fullText = property.rich_text
+            .map((item: any) => item.text?.content || '')
+            .join('')
+            .trim();
+
+        if (fullText) {
+            // 세미콜론(;)으로만 구분
+            return fullText
+                .split(';')
+                .map((item: string) => item.trim())
+                .filter((item: string) => item.length > 0);
+        }
     }
 
     return [];
@@ -156,31 +184,50 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     },
     skills: {
         name: 'name',
-        category: 'category',
-        level: 'level'
+        category: 'category'
     },
     coreCompetencies: {
         title: 'title',
         description: 'description',
-        technologies: 'technologies',
+        skills: 'skills',
         examples: 'examples'
     },
     experiences: {
         company: 'company',
         position: 'position',
         period: 'period',
-        description: 'description',
+        description: 'description'
+    },
+    achievementSections: {
+        name: 'name',
         achievements: 'achievements',
-        technologies: 'technologies'
+        skills: 'skills'
     },
     projects: {
         name: 'name',
         description: 'description',
         period: 'period',
-        technologies: 'technologies',
+        skills: 'skills',
         features: 'features',
         github: 'github',
-        demo: 'demo'
+        website: 'website',
+        ios: 'ios',
+        android: 'android',
+        post: 'post',
+        contribution: 'contribution'
+    },
+    portfolio: {
+        name: 'name',
+        description: 'description',
+        period: 'period',
+        skills: 'skills',
+        features: 'features',
+        github: 'github',
+        website: 'website',
+        ios: 'ios',
+        android: 'android',
+        post: 'post',
+        contribution: 'contribution'
     },
     values: {
         title: 'title',
@@ -291,14 +338,31 @@ export async function getPersonalInfo(): Promise<PersonalInfo> {
     }
 }
 
-// 기술 스택 가져오기
+// 기술 스택 가져오기 (Multi-select 전용)
 export async function getSkills(): Promise<Skill[]> {
     try {
-        return await queryDatabase('skills', PROPERTY_MAPPINGS.skills, (page) => ({
-            name: extractText(page.properties.name),
-            category: (extractText(page.properties.category) as any) || 'other',
-            level: (extractText(page.properties.level) as any) || 'intermediate',
-        }));
+        return await queryDatabase('skills', PROPERTY_MAPPINGS.skills, (page) => {
+            const nameProperty = page.properties.name;
+
+            // Multi-select 속성에서 직접 배열 추출
+            let skillsArray: string[] = [];
+
+            if (nameProperty && 'multi_select' in nameProperty && nameProperty.multi_select) {
+                // Multi-select에서 각 선택된 옵션의 이름을 추출
+                skillsArray = nameProperty.multi_select
+                    .map((item: any) => item.name)
+                    .filter((name: string) => name && name.trim().length > 0);
+            } else {
+                // Multi-select가 아닌 경우 경고 로그
+                console.warn('Skills name property is not multi-select. Please change to multi-select in Notion.');
+                skillsArray = [];
+            }
+
+            return {
+                name: skillsArray,
+                category: (extractText(page.properties.category) as any) || 'other',
+            };
+        });
     } catch (error) {
         console.error('Error fetching skills:', error);
         return [];
@@ -308,7 +372,24 @@ export async function getSkills(): Promise<Skill[]> {
 // 핵심 역량 가져오기
 export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
     try {
-        return await queryDatabase('coreCompetencies', PROPERTY_MAPPINGS.coreCompetencies);
+        return await queryDatabase('coreCompetencies', PROPERTY_MAPPINGS.coreCompetencies, (page) => {
+            const skillsProperty = page.properties.skills;
+            let skillsArray: string[] = [];
+
+            // Multi-select 속성에서 skills 추출
+            if (skillsProperty && 'multi_select' in skillsProperty && skillsProperty.multi_select) {
+                skillsArray = skillsProperty.multi_select
+                    .map((item: any) => item.name)
+                    .filter((name: string) => name && name.trim().length > 0);
+            }
+
+            return {
+                title: extractText(page.properties.title),
+                description: extractText(page.properties.description),
+                skills: skillsArray,
+                examples: extractArray(page.properties.examples),
+            };
+        });
     } catch (error) {
         console.error('Error fetching core competencies:', error);
         return [];
@@ -325,6 +406,32 @@ export async function getExperiences(): Promise<Experience[]> {
     }
 }
 
+// 성과 섹션 가져오기
+export async function getAchievementSections(): Promise<AchievementSection[]> {
+    try {
+        return await queryDatabase('achievementSections', PROPERTY_MAPPINGS.achievementSections, (page) => {
+            const skillsProperty = page.properties.skills;
+            let skillsArray: string[] = [];
+
+            // Multi-select 속성에서 skills 추출
+            if (skillsProperty && 'multi_select' in skillsProperty && skillsProperty.multi_select) {
+                skillsArray = skillsProperty.multi_select
+                    .map((item: any) => item.name)
+                    .filter((name: string) => name && name.trim().length > 0);
+            }
+
+            return {
+                name: extractText(page.properties.name),
+                achievements: extractArray(page.properties.achievements),
+                skills: skillsArray,
+            };
+        });
+    } catch (error) {
+        console.error('Error fetching achievement sections:', error);
+        return [];
+    }
+}
+
 // 프로젝트 경험 가져오기
 export async function getProjects(): Promise<Project[]> {
     try {
@@ -335,10 +442,28 @@ export async function getProjects(): Promise<Project[]> {
     }
 }
 
+// 포트폴리오 가져오기
+export async function getPortfolio(): Promise<Portfolio[]> {
+    try {
+        return await queryDatabase('portfolio', PROPERTY_MAPPINGS.portfolio);
+    } catch (error) {
+        console.error('Error fetching portfolio:', error);
+        return [];
+    }
+}
+
 // 가치관 가져오기
 export async function getValues(): Promise<Value[]> {
     try {
-        return await queryDatabase('values', PROPERTY_MAPPINGS.values);
+        return await queryDatabase('values', PROPERTY_MAPPINGS.values, (page) => {
+            const descriptionProperty = page.properties.description;
+            const descriptionArray = descriptionProperty ? extractArray(descriptionProperty) : [];
+
+            return {
+                title: extractText(page.properties.title),
+                description: descriptionArray
+            };
+        });
     } catch (error) {
         console.error('Error fetching values:', error);
         return [];
@@ -367,7 +492,9 @@ export async function getResumeData(): Promise<ResumeData> {
             skills,
             coreCompetencies,
             experiences,
+            achievementSections,
             projects,
+            portfolio,
             values,
             tools,
         ] = await Promise.all([
@@ -375,7 +502,9 @@ export async function getResumeData(): Promise<ResumeData> {
             getSkills(),
             getCoreCompetencies(),
             getExperiences(),
+            getAchievementSections(),
             getProjects(),
+            getPortfolio(),
             getValues(),
             getTools(),
         ]);
@@ -385,7 +514,9 @@ export async function getResumeData(): Promise<ResumeData> {
             skills,
             coreCompetencies,
             experiences,
+            achievementSections,
             projects,
+            portfolio,
             values,
             tools,
         };

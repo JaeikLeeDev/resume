@@ -23,15 +23,14 @@ export interface NotionDatabaseResponse {
 }
 
 export interface Skill {
-    name: string;
+    name: string[]; // 쉼표로 구분된 기술들을 배열로 저장
     category: string; // Notion에서 자유롭게 설정 가능
-    level: string; // Notion에서 자유롭게 설명 입력 가능
 }
 
 export interface CoreCompetency {
     title: string;
     description: string;
-    technologies: string[];
+    skills: string[]; // Multi-select로 추가될 기술 스택
     examples?: string[];
 }
 
@@ -40,29 +39,51 @@ export interface Experience {
     position: string;
     period: string;
     description: string;
-    achievements: string[];
-    technologies: string[];
+}
+
+export interface AchievementSection {
+    name: string; // 소제목
+    achievements: string[]; // 성과 목록
+    skills: string[]; // 기술 스택 (Multi-select)
 }
 
 export interface Project {
     name: string;
     description: string;
     period: string;
-    technologies: string[];
+    skills: string[];
     features: string[];
     github?: string;
-    demo?: string;
+    website?: string;
+    ios?: string;
+    android?: string;
+    post?: string; // 블로그 글 링크
+    contribution?: string; // 기여도
+}
+
+export interface Portfolio {
+    name: string;
+    description: string;
+    period: string;
+    skills: string[];
+    features: string[];
+    github?: string;
+    website?: string;
+    ios?: string;
+    android?: string;
+    post?: string; // 블로그 글 링크
+    contribution?: string; // 기여도
 }
 
 export interface Value {
     title: string;
-    description: string;
+    description: string[];
 }
 
 export interface Tool {
-    name: string;
-    category: string;
-    description?: string;
+    name: string; // 단일 텍스트로 변경
+    category: string; // Select로 유지
+    description: string; // 설명 추가
 }
 
 export interface ResumeData {
@@ -70,7 +91,9 @@ export interface ResumeData {
     skills: Skill[];
     coreCompetencies: CoreCompetency[];
     experiences: Experience[];
+    achievementSections: AchievementSection[];
     projects: Project[];
+    portfolio: Portfolio[];
     values: Value[];
     tools: Tool[];
 }
