@@ -10,10 +10,22 @@ export interface PersonalInfo {
     website?: string;
 }
 
+// Notion API 응답 타입들
+export interface NotionPage {
+    id: string;
+    properties: Record<string, any>;
+}
+
+export interface NotionDatabaseResponse {
+    results: NotionPage[];
+    has_more: boolean;
+    next_cursor?: string;
+}
+
 export interface Skill {
     name: string;
-    category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'other';
-    level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+    category: string; // Notion에서 자유롭게 설정 가능
+    level: string; // Notion에서 자유롭게 설명 입력 가능
 }
 
 export interface CoreCompetency {
