@@ -15,21 +15,17 @@ interface ContactInfoProps {
 export default function ContactInfo({ email, phone, photo, blog, github }: ContactInfoProps) {
   return (
     <div style={{ marginBottom: 'var(--space-lg)' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-lg)' }}>
+      <div className="contact-container">
         {photo && (
-          <div style={{ flexShrink: 0 }}>
+          <div className="photo-container">
             <img
               src={photo}
               alt="Profile"
-              style={{
-                width: '120px',
-                height: '120px',
-                objectFit: 'cover'
-              }}
+              className="profile-photo"
             />
           </div>
         )}
-        <div style={{ flex: 1 }}>
+        <div className="contact-details">
           <div className="contact-row">
             <span className="text-meta">Email.</span>
             <span className="text-body">{email}</span>
