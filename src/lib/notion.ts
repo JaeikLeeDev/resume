@@ -94,12 +94,10 @@ function validateEnvironmentVariables() {
         .map(([key, _]) => key);
 
     if (missingVars.length > 0) {
-        console.warn(`Missing environment variables: ${missingVars.join(', ')}`);
         return false;
     }
 
     if (missingRequiredDbs.length > 0) {
-        console.warn(`Missing required database IDs: ${missingRequiredDbs.join(', ')}`);
         return false;
     }
 
@@ -262,8 +260,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         description: 'description'
     },
     tools: {
-        name: 'name',
-        category: 'category',
+        category: 'category',  // Title 속성
+        name: 'name',         // Select 속성
         description: 'description'
     },
     education: {
@@ -293,7 +291,6 @@ async function queryDatabase(
     try {
         const config = DATABASE_CONFIGS[databaseKey];
         if (!config?.id) {
-            console.warn(`${config?.name || databaseKey} database ID not configured`);
             return [];
         }
 
@@ -329,38 +326,6 @@ async function queryDatabase(
     }
 }
 
-// 범용적인 데이터 가져오기 함수 (설정 기반)
-export async function getDataByType<T>(
-    dataType: string,
-    customMapping?: PropertyMapping,
-    customTransform?: (page: PageObjectResponse) => T
-): Promise<T[]> {
-    try {
-        const mapping = customMapping || PROPERTY_MAPPINGS[dataType];
-        if (!mapping) {
-            throw new Error(`No property mapping found for data type: ${dataType}`);
-        }
-
-        return await queryDatabase(dataType, mapping, customTransform);
-    } catch (error) {
-        console.error(`Error fetching ${dataType} data:`, error);
-        return [];
-    }
-}
-
-// 모든 데이터베이스 상태 확인
-export async function checkDatabaseStatus(): Promise<Record<string, { configured: boolean; name: string }>> {
-    const status: Record<string, { configured: boolean; name: string }> = {};
-
-    for (const [key, config] of Object.entries(DATABASE_CONFIGS)) {
-        status[key] = {
-            configured: !!config.id,
-            name: config.name
-        };
-    }
-
-    return status;
-}
 
 // 개인 정보 가져오기
 export async function getPersonalInfo(): Promise<PersonalInfo> {
@@ -397,8 +362,6 @@ export async function getSkills(): Promise<Skill[]> {
                     .map((item: any) => item.name)
                     .filter((name: string) => name && name.trim().length > 0);
             } else {
-                // Multi-select가 아닌 경우 경고 로그
-                console.warn('Skills name property is not multi-select. Please change to multi-select in Notion.');
                 skillsArray = [];
             }
 
@@ -613,50 +576,3 @@ export async function getResumeData(): Promise<ResumeData> {
     }
 }
 
-// Notion API 연결 테스트
-export async function testNotionConnection(): Promise<boolean> {
-    try {
-        if (!process.env.NOTION_TOKEN) {
-            throw new Error('NOTION_TOKEN 환경 변수가 설정되지 않았습니다.');
-        }
-
-        console.log('Testing Notion API connection...');
-        console.log('Token format:', process.env.NOTION_TOKEN.substring(0, 10) + '...');
-
-        const response = await fetch('https://api.notion.com/v1/users/me', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-                'Notion-Version': '2022-06-28',
-                'Content-Type': 'application/json'
-            }
-        });
-
-        console.log('Response status:', response.status);
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Error response:', errorText);
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-        }
-
-        const data = await response.json();
-        console.log('Notion API connection successful:', data);
-        return true;
-    } catch (error: any) {
-        console.error('Notion API connection failed:', error);
-
-        // 더 자세한 에러 정보 제공
-        if (error.message?.includes('401')) {
-            throw new Error('Notion API 토큰이 유효하지 않습니다. Integration Token을 확인해주세요.');
-        } else if (error.message?.includes('403')) {
-            throw new Error('Notion API 접근이 제한되었습니다. Integration이 올바르게 설정되었는지 확인해주세요.');
-        } else if (error.message?.includes('<!DOCTYPE')) {
-            throw new Error('Notion API가 HTML을 반환했습니다. 토큰이 잘못되었거나 Integration이 비활성화되었을 수 있습니다.');
-        } else if (error.message?.includes('fetch')) {
-            throw new Error('네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인해주세요.');
-        } else {
-            throw new Error(`Notion API 연결 실패: ${error.message || '알 수 없는 오류'}`);
-        }
-    }
-}

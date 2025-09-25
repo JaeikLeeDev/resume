@@ -1,16 +1,17 @@
 # 이재익 이력서 사이트
 
-React와 Next.js로 구축된 모던한 개인 이력서 웹사이트입니다. 깔끔한 타이포그래피와 모듈화된 컴포넌트 구조로 설계되었으며, Notion API를 통해 동적으로 관리됩니다.
+React와 Next.js로 구축된 개인 이력서 빌더입니다. Notioin Database API를 연동하여 Notion 데이터베이스를 수정하면 바로 이력서 페이지에 반영되도록 구현했습니다.
 
 ## ✨ 주요 기능
 
-- 📝 **모듈화된 컴포넌트**: 재사용 가능한 컴포넌트로 구성된 깔끔한 구조
-- 📄 **PDF Export**: 웹사이트를 A4 크기의 PDF로 다운로드 가능
-- 📱 **반응형 디자인**: 모바일과 데스크톱에서 모두 최적화된 경험
-- 🎨 **일관된 디자인**: 체계적인 타이포그래피 위계와 spacing 시스템
-- 🚀 **GitHub Pages 호스팅**: 정적 사이트 생성을 통한 빠른 로딩
-- 🔄 **Notion API 연동**: Notion 데이터베이스와 실시간 연동으로 동적 이력서 관리
-- 📋 **완전한 이력서**: 11개 섹션으로 구성된 포괄적인 이력서 구조
+- 🔄 **Notion API 연동**: Notion 데이터베이스 수정 시 실시간 반영
+- 📸 **프로필 사진 지원**: Notion Files & media 필드로 이미지 관리
+- 📝 **자기소개 관리**: 줄바꿈 지원으로 자연스러운 문단 구성
+- 📄 **PDF Export**: 웹사이트를 A4 크기의 PDF로 다운로드
+- 📱 **반응형 디자인**: 모바일과 데스크톱 최적화
+- 🎨 **커스터마이징**: CSS 변수로 색상, 간격, 폰트 조정 가능
+- 📋 **11개 섹션**: 개인정보, 기술, 경험, 프로젝트 등 포괄적 구성
+- 🛠 **TypeScript**: 타입 안정성과 개발자 경험 향상
 
 ## 🛠 기술 스택
 
@@ -19,15 +20,14 @@ React와 Next.js로 구축된 모던한 개인 이력서 웹사이트입니다. 
 - **Fonts**: Inter (주요 폰트), JetBrains Mono (코드/기술 스택)
 - **PDF Generation**: html2canvas, jsPDF
 - **API Integration**: Notion API (@notionhq/client)
-- **Deployment**: GitHub Pages (Static Export)
 
 ## 📋 이력서 섹션 구성
 
 이 프로젝트는 다음과 같은 11개 섹션으로 구성된 완전한 이력서를 제공합니다:
 
-1. **개인 정보**: 이름, 연락처, 소개
+1. **개인 정보**: 이름, 연락처, 사진, 소개
 2. **사용한 기술**: 기술 스택을 카테고리별로 분류
-3. **핵심 역량**: 주요 역량과 관련 기술 스택
+3. **핵심 역량**: 기술을 중심으로 핵심 역량 어필
 4. **업무 경험**: 회사별 경험과 성과
 5. **프로젝트 경험**: 개발한 프로젝트들
 6. **포트폴리오**: 개인 프로젝트 및 작품
@@ -52,7 +52,7 @@ src/
 │   │   ├── Page.tsx        # A4 페이지 래퍼
 │   │   └── ResumeLayout.tsx # 이력서 전체 레이아웃
 │   ├── sections/           # 이력서 섹션별 컴포넌트
-│   │   ├── ContactInfo.tsx # 연락처 정보 섹션
+│   │   ├── ContactInfo.tsx # 연락처 정보 섹션 (프로필 사진 포함)
 │   │   ├── ProjectItem.tsx # 프로젝트/포트폴리오 아이템 (공통 컴포넌트)
 │   │   ├── SkillSection.tsx # 기술 스택 섹션
 │   │   ├── CoreCompetencySection.tsx # 핵심 역량 섹션
@@ -92,35 +92,9 @@ src/
 - `--space-2xl`: 64px
 - `--space-3xl`: 96px
 
-## 🚀 시작하기
+## 🚀 템플릿으로 사용하기
 
-### 1. 프로젝트 클론 및 의존성 설치
-
-```bash
-git clone https://github.com/yourusername/jaeiklee-resume.git
-cd jaeiklee-resume
-npm install
-```
-
-### 2. 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-[http://localhost:3000](http://localhost:3000)에서 결과를 확인할 수 있습니다.
-
-### 3. 빌드 및 배포
-
-```bash
-# 정적 사이트 빌드
-npm run build
-
-# GitHub Pages 배포
-npm run deploy
-```
-
-## 🔧 Notion API 연동 설정
+이 프로젝트를 템플릿으로 사용하여 자신만의 이력서 사이트를 만들 수 있습니다.
 
 ### 1. Notion Integration 생성
 
@@ -132,85 +106,91 @@ npm run deploy
 
 다음 데이터베이스들을 Notion에서 생성하고 Integration에 연결:
 
+**⚠️ 중요**: 컬럼명은 반드시 소문자로 생성하고, 코드의 interface와 정확히 동일한 이름을 사용해야 합니다.
+
+**📝 참고**: 각 데이터베이스에서 (Title)로 표시된 필드는 데이터베이스의 기본 Title 속성입니다.
+
 #### Personal Info 데이터베이스
-- **Name** (Title)
-- **Title** (Rich Text)
-- **Email** (Email)
-- **Phone** (Phone Number)
-- **Location** (Rich Text)
-- **GitHub** (URL)
-- **LinkedIn** (URL)
-- **Website** (URL)
+- **name** (Title)
+- **title** (Rich Text) - 직책/포지션
+- **email** (Email)
+- **phone** (Phone Number)
+- **location** (Rich Text)
+- **photo** (Files & media)
+- **introduction** (Rich Text)
+- **github** (URL)
+- **linkedin** (URL)
+- **website** (URL)
 
 #### Skills 데이터베이스
-- **Name** (Multi-select): 각 기술을 개별 옵션으로 추가 (예: React, TypeScript, Python, Docker 등)
-- **Category** (Select): 카테고리 설정 (예: Frontend, Backend, Database, DevOps, Tools, Mobile, AI/ML 등)
+- **category** (Title)
+- **name** (Multi-select): 각 기술을 개별 옵션으로 추가 (예: React, TypeScript, Python, Docker 등)
 
 #### Core Competencies 데이터베이스
-- **Title** (Title): 역량 제목
-- **Description** (Rich Text): 역량 설명
-- **Skills** (Multi-select): 관련 기술 스택
-- **Examples** (Rich Text): 세미콜론(;)으로 구분된 예시들
+- **title** (Title)
+- **description** (Rich Text): 역량 설명
+- **skills** (Multi-select): 관련 기술 스택
+- **examples** (Rich Text): 세미콜론(;)으로 구분된 예시들
 
 #### Experiences 데이터베이스
-- **Company** (Title): 회사명
-- **Position** (Rich Text): 직책
-- **Period** (Rich Text): 근무 기간
-- **Description** (Rich Text): 업무 설명
+- **company** (Title)
+- **position** (Rich Text): 직책
+- **period** (Rich Text): 근무 기간
+- **description** (Rich Text): 업무 설명
 
-#### Achievement Sections 데이터베이스 (새로 추가)
-- **Name** (Title): 소제목 (예: "SI 개발", "펌웨어 및 임베디드 SW 개발")
-- **Achievements** (Rich Text): 세미콜론(;)으로 구분된 성과 목록
-- **Skills** (Multi-select): 해당 섹션에서 사용한 기술 스택
+#### Achievement Sections 데이터베이스
+- **name** (Title)
+- **achievements** (Rich Text): 세미콜론(;)으로 구분된 성과 목록
+- **skills** (Multi-select): 해당 섹션에서 사용한 기술 스택
 
 #### Projects 데이터베이스
-- **Name** (Title): 프로젝트명
-- **Description** (Rich Text): 프로젝트 설명
-- **Period** (Rich Text): 개발 기간
-- **Skills** (Multi-select): 사용한 기술 스택
-- **Features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
-- **GitHub** (URL): GitHub 저장소 링크
-- **Website** (URL): 웹사이트 링크
-- **iOS** (URL): iOS 앱스토어 링크
-- **Android** (URL): Android 플레이스토어 링크
-- **Contribution** (Rich Text): 기여도 정보
+- **name** (Title)
+- **description** (Rich Text): 프로젝트 설명
+- **period** (Rich Text): 개발 기간
+- **skills** (Multi-select): 사용한 기술 스택
+- **features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
+- **github** (URL): GitHub 저장소 링크
+- **website** (URL): 웹사이트 링크
+- **ios** (URL): iOS 앱스토어 링크
+- **android** (URL): Android 플레이스토어 링크
+- **contribution** (Rich Text): 기여도 정보
 
 #### Portfolio 데이터베이스 (Projects와 동일한 구조)
-- **Name** (Title): 포트폴리오명
-- **Description** (Rich Text): 포트폴리오 설명
-- **Period** (Rich Text): 개발 기간
-- **Skills** (Multi-select): 사용한 기술 스택
-- **Features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
-- **GitHub** (URL): GitHub 저장소 링크
-- **Website** (URL): 웹사이트 링크
-- **iOS** (URL): iOS 앱스토어 링크
-- **Android** (URL): Android 플레이스토어 링크
-- **Contribution** (Rich Text): 기여도 정보
+- **name** (Title)
+- **description** (Rich Text): 포트폴리오 설명
+- **period** (Rich Text): 개발 기간
+- **skills** (Multi-select): 사용한 기술 스택
+- **features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
+- **github** (URL): GitHub 저장소 링크
+- **website** (URL): 웹사이트 링크
+- **ios** (URL): iOS 앱스토어 링크
+- **android** (URL): Android 플레이스토어 링크
+- **contribution** (Rich Text): 기여도 정보
 
 #### Values 데이터베이스
-- **Title** (Title)
-- **Description** (Rich Text)
+- **title** (Title)
+- **description** (Rich Text)
 
 #### Tools 데이터베이스
-- **Name** (Title)
-- **Category** (Select)
-- **Description** (Rich Text)
+- **category** (Title) - 카테고리명 (예: Graphic Design Tool (Adobe), UI Design Tool 등)
+- **name** (Select) - 도구명 선택 (예: Premiere Pro, After Effects, Figma 등)
+- **description** (Rich Text) - 숙련도 및 경험 설명 (예: 숙련 | 실사 기반 영상 편집 20건+)
 
 #### Education 데이터베이스
-- **Institution** (Title): 학교명 (예: 한동대학교)
-- **Degree** (Rich Text): 학위/전공 (예: 컴퓨터공학)
-- **Period** (Rich Text): 학력 기간 (예: 2012.02 ~ 2021.02)
-- **Location** (Rich Text): 위치 (예: 포항, 4년제)
+- **institution** (Title)
+- **degree** (Rich Text): 학위/전공 (예: 컴퓨터공학)
+- **period** (Rich Text): 학력 기간 (예: 2012.02 ~ 2021.02)
+- **location** (Rich Text): 위치 (예: 포항, 4년제)
 
 #### Certifications 데이터베이스
-- **Name** (Title): 자격증명 (예: 정보처리기사)
-- **Date** (Rich Text): 취득일 (예: 2020.11.12)
-- **Number** (Rich Text): 자격증 번호 (예: 20203220072C)
-- **Issuer** (Rich Text): 발행기관 (예: 한국산업인력공단)
+- **name** (Title)
+- **date** (Rich Text): 취득일 (예: 2020.11.12)
+- **number** (Rich Text): 자격증 번호 (예: 20203220072C)
+- **issuer** (Rich Text): 발행기관 (예: 한국산업인력공단)
 
 #### Military Service 데이터베이스
-- **Name** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
-- **Period** (Rich Text): 복무기간 (예: 2013.03 ~ 2014.12)
+- **name** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
+- **period** (Rich Text): 복무기간 (예: 2013.03 ~ 2014.12)
 
 ### 3. 환경 변수 설정
 
@@ -388,90 +368,4 @@ OPIc IM2
 - **Notion API 연동**: 모든 이력서 데이터를 Notion에서 동적으로 관리
 - **타입 안정성**: TypeScript로 모든 데이터 구조 정의
 - **데이터 변환**: Notion API 응답을 UI에 맞는 형태로 변환하는 함수들
-
-## 🚀 템플릿으로 사용하기
-
-이 프로젝트를 템플릿으로 사용하여 자신만의 이력서 사이트를 만들 수 있습니다.
-
-### 1. 프로젝트 포크 및 설정
-```bash
-# 1. 이 저장소를 포크하거나 클론
-git clone https://github.com/yourusername/jaeiklee-resume.git
-cd jaeiklee-resume
-
-# 2. 의존성 설치
-npm install
-
-# 3. 환경 변수 설정 (.env.local 파일 생성)
-cp .env.example .env.local
-# .env.local 파일을 편집하여 본인의 Notion API 정보 입력
-```
-
-### 2. 개인화 설정
-
-#### 개인 정보 수정
-`src/app/page.tsx` 파일에서 다음 부분을 수정하세요:
-
-```tsx
-// 개인 소개 문구 수정 (168-180번째 줄 근처)
-<p className="text-body">
-    스타트업 개발자로 4년간 다양한 기술 스택을 경험했습니다...
-</p>
-```
-
-#### 디자인 커스터마이징
-`src/app/globals.css` 파일에서 다음 변수들을 수정할 수 있습니다:
-
-```css
-:root {
-  --primary: #000000;        /* 주요 색상 */
-  --secondary: #666666;      /* 보조 색상 */
-  --tertiary: #999999;       /* 3차 색상 */
-  --background: #ffffff;     /* 배경색 */
-  --foreground: #000000;     /* 텍스트 색상 */
-}
-```
-
-#### 레이아웃 수정
-- **섹션 순서**: `src/app/page.tsx`에서 섹션들의 순서를 변경
-- **레이아웃 구조**: `src/components/layout/`에서 레이아웃 컴포넌트 수정
-
-### 3. Notion 데이터베이스 설정
-위의 "Notion API 연동 설정" 섹션을 참고하여 본인의 데이터로 채워넣기
-
-### 4. 배포
-```bash
-# GitHub Pages 배포
-npm run deploy
-
-# 또는 다른 호스팅 서비스 사용
-npm run build
-# build 폴더를 원하는 호스팅 서비스에 업로드
-```
-
-## 🔧 커스터마이징 가이드
-
-### 섹션 추가/제거
-새로운 섹션을 추가하려면:
-
-1. **타입 정의**: `src/types/index.ts`에 새로운 인터페이스 추가
-2. **컴포넌트 생성**: `src/components/sections/`에 새 섹션 컴포넌트 생성
-3. **Notion 연동**: `src/lib/notion.ts`에 데이터 fetching 함수 추가
-4. **페이지에 추가**: `src/app/page.tsx`에 새 섹션 렌더링 추가
-
-### 스타일 수정
-- **색상**: `src/app/globals.css`의 CSS 변수 수정
-- **폰트**: `src/app/layout.tsx`에서 Google Fonts 변경
-- **간격**: `--space-*` 변수들로 spacing 시스템 조정
-
-### 데이터 구조 변경
-- **Notion DB 스키마**: 데이터베이스 필드 추가/제거 시 타입 정의도 함께 수정
-- **데이터 변환**: `src/app/page.tsx`의 변환 함수들 수정
-
-## 🔗 배포
-
-GitHub Actions를 통해 main 브랜치에 push하면 자동으로 GitHub Pages에 배포됩니다.
-
-## 📄 라이선스
-
-MIT License
+- **코드 구조**: 명확하고 유지보수하기 쉬운 데이터 변환 함수들

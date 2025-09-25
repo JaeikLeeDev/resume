@@ -21,9 +21,9 @@ export default function NotionResumePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         addPageBreakStyles();
-
 
         // 이력서 데이터 가져오기 (API 라우트를 통해)
         const fetchResumeData = async () => {
@@ -87,7 +87,7 @@ export default function NotionResumePage() {
 
     const { personalInfo, skills, coreCompetencies, experiences, achievementSections, projects, portfolio, values, tools, education, certifications, militaryService } = resumeData;
 
-    // 데이터 변환 함수들
+    // 데이터 변환 함수들 (간단하고 명확하게)
     const transformContactInfo = (personalInfo: any) => ({
         email: personalInfo.email,
         phone: personalInfo.phone,
@@ -136,6 +136,7 @@ export default function NotionResumePage() {
 
     const transformToolsData = (tools: any[]) => {
         return tools.reduce((acc: Array<{ category: string; tools: Array<{ name: string; description: string }> }>, tool) => {
+            // tool.category가 실제 카테고리 (Title), tool.name이 도구명 (Select)
             const category = tool.category || 'Other';
             let categoryObj = acc.find(cat => cat.category === category);
 
@@ -145,7 +146,7 @@ export default function NotionResumePage() {
             }
 
             categoryObj.tools.push({
-                name: tool.name,
+                name: tool.name,  // 도구명
                 description: tool.description || ''
             });
 

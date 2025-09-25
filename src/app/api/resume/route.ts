@@ -7,9 +7,6 @@ export async function GET() {
     try {
         const resumeData = await getResumeData();
 
-        // 디버깅을 위한 로그
-        console.log('PersonalInfo photo:', resumeData.personalInfo.photo);
-
         return NextResponse.json({
             success: true,
             data: resumeData

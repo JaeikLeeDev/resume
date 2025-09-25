@@ -13,9 +13,6 @@ interface ContactInfoProps {
 }
 
 export default function ContactInfo({ email, phone, photo, blog, github }: ContactInfoProps) {
-  // 디버깅을 위한 로그
-  console.log('ContactInfo photo prop:', photo);
-
   return (
     <div style={{ marginBottom: 'var(--space-lg)' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-lg)' }}>
