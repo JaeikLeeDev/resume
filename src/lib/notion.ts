@@ -7,6 +7,9 @@ const notion = new Client({
     auth: process.env.NOTION_TOKEN,
 });
 
+// 정렬을 위한 상수
+const DEFAULT_ORDER_VALUE = 999;
+
 // 범용적인 데이터베이스 ID 가져오기 함수
 function getDatabaseId(key: string): string {
     return DATABASE_CONFIGS[key]?.id || '';
@@ -138,6 +141,10 @@ function extractText(property: any): string {
         return property.url || '';
     }
 
+    if (property.number !== undefined && property.number !== null) {
+        return property.number.toString();
+    }
+
     // 이미지 파일 처리
     if (property.files && property.files.length > 0) {
         const file = property.files[0];
@@ -210,24 +217,28 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     },
     skills: {
         name: 'name',
-        category: 'category'
+        category: 'category',
+        order: 'order'
     },
     coreCompetencies: {
         title: 'title',
         description: 'description',
         skills: 'skills',
-        examples: 'examples'
+        examples: 'examples',
+        order: 'order'
     },
     experiences: {
         company: 'company',
         position: 'position',
         period: 'period',
-        description: 'description'
+        description: 'description',
+        order: 'order'
     },
     achievementSections: {
         name: 'name',
         achievements: 'achievements',
-        skills: 'skills'
+        skills: 'skills',
+        order: 'order'
     },
     projects: {
         name: 'name',
@@ -240,7 +251,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         ios: 'ios',
         android: 'android',
         post: 'post',
-        contribution: 'contribution'
+        contribution: 'contribution',
+        order: 'order'
     },
     portfolio: {
         name: 'name',
@@ -253,28 +265,33 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         ios: 'ios',
         android: 'android',
         post: 'post',
-        contribution: 'contribution'
+        contribution: 'contribution',
+        order: 'order'
     },
     values: {
         title: 'title',
-        description: 'description'
+        description: 'description',
+        order: 'order'
     },
     tools: {
         category: 'category',  // Title 속성
         name: 'name',         // Select 속성
-        description: 'description'
+        description: 'description',
+        order: 'order'
     },
     education: {
         institution: 'institution',
         degree: 'degree',
         period: 'period',
-        location: 'location'
+        location: 'location',
+        order: 'order'
     },
     certifications: {
         name: 'name',
         date: 'date',
         number: 'number',
-        issuer: 'issuer'
+        issuer: 'issuer',
+        order: 'order'
     },
     militaryService: {
         name: 'name',
@@ -300,26 +317,39 @@ async function queryDatabase(
 
         const validPages = response.results.filter(isValidPageObject);
 
-        if (transformFunction) {
-            return validPages.map(transformFunction);
-        }
+        let results: any[];
 
-        // 기본 변환 함수: 속성 매핑을 사용하여 객체 생성
-        return validPages.map((page) => {
-            const result: any = {};
-            for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
-                const property = page.properties[notionProperty];
-                if (property) {
-                    // 배열 속성인지 동적으로 확인
-                    if ('multi_select' in property || 'rich_text' in property) {
-                        result[outputField] = extractArray(property);
-                    } else {
-                        result[outputField] = extractText(property);
+        if (transformFunction) {
+            results = validPages.map(transformFunction);
+        } else {
+            // 기본 변환 함수: 속성 매핑을 사용하여 객체 생성
+            results = validPages.map((page) => {
+                const result: any = {};
+                for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
+                    const property = page.properties[notionProperty];
+                    if (property) {
+                        // 배열 속성인지 동적으로 확인
+                        if ('multi_select' in property || 'rich_text' in property) {
+                            result[outputField] = extractArray(property);
+                        } else {
+                            result[outputField] = extractText(property);
+                        }
                     }
                 }
-            }
-            return result;
-        });
+                return result;
+            });
+        }
+
+        // order 프로퍼티가 있으면 정렬
+        if (propertyMapping.order) {
+            return results.sort((a, b) => {
+                const orderA = typeof a.order === 'number' ? a.order : (parseInt(a.order) || DEFAULT_ORDER_VALUE);
+                const orderB = typeof b.order === 'number' ? b.order : (parseInt(b.order) || DEFAULT_ORDER_VALUE);
+                return orderA - orderB;
+            });
+        }
+
+        return results;
     } catch (error) {
         console.error(`Error fetching ${databaseKey}:`, error);
         return [];
@@ -351,23 +381,10 @@ export async function getPersonalInfo(): Promise<PersonalInfo> {
 export async function getSkills(): Promise<Skill[]> {
     try {
         return await queryDatabase('skills', PROPERTY_MAPPINGS.skills, (page) => {
-            const nameProperty = page.properties.name;
-
-            // Multi-select 속성에서 직접 배열 추출
-            let skillsArray: string[] = [];
-
-            if (nameProperty && 'multi_select' in nameProperty && nameProperty.multi_select) {
-                // Multi-select에서 각 선택된 옵션의 이름을 추출
-                skillsArray = nameProperty.multi_select
-                    .map((item: any) => item.name)
-                    .filter((name: string) => name && name.trim().length > 0);
-            } else {
-                skillsArray = [];
-            }
-
             return {
-                name: skillsArray,
-                category: (extractText(page.properties.category) as any) || 'other',
+                name: extractArray(page.properties.name),
+                category: extractText(page.properties.category) || 'other',
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
             };
         });
     } catch (error) {
@@ -380,21 +397,12 @@ export async function getSkills(): Promise<Skill[]> {
 export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
     try {
         return await queryDatabase('coreCompetencies', PROPERTY_MAPPINGS.coreCompetencies, (page) => {
-            const skillsProperty = page.properties.skills;
-            let skillsArray: string[] = [];
-
-            // Multi-select 속성에서 skills 추출
-            if (skillsProperty && 'multi_select' in skillsProperty && skillsProperty.multi_select) {
-                skillsArray = skillsProperty.multi_select
-                    .map((item: any) => item.name)
-                    .filter((name: string) => name && name.trim().length > 0);
-            }
-
             return {
                 title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
-                skills: skillsArray,
+                skills: extractArray(page.properties.skills),
                 examples: extractArray(page.properties.examples),
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
             };
         });
     } catch (error) {
@@ -431,6 +439,7 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
                 name: extractText(page.properties.name),
                 achievements: extractArray(page.properties.achievements),
                 skills: skillsArray,
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
             };
         });
     } catch (error) {
@@ -468,7 +477,8 @@ export async function getValues(): Promise<Value[]> {
 
             return {
                 title: extractText(page.properties.title),
-                description: descriptionArray
+                description: descriptionArray,
+                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
             };
         });
     } catch (error) {
@@ -566,8 +576,8 @@ export async function getResumeData(): Promise<ResumeData> {
             education,
             certifications,
             militaryService: militaryService || {
-                name: '육군 | 병장 | 만기 전역',
-                period: '2013.03 ~ 2014.12'
+                name: '병역 정보 없음',
+                period: '정보 없음'
             },
         };
     } catch (error) {

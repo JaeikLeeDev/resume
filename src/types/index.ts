@@ -27,6 +27,7 @@ export interface NotionDatabaseResponse {
 export interface Skill {
     name: string[]; // 쉼표로 구분된 기술들을 배열로 저장
     category: string; // Notion에서 자유롭게 설정 가능
+    order: number; // 정렬 순서
 }
 
 export interface CoreCompetency {
@@ -34,6 +35,7 @@ export interface CoreCompetency {
     description: string;
     skills: string[]; // Multi-select로 추가될 기술 스택
     examples?: string[];
+    order: number; // 정렬 순서
 }
 
 export interface Experience {
@@ -41,12 +43,14 @@ export interface Experience {
     position: string;
     period: string;
     description: string;
+    order: number; // 정렬 순서
 }
 
 export interface AchievementSection {
     name: string; // 소제목
     achievements: string[]; // 성과 목록
     skills: string[]; // 기술 스택 (Multi-select)
+    order: number; // 정렬 순서
 }
 
 export interface Project {
@@ -61,6 +65,7 @@ export interface Project {
     android?: string;
     post?: string; // 블로그 글 링크
     contribution?: string; // 기여도
+    order: number; // 정렬 순서
 }
 
 export interface Portfolio {
@@ -75,17 +80,20 @@ export interface Portfolio {
     android?: string;
     post?: string; // 블로그 글 링크
     contribution?: string; // 기여도
+    order: number; // 정렬 순서
 }
 
 export interface Value {
     title: string;
     description: string[];
+    order: number; // 정렬 순서
 }
 
 export interface Tool {
     name: string; // 단일 텍스트로 변경
     category: string; // Select로 유지
     description: string; // 설명 추가
+    order: number; // 정렬 순서
 }
 
 export interface Education {
@@ -93,6 +101,7 @@ export interface Education {
     degree: string;
     period: string;
     location: string;
+    order: number; // 정렬 순서
 }
 
 export interface Certification {
@@ -100,6 +109,7 @@ export interface Certification {
     date: string;
     number: string;
     issuer: string;
+    order: number; // 정렬 순서
 }
 
 export interface MilitaryService {

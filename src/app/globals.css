@@ -15,25 +15,23 @@
   --tech-chip-bg: #f0f0f0;
   --tech-chip-text: var(--foreground-secondary);
 
-  /* Spacing System - Exact match */
-  --space-xs: 0.5rem;
-  /* 8px */
-  --space-sm: 1rem;
-  /* 16px */
-  --space-md: 1.5rem;
-  /* 24px */
-  --space-lg: 2rem;
-  /* 32px */
-  --space-xl: 3rem;
-  /* 48px */
-  --space-2xl: 4rem;
-  /* 64px */
-  --space-3xl: 6rem;
-  /* 96px */
-
-  /* Additional spacing values for consistency */
+  /* Spacing System - Consistent Design Tokens */
   --space-xxs: 0.375rem;
-  /* 6px */
+  /* 6px - minimal spacing */
+  --space-xs: 0.5rem;
+  /* 8px - small spacing */
+  --space-sm: 1rem;
+  /* 16px - medium spacing */
+  --space-md: 1.5rem;
+  /* 24px - large spacing */
+  --space-lg: 2rem;
+  /* 32px - extra large spacing */
+  --space-xl: 3rem;
+  /* 48px - section spacing */
+  --space-2xl: 4rem;
+  /* 64px - major section spacing */
+  --space-3xl: 6rem;
+  /* 96px - page section spacing */
   --contact-font-size: 0.9rem;
 }
 
@@ -72,7 +70,7 @@ body {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-lg);
   color: #4A90E2;
 }
 
@@ -117,7 +115,7 @@ body {
   font-weight: 400;
   line-height: 1.4;
   color: var(--foreground-tertiary);
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-sm);
 }
 
 .text-tech {
@@ -167,7 +165,7 @@ body {
 }
 
 .list-item {
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--space-xxs);
   position: relative;
   padding-left: var(--space-sm);
 }
@@ -291,6 +289,21 @@ body {
 
 .skill-separator {
   margin: 0 var(--space-xs);
+}
+
+/* Contribution text */
+.contribution-text {
+  margin-top: var(--space-xxs) !important;
+  margin-bottom: var(--space-sm) !important;
+}
+
+/* Skill category item - reduced spacing */
+.skill-category-item {
+  margin-bottom: var(--space-sm);
+}
+
+.skill-category-item:last-child {
+  margin-bottom: 0;
 }
 
 /* Custom scrollbar - Minimal */

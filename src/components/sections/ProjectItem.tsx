@@ -33,7 +33,7 @@ export default function ProjectItem({
             <p className="text-body">{description}</p>
 
             {contribution && (
-                <p className="text-meta" style={{ marginTop: '0.125rem', marginBottom: '0.5rem' }}>
+                <p className="text-meta contribution-text">
                     {contribution}
                 </p>
             )}

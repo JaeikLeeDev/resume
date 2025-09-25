@@ -11,6 +11,7 @@ React와 Next.js로 구축된 개인 이력서 빌더입니다. Notioin Database
 - 📱 **반응형 디자인**: 모바일과 데스크톱 최적화
 - 🎨 **커스터마이징**: CSS 변수로 색상, 간격, 폰트 조정 가능
 - 📋 **11개 섹션**: 개인정보, 기술, 경험, 프로젝트 등 포괄적 구성
+- 🔢 **정렬 시스템**: order 프로퍼티로 모든 섹션의 표시 순서 제어
 - 🛠 **TypeScript**: 타입 안정성과 개발자 경험 향상
 
 ## 🛠 기술 스택
@@ -125,23 +126,27 @@ src/
 #### Skills 데이터베이스
 - **category** (Title)
 - **name** (Multi-select): 각 기술을 개별 옵션으로 추가 (예: React, TypeScript, Python, Docker 등)
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Core Competencies 데이터베이스
 - **title** (Title)
 - **description** (Rich Text): 역량 설명
 - **skills** (Multi-select): 관련 기술 스택
 - **examples** (Rich Text): 세미콜론(;)으로 구분된 예시들
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Experiences 데이터베이스
 - **company** (Title)
 - **position** (Rich Text): 직책
 - **period** (Rich Text): 근무 기간
 - **description** (Rich Text): 업무 설명
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Achievement Sections 데이터베이스
 - **name** (Title)
 - **achievements** (Rich Text): 세미콜론(;)으로 구분된 성과 목록
 - **skills** (Multi-select): 해당 섹션에서 사용한 기술 스택
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Projects 데이터베이스
 - **name** (Title)
@@ -154,6 +159,7 @@ src/
 - **ios** (URL): iOS 앱스토어 링크
 - **android** (URL): Android 플레이스토어 링크
 - **contribution** (Rich Text): 기여도 정보
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Portfolio 데이터베이스 (Projects와 동일한 구조)
 - **name** (Title)
@@ -166,33 +172,56 @@ src/
 - **ios** (URL): iOS 앱스토어 링크
 - **android** (URL): Android 플레이스토어 링크
 - **contribution** (Rich Text): 기여도 정보
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Values 데이터베이스
 - **title** (Title)
 - **description** (Rich Text)
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Tools 데이터베이스
 - **category** (Title) - 카테고리명 (예: Graphic Design Tool (Adobe), UI Design Tool 등)
 - **name** (Select) - 도구명 선택 (예: Premiere Pro, After Effects, Figma 등)
 - **description** (Rich Text) - 숙련도 및 경험 설명 (예: 숙련 | 실사 기반 영상 편집 20건+)
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Education 데이터베이스
 - **institution** (Title)
 - **degree** (Rich Text): 학위/전공 (예: 컴퓨터공학)
 - **period** (Rich Text): 학력 기간 (예: 2012.02 ~ 2021.02)
 - **location** (Rich Text): 위치 (예: 포항, 4년제)
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Certifications 데이터베이스
 - **name** (Title)
 - **date** (Rich Text): 취득일 (예: 2020.11.12)
 - **number** (Rich Text): 자격증 번호 (예: 20203220072C)
 - **issuer** (Rich Text): 발행기관 (예: 한국산업인력공단)
+- **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Military Service 데이터베이스
 - **name** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
 - **period** (Rich Text): 복무기간 (예: 2013.03 ~ 2014.12)
 
-### 3. 환경 변수 설정
+### 3. 정렬 시스템
+
+모든 데이터베이스(Personal Info, Military Service 제외)에서 **order** 프로퍼티를 사용하여 표시 순서를 제어합니다:
+
+- **order 1** → 맨 위에 표시
+- **order 2** → 두 번째에 표시
+- **order 3** → 세 번째에 표시
+- **order 값이 없거나 잘못된 경우** → 맨 아래에 표시
+
+**정렬 예시:**
+```
+Skills 데이터베이스:
+- Frontend (order: 1) → 맨 위
+- Backend (order: 2) → 두 번째
+- DevOps (order: 3) → 세 번째
+- Other (order 없음) → 맨 아래
+```
+
+### 4. 환경 변수 설정
 
 `.env.local` 파일을 생성하고 다음 환경변수들을 설정:
 
@@ -215,7 +244,7 @@ NOTION_CERTIFICATIONS_DB_ID=your_certifications_database_id_here
 NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
 ```
 
-### 4. 데이터 입력 방법 및 파싱 규칙
+### 5. 데이터 입력 방법 및 파싱 규칙
 
 #### 📝 텍스트 구분자 규칙
 이 템플릿에서는 **세미콜론(;)**을 구분자로 사용합니다:
@@ -348,7 +377,7 @@ OPIc IM2
 2013.03 ~ 2014.12
 ```
 
-### 5. 사용 방법
+### 6. 사용 방법
 
 - **이력서 페이지**: `http://localhost:3000` (Notion API 연동)
 - **개발 서버**: `npm run dev`로 로컬 개발 서버 실행
