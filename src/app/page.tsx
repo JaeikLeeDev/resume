@@ -10,6 +10,9 @@ import ToolSection from '@/components/sections/ToolSection';
 import CoreCompetencySection from '@/components/sections/CoreCompetencySection';
 import WorkAchievementSection from '@/components/sections/WorkAchievementSection';
 import ProjectItem from '@/components/sections/ProjectItem';
+import EducationSection from '@/components/sections/EducationSection';
+import CertificationSection from '@/components/sections/CertificationSection';
+import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection';
 import { addPageBreakStyles } from '@/lib/pdf';
 import { ResumeData } from '@/types';
 
@@ -82,7 +85,7 @@ export default function NotionResumePage() {
         );
     }
 
-    const { personalInfo, skills, coreCompetencies, experiences, achievementSections, projects, portfolio, values, tools } = resumeData;
+    const { personalInfo, skills, coreCompetencies, experiences, achievementSections, projects, portfolio, values, tools, education, certifications, militaryService } = resumeData;
 
     // 데이터 변환 함수들
     const transformContactInfo = (personalInfo: any) => ({
@@ -265,6 +268,24 @@ export default function NotionResumePage() {
                     <div className="section">
                         <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
                         <ToolSection categories={otherToolsData} />
+                    </div>
+
+                    {/* 학력 Section */}
+                    <div className="section">
+                        <h2 className="text-section-title">학력.</h2>
+                        <EducationSection education={education} />
+                    </div>
+
+                    {/* 자격증 및 어학 Section */}
+                    <div className="section">
+                        <h2 className="text-section-title">자격증 및 어학.</h2>
+                        <CertificationSection certifications={certifications} />
+                    </div>
+
+                    {/* 병역 Section */}
+                    <div className="section">
+                        <h2 className="text-section-title">병역.</h2>
+                        <MilitaryServiceSection militaryService={militaryService} />
                     </div>
 
                 </div>

@@ -86,6 +86,25 @@ export interface Tool {
     description: string; // 설명 추가
 }
 
+export interface Education {
+    institution: string;
+    degree: string;
+    period: string;
+    location: string;
+}
+
+export interface Certification {
+    name: string;
+    date: string;
+    number: string;
+    issuer: string;
+}
+
+export interface MilitaryService {
+    name: string;
+    period: string;
+}
+
 export interface ResumeData {
     personalInfo: PersonalInfo;
     skills: Skill[];
@@ -96,4 +115,7 @@ export interface ResumeData {
     portfolio: Portfolio[];
     values: Value[];
     tools: Tool[];
+    education: Education[];
+    certifications: Certification[];
+    militaryService: MilitaryService;
 }

@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, NotionPage } from '@/types';
+import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, Education, Certification, MilitaryService, NotionPage } from '@/types';
 import type { PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion 클라이언트 초기화
@@ -64,6 +64,21 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
     tools: {
         id: process.env.NOTION_TOOLS_DB_ID || '',
         name: 'Tools',
+        required: false
+    },
+    education: {
+        id: process.env.NOTION_EDUCATION_DB_ID || '',
+        name: 'Education',
+        required: false
+    },
+    certifications: {
+        id: process.env.NOTION_CERTIFICATIONS_DB_ID || '',
+        name: 'Certifications',
+        required: false
+    },
+    militaryService: {
+        id: process.env.NOTION_MILITARY_SERVICE_DB_ID || '',
+        name: 'Military Service',
         required: false
     }
 };
@@ -237,6 +252,22 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         name: 'name',
         category: 'category',
         description: 'description'
+    },
+    education: {
+        institution: 'institution',
+        degree: 'degree',
+        period: 'period',
+        location: 'location'
+    },
+    certifications: {
+        name: 'name',
+        date: 'date',
+        number: 'number',
+        issuer: 'issuer'
+    },
+    militaryService: {
+        name: 'name',
+        period: 'period'
     }
 };
 
@@ -480,6 +511,37 @@ export async function getTools(): Promise<Tool[]> {
     }
 }
 
+// 학력 가져오기
+export async function getEducation(): Promise<Education[]> {
+    try {
+        return await queryDatabase('education', PROPERTY_MAPPINGS.education);
+    } catch (error) {
+        console.error('Error fetching education:', error);
+        return [];
+    }
+}
+
+// 자격증 가져오기
+export async function getCertifications(): Promise<Certification[]> {
+    try {
+        return await queryDatabase('certifications', PROPERTY_MAPPINGS.certifications);
+    } catch (error) {
+        console.error('Error fetching certifications:', error);
+        return [];
+    }
+}
+
+// 병역 가져오기
+export async function getMilitaryService(): Promise<MilitaryService | null> {
+    try {
+        const results = await queryDatabase('militaryService', PROPERTY_MAPPINGS.militaryService);
+        return results.length > 0 ? results[0] as MilitaryService : null;
+    } catch (error) {
+        console.error('Error fetching military service:', error);
+        return null;
+    }
+}
+
 // 전체 이력서 데이터 가져오기
 export async function getResumeData(): Promise<ResumeData> {
     try {
@@ -497,6 +559,9 @@ export async function getResumeData(): Promise<ResumeData> {
             portfolio,
             values,
             tools,
+            education,
+            certifications,
+            militaryService,
         ] = await Promise.all([
             getPersonalInfo(),
             getSkills(),
@@ -507,6 +572,9 @@ export async function getResumeData(): Promise<ResumeData> {
             getPortfolio(),
             getValues(),
             getTools(),
+            getEducation(),
+            getCertifications(),
+            getMilitaryService(),
         ]);
 
         return {
@@ -519,6 +587,12 @@ export async function getResumeData(): Promise<ResumeData> {
             portfolio,
             values,
             tools,
+            education,
+            certifications,
+            militaryService: militaryService || {
+                name: '육군 | 병장 | 만기 전역',
+                period: '2013.03 ~ 2014.12'
+            },
         };
     } catch (error) {
         console.error('Error fetching resume data:', error);

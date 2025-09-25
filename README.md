@@ -10,7 +10,7 @@ React와 Next.js로 구축된 모던한 개인 이력서 웹사이트입니다. 
 - 🎨 **일관된 디자인**: 체계적인 타이포그래피 위계와 spacing 시스템
 - 🚀 **GitHub Pages 호스팅**: 정적 사이트 생성을 통한 빠른 로딩
 - 🔄 **Notion API 연동**: Notion 데이터베이스와 실시간 연동으로 동적 이력서 관리
-- ⚡ **최적화된 코드**: 중복 제거, 효율적인 데이터 변환, 깔끔한 컴포넌트 구조
+- 📋 **완전한 이력서**: 11개 섹션으로 구성된 포괄적인 이력서 구조
 
 ## 🛠 기술 스택
 
@@ -20,6 +20,22 @@ React와 Next.js로 구축된 모던한 개인 이력서 웹사이트입니다. 
 - **PDF Generation**: html2canvas, jsPDF
 - **API Integration**: Notion API (@notionhq/client)
 - **Deployment**: GitHub Pages (Static Export)
+
+## 📋 이력서 섹션 구성
+
+이 프로젝트는 다음과 같은 11개 섹션으로 구성된 완전한 이력서를 제공합니다:
+
+1. **개인 정보**: 이름, 연락처, 소개
+2. **사용한 기술**: 기술 스택을 카테고리별로 분류
+3. **핵심 역량**: 주요 역량과 관련 기술 스택
+4. **업무 경험**: 회사별 경험과 성과
+5. **프로젝트 경험**: 개발한 프로젝트들
+6. **포트폴리오**: 개인 프로젝트 및 작품
+7. **가치관**: 개인의 가치관과 철학
+8. **개발 외 툴 활용 역량**: 개발 외 사용하는 도구들
+9. **학력**: 교육 배경 정보
+10. **자격증 및 어학**: 취득한 자격증과 어학 능력
+11. **병역**: 병역 복무 정보
 
 ## 📁 프로젝트 구조
 
@@ -42,7 +58,10 @@ src/
 │   │   ├── CoreCompetencySection.tsx # 핵심 역량 섹션
 │   │   ├── WorkAchievementSection.tsx # 업무 성과 섹션 (소제목별)
 │   │   ├── ValueSection.tsx # 가치관 섹션
-│   │   └── ToolSection.tsx # 개발 외 툴 섹션
+│   │   ├── ToolSection.tsx # 개발 외 툴 섹션
+│   │   ├── EducationSection.tsx # 학력 섹션
+│   │   ├── CertificationSection.tsx # 자격증 및 어학 섹션
+│   │   └── MilitaryServiceSection.tsx # 병역 섹션
 │   └── ui/                 # 재사용 가능한 UI 컴포넌트
 │       ├── PDFExport.tsx   # PDF 다운로드 버튼
 │       └── TechChips.tsx   # 기술 스택 칩
@@ -177,6 +196,22 @@ npm run deploy
 - **Category** (Select)
 - **Description** (Rich Text)
 
+#### Education 데이터베이스
+- **Institution** (Title): 학교명 (예: 한동대학교)
+- **Degree** (Rich Text): 학위/전공 (예: 컴퓨터공학)
+- **Period** (Rich Text): 학력 기간 (예: 2012.02 ~ 2021.02)
+- **Location** (Rich Text): 위치 (예: 포항, 4년제)
+
+#### Certifications 데이터베이스
+- **Name** (Title): 자격증명 (예: 정보처리기사)
+- **Date** (Rich Text): 취득일 (예: 2020.11.12)
+- **Number** (Rich Text): 자격증 번호 (예: 20203220072C)
+- **Issuer** (Rich Text): 발행기관 (예: 한국산업인력공단)
+
+#### Military Service 데이터베이스
+- **Name** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
+- **Period** (Rich Text): 복무기간 (예: 2013.03 ~ 2014.12)
+
 ### 3. 환경 변수 설정
 
 `.env.local` 파일을 생성하고 다음 환경변수들을 설정:
@@ -195,6 +230,9 @@ NOTION_PROJECTS_DB_ID=your_projects_database_id_here
 NOTION_PORTFOLIO_DB_ID=your_portfolio_database_id_here
 NOTION_VALUES_DB_ID=your_values_database_id_here
 NOTION_TOOLS_DB_ID=your_tools_database_id_here
+NOTION_EDUCATION_DB_ID=your_education_database_id_here
+NOTION_CERTIFICATIONS_DB_ID=your_certifications_database_id_here
+NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
 ```
 
 ### 4. 데이터 입력 방법 및 파싱 규칙
@@ -303,43 +341,53 @@ GitHub | Website | iOS | Android
 GitHub | Website
 ```
 
+**학력:**
+```
+한동대학교 컴퓨터공학
+2012.02 ~ 2021.02 | 포항, 4년제
+
+벨국제학교 대안학교
+2008.02 ~ 2011.02 | 2008.08 고졸 검정고시
+```
+
+**자격증 및 어학:**
+```
+정보처리기사
+2020.11.12 | 20203220072C | 한국산업인력공단
+
+IoT지식능력검정
+2022.06.10 | 2022-05-900159 | 한국지능형사물인터넷협회
+
+OPIc IM2
+2025.07.22 | BR9M-RQFO-XZ2F-KSM5-RA38 | ACTFL
+```
+
+**병역:**
+```
+육군 | 병장 | 만기 전역
+2013.03 ~ 2014.12
+```
+
 ### 5. 사용 방법
 
 - **이력서 페이지**: `http://localhost:3000` (Notion API 연동)
 - **개발 서버**: `npm run dev`로 로컬 개발 서버 실행
 - **빌드**: `npm run build`로 정적 사이트 생성
 
-## ⚡ 코드 최적화 및 리팩토링
+## 🏗️ 프로젝트 구조 및 설계
 
-이 프로젝트는 지속적인 코드 품질 개선을 통해 최적화되었습니다:
+### 컴포넌트 아키텍처
+이 프로젝트는 다음과 같은 구조로 설계되었습니다:
 
-### 🔧 최적화된 부분들
+- **레이아웃 컴포넌트**: `ResumeLayout`, `Page` - 전체 레이아웃 관리
+- **섹션 컴포넌트**: 각 이력서 섹션별로 분리된 컴포넌트
+- **공통 컴포넌트**: `ProjectItem` - 프로젝트/포트폴리오 공통 렌더링
+- **UI 컴포넌트**: `PDFExport`, `TechChips` - 재사용 가능한 UI 요소
 
-#### 1. 중복 코드 제거
-- **프로젝트/포트폴리오 섹션**: 동일한 렌더링 로직을 `ProjectItem` 공통 컴포넌트로 분리
-- **Notion API 함수**: 중복된 연결 테스트 함수를 하나로 통합
-- **데이터 변환 로직**: 반복되는 변환 패턴을 재사용 가능한 함수로 분리
-
-#### 2. 사용하지 않는 코드 정리
-- **불필요한 import 제거**: `TechChips`, `Page` 등 사용하지 않는 컴포넌트 import 제거
-- **주석 처리된 코드 제거**: `WorkAchievementSection`의 주석 처리된 TechChips 코드 제거
-- **빈 디렉토리 정리**: 사용하지 않는 debug, notion 디렉토리 제거
-
-#### 3. 효율적인 데이터 변환
-- **함수형 변환**: 데이터 변환 로직을 별도 함수로 분리하여 가독성 향상
-- **타입 안정성**: TypeScript 타입 정의 개선으로 컴파일 타임 에러 방지
-- **성능 최적화**: 불필요한 재계산 방지 및 메모리 사용량 최적화
-
-#### 4. 컴포넌트 구조 개선
-- **단일 책임 원칙**: 각 컴포넌트가 하나의 명확한 역할을 담당
-- **재사용성 향상**: 공통 컴포넌트 분리로 코드 재사용성 증대
-- **유지보수성**: 명확한 구조로 향후 수정 및 확장 용이
-
-### 📊 최적화 결과
-- **코드 라인 수 감소**: 중복 코드 제거로 약 200줄 감소
-- **컴포넌트 재사용성**: `ProjectItem` 컴포넌트로 프로젝트/포트폴리오 섹션 통합
-- **타입 안정성**: TypeScript 에러 0개 달성
-- **성능 향상**: 불필요한 렌더링 및 계산 최소화
+### 데이터 관리
+- **Notion API 연동**: 모든 이력서 데이터를 Notion에서 동적으로 관리
+- **타입 안정성**: TypeScript로 모든 데이터 구조 정의
+- **데이터 변환**: Notion API 응답을 UI에 맞는 형태로 변환하는 함수들
 
 ## 🚀 템플릿으로 사용하기
 
@@ -360,9 +408,33 @@ cp .env.example .env.local
 ```
 
 ### 2. 개인화 설정
-- **개인 정보**: `src/app/page.tsx`에서 이름, 제목 등 수정
-- **디자인**: `src/app/globals.css`에서 색상, 폰트 등 커스터마이징
-- **레이아웃**: `src/components/layout/`에서 레이아웃 구조 수정
+
+#### 개인 정보 수정
+`src/app/page.tsx` 파일에서 다음 부분을 수정하세요:
+
+```tsx
+// 개인 소개 문구 수정 (168-180번째 줄 근처)
+<p className="text-body">
+    스타트업 개발자로 4년간 다양한 기술 스택을 경험했습니다...
+</p>
+```
+
+#### 디자인 커스터마이징
+`src/app/globals.css` 파일에서 다음 변수들을 수정할 수 있습니다:
+
+```css
+:root {
+  --primary: #000000;        /* 주요 색상 */
+  --secondary: #666666;      /* 보조 색상 */
+  --tertiary: #999999;       /* 3차 색상 */
+  --background: #ffffff;     /* 배경색 */
+  --foreground: #000000;     /* 텍스트 색상 */
+}
+```
+
+#### 레이아웃 수정
+- **섹션 순서**: `src/app/page.tsx`에서 섹션들의 순서를 변경
+- **레이아웃 구조**: `src/components/layout/`에서 레이아웃 컴포넌트 수정
 
 ### 3. Notion 데이터베이스 설정
 위의 "Notion API 연동 설정" 섹션을 참고하여 본인의 데이터로 채워넣기
@@ -377,28 +449,24 @@ npm run build
 # build 폴더를 원하는 호스팅 서비스에 업로드
 ```
 
-## 📋 개발 로드맵
+## 🔧 커스터마이징 가이드
 
-- [x] 모던한 이력서 디자인 구현
-- [x] 컴포넌트 모듈화 완료
-- [x] 타이포그래피 시스템 구축
-- [x] PDF 다운로드 기능
-- [x] GitHub Pages 배포 설정
-- [x] Notion API 연동
-- [x] 소제목별 성과 섹션 구조화
-- [x] Multi-select 기술 스택 지원
-- [x] 세미콜론 구분자 파싱 시스템
-- [x] 포트폴리오 섹션 추가
-- [x] 다중 링크 지원 (GitHub, Website, iOS, Android)
-- [x] 기여도 정보 표시 기능
-- [x] 줄바꿈 지원 (Rich Text)
-- [x] **코드 최적화 및 리팩토링**: 중복 코드 제거, 공통 컴포넌트 분리, 효율적인 데이터 변환
-- [x] **사용하지 않는 코드 정리**: 불필요한 import 제거, 빈 디렉토리 정리
-- [ ] 다국어 지원 (한국어/영어)
-- [ ] 다크모드 지원
-- [ ] 애니메이션 효과 추가
-- [ ] Notion 데이터 실시간 동기화
-- [ ] 이력서 버전 관리 시스템
+### 섹션 추가/제거
+새로운 섹션을 추가하려면:
+
+1. **타입 정의**: `src/types/index.ts`에 새로운 인터페이스 추가
+2. **컴포넌트 생성**: `src/components/sections/`에 새 섹션 컴포넌트 생성
+3. **Notion 연동**: `src/lib/notion.ts`에 데이터 fetching 함수 추가
+4. **페이지에 추가**: `src/app/page.tsx`에 새 섹션 렌더링 추가
+
+### 스타일 수정
+- **색상**: `src/app/globals.css`의 CSS 변수 수정
+- **폰트**: `src/app/layout.tsx`에서 Google Fonts 변경
+- **간격**: `--space-*` 변수들로 spacing 시스템 조정
+
+### 데이터 구조 변경
+- **Notion DB 스키마**: 데이터베이스 필드 추가/제거 시 타입 정의도 함께 수정
+- **데이터 변환**: `src/app/page.tsx`의 변환 함수들 수정
 
 ## 🔗 배포
 

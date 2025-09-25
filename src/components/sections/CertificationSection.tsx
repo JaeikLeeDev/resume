@@ -1,0 +1,25 @@
+interface Certification {
+    name: string;
+    date: string;
+    number: string;
+    issuer: string;
+}
+
+interface CertificationSectionProps {
+    certifications: Certification[];
+}
+
+export default function CertificationSection({ certifications }: CertificationSectionProps) {
+    return (
+        <div>
+            {certifications.map((cert, index) => (
+                <div key={index} className="item">
+                    <h3 className="text-item-title">{cert.name}</h3>
+                    <div className="text-meta">
+                        <p>{cert.date} | {cert.number} | {cert.issuer}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
