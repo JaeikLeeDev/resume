@@ -250,8 +250,8 @@ body {
 @media (max-width: 768px) {
   .contact-container {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     gap: var(--space-md);
   }
 
@@ -265,11 +265,11 @@ body {
   }
 
   .contact-row {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .contact-row .text-meta {
-    width: auto;
+    width: 60px;
     margin-right: var(--space-xs);
   }
 }

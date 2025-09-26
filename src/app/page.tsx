@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import ResumeLayout from '@/components/layout/ResumeLayout';
-import PDFExport from '@/components/ui/PDFExport';
 import ContactInfo from '@/components/sections/ContactInfo';
 import SkillSection from '@/components/sections/SkillSection';
 import ValueSection from '@/components/sections/ValueSection';
@@ -13,7 +12,6 @@ import ProjectItem from '@/components/sections/ProjectItem';
 import EducationSection from '@/components/sections/EducationSection';
 import CertificationSection from '@/components/sections/CertificationSection';
 import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection';
-import { addPageBreakStyles } from '@/lib/pdf';
 import { ResumeData } from '@/types';
 
 export default function NotionResumePage() {
@@ -25,8 +23,6 @@ export default function NotionResumePage() {
 
     // 컴포넌트 마운트 시 이력서 데이터 로드
     useEffect(() => {
-        addPageBreakStyles();
-
         const fetchResumeData = async () => {
             try {
                 setLoading(true);
@@ -161,9 +157,8 @@ export default function NotionResumePage() {
 
     return (
         <div className="min-h-screen" style={{ background: 'var(--background)' }}>
-            <PDFExport />
             <ResumeLayout>
-                <div className="container" style={{ paddingTop: 'var(--space-3xl)', paddingBottom: 'var(--space-3xl)' }}>
+                <div className="container" style={{ paddingTop: 'var(--space-lg)', paddingBottom: 'var(--space-3xl)' }}>
 
                     {/* 개인정보 섹션 */}
                     <div style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -181,7 +176,7 @@ export default function NotionResumePage() {
 
                     {/* 사용한 기술 섹션 */}
                     {skills.some(skill => skill.show === 'show') && (
-                        <div className="section">
+                        <div className="section page-break-before">
                             <h2 className="text-section-title">사용한 기술.</h2>
                             <SkillSection categories={skillsData} />
                         </div>
@@ -262,6 +257,14 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
+                    {/* 학력 섹션 */}
+                    {education.some(edu => edu.show === 'show') && (
+                        <div className="section page-break-before">
+                            <h2 className="text-section-title">학력.</h2>
+                            <EducationSection education={education.filter(edu => edu.show === 'show')} />
+                        </div>
+                    )}
+
                     {/* 가치관 섹션 */}
                     {values.some(value => value.show === 'show') && (
                         <div className="section">
@@ -275,14 +278,6 @@ export default function NotionResumePage() {
                         <div className="section">
                             <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
                             <ToolSection categories={otherToolsData} />
-                        </div>
-                    )}
-
-                    {/* 학력 섹션 */}
-                    {education.some(edu => edu.show === 'show') && (
-                        <div className="section">
-                            <h2 className="text-section-title">학력.</h2>
-                            <EducationSection education={education.filter(edu => edu.show === 'show')} />
                         </div>
                     )}
 
