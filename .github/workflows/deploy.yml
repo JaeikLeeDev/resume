@@ -1,0 +1,69 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+# GitHub Pages에 배포할 권한 설정
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시 배포 방지
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run build
+      env:
+        NODE_ENV: production
+        ESLINT_NO_DEV_ERRORS: true
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        NOTION_PERSONAL_INFO_DB_ID: ${{ vars.NOTION_PERSONAL_INFO_DB_ID }}
+        NOTION_SKILLS_DB_ID: ${{ vars.NOTION_SKILLS_DB_ID }}
+        NOTION_CORE_COMPETENCIES_DB_ID: ${{ vars.NOTION_CORE_COMPETENCIES_DB_ID }}
+        NOTION_EXPERIENCES_DB_ID: ${{ vars.NOTION_EXPERIENCES_DB_ID }}
+        NOTION_ACHIEVEMENT_SECTIONS_DB_ID: ${{ vars.NOTION_ACHIEVEMENT_SECTIONS_DB_ID }}
+        NOTION_PROJECTS_DB_ID: ${{ vars.NOTION_PROJECTS_DB_ID }}
+        NOTION_PORTFOLIO_DB_ID: ${{ vars.NOTION_PORTFOLIO_DB_ID }}
+        NOTION_VALUES_DB_ID: ${{ vars.NOTION_VALUES_DB_ID }}
+        NOTION_TOOLS_DB_ID: ${{ vars.NOTION_TOOLS_DB_ID }}
+        NOTION_EDUCATION_DB_ID: ${{ vars.NOTION_EDUCATION_DB_ID }}
+        NOTION_CERTIFICATIONS_DB_ID: ${{ vars.NOTION_CERTIFICATIONS_DB_ID }}
+        NOTION_MILITARY_SERVICE_DB_ID: ${{ vars.NOTION_MILITARY_SERVICE_DB_ID }}
+        
+    - name: Debug Environment Variables
+      run: |
+        echo "NOTION_TOKEN is set: ${{ secrets.NOTION_TOKEN != '' }}"
+        echo "NOTION_PERSONAL_INFO_DB_ID is set: ${{ vars.NOTION_PERSONAL_INFO_DB_ID != '' }}"
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./out
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

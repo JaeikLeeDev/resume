@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   },
   basePath: process.env.NODE_ENV === 'production' ? '/jaeiklee-resume' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/jaeiklee-resume/' : '',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;

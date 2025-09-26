@@ -1,6 +1,3 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import ResumeLayout from '@/components/layout/ResumeLayout';
 import ContactInfo from '@/components/sections/ContactInfo';
 import SkillSection from '@/components/sections/SkillSection';
@@ -13,70 +10,26 @@ import EducationSection from '@/components/sections/EducationSection';
 import CertificationSection from '@/components/sections/CertificationSection';
 import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection';
 import { ResumeData } from '@/types';
+import { getResumeData } from '@/lib/notion';
 
-export default function NotionResumePage() {
-    // 이력서 데이터 로딩을 위한 상태 관리
-    const [resumeData, setResumeData] = useState<ResumeData | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+export default async function NotionResumePage() {
+    let resumeData: ResumeData;
 
-
-    // 컴포넌트 마운트 시 이력서 데이터 로드
-    useEffect(() => {
-        const fetchResumeData = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('/api/resume');
-                const result = await response.json();
-
-                if (result.success) {
-                    setResumeData(result.data);
-                    setError(null);
-                } else {
-                    setError(result.message);
-                }
-            } catch (err) {
-                console.error('Failed to fetch resume data:', err);
-                setError(err instanceof Error ? err.message : 'Failed to fetch resume data');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResumeData();
-    }, []);
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                    <p className="text-lg">이력서를 불러오는 중...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
+    try {
+        resumeData = await getResumeData();
+    } catch (error) {
+        console.error('Failed to fetch resume data:', error);
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center max-w-md mx-auto p-6">
                     <div className="text-red-500 text-6xl mb-4">⚠️</div>
                     <h2 className="text-2xl font-bold mb-4">데이터 로딩 실패</h2>
-                    <p className="text-gray-600 mb-4">{error}</p>
+                    <p className="text-gray-600 mb-4">
+                        {error instanceof Error ? error.message : 'Failed to fetch resume data'}
+                    </p>
                     <div className="text-sm text-gray-500">
                         <p className="mt-2">환경 변수가 올바르게 설정되었는지 확인해주세요.</p>
                     </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (!resumeData) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-lg">데이터를 찾을 수 없습니다.</p>
                 </div>
             </div>
         );

@@ -98,7 +98,7 @@ export interface Portfolio {
 // 가치관 타입
 export interface Value {
     title: string;
-    detail: string;
+    detail: string | string[];
     order: number;
     show: 'show' | 'hide';
 }
