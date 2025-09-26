@@ -1,9 +1,4 @@
-interface Education {
-    institution: string;
-    degree: string;
-    period: string;
-    location: string;
-}
+import { Education } from '@/types';
 
 interface EducationSectionProps {
     education: Education[];
@@ -14,7 +9,7 @@ export default function EducationSection({ education }: EducationSectionProps) {
         <div>
             {education.map((edu, index) => (
                 <div key={index} className="item">
-                    <h3 className="text-item-title">{edu.institution} {edu.degree}</h3>
+                    <h3 className="text-item-title">{edu.title} {edu.degree}</h3>
                     <div className="text-meta">
                         <p>{edu.period} | {edu.location}</p>
                     </div>

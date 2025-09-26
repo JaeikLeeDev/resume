@@ -1,9 +1,4 @@
-interface Certification {
-    name: string;
-    date: string;
-    number: string;
-    issuer: string;
-}
+import { Certification } from '@/types';
 
 interface CertificationSectionProps {
     certifications: Certification[];
@@ -14,7 +9,7 @@ export default function CertificationSection({ certifications }: CertificationSe
         <div>
             {certifications.map((cert, index) => (
                 <div key={index} className="item">
-                    <h3 className="text-item-title">{cert.name}</h3>
+                    <h3 className="text-item-title">{cert.title}</h3>
                     <div className="text-meta">
                         <p>{cert.date} | {cert.number} | {cert.issuer}</p>
                     </div>

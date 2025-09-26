@@ -1,13 +1,9 @@
 import TechChips from '@/components/ui/TechChips';
 
-interface WorkAchievementSection {
-    name: string;
-    achievements: string[];
-    skills: string[];
-}
+import { AchievementSection } from '@/types';
 
 interface WorkAchievementSectionProps {
-    sections: WorkAchievementSection[];
+    sections: AchievementSection[];
 }
 
 export default function WorkAchievementSection({ sections }: WorkAchievementSectionProps) {
@@ -15,15 +11,20 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
         <div>
             {sections.map((section, index) => (
                 <div key={index} className="item">
-                    <h3 className="text-item-title">{section.name}</h3>
+                    <h3 className="text-item-title">{section.title}</h3>
 
 
                     {/* Achievements */}
-                    {section.achievements && section.achievements.length > 0 && (
+                    {section.achievements && (
                         <ul className="list">
-                            {section.achievements.map((achievement, achievementIndex) => (
-                                <li key={achievementIndex} className="list-item">{achievement}</li>
-                            ))}
+                            {Array.isArray(section.achievements)
+                                ? section.achievements.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                                    <li key={achievementIndex} className="list-item">{achievement}</li>
+                                ))
+                                : section.achievements.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                                    <li key={achievementIndex} className="list-item">{achievement.trim()}</li>
+                                ))
+                            }
                         </ul>
                     )}
                 </div>

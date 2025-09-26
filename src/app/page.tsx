@@ -17,15 +17,16 @@ import { addPageBreakStyles } from '@/lib/pdf';
 import { ResumeData } from '@/types';
 
 export default function NotionResumePage() {
+    // 이력서 데이터 로딩을 위한 상태 관리
     const [resumeData, setResumeData] = useState<ResumeData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
 
+    // 컴포넌트 마운트 시 이력서 데이터 로드
     useEffect(() => {
         addPageBreakStyles();
 
-        // 이력서 데이터 가져오기 (API 라우트를 통해)
         const fetchResumeData = async () => {
             try {
                 setLoading(true);
@@ -54,7 +55,7 @@ export default function NotionResumePage() {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                    <p className="text-lg">이력서 데이터를 불러오는 중...</p>
+                    <p className="text-lg">이력서를 불러오는 중...</p>
                 </div>
             </div>
         );
@@ -85,13 +86,15 @@ export default function NotionResumePage() {
         );
     }
 
+    // 이력서 데이터 구조분해할당
     const { personalInfo, skills, coreCompetencies, experiences, achievementSections, projects, portfolio, values, tools, education, certifications, militaryService } = resumeData;
 
-    // 데이터 변환 함수들 (간단하고 명확하게)
+    // 개인정보를 ContactInfo 컴포넌트 형식으로 변환
     const transformContactInfo = (personalInfo: any) => ({
         email: personalInfo.email,
         phone: personalInfo.phone,
         photo: personalInfo.photo,
+        // 웹사이트/깃허브 링크를 URL과 표시용 텍스트로 분리
         ...(personalInfo.website && {
             blog: {
                 url: personalInfo.website,
@@ -106,58 +109,54 @@ export default function NotionResumePage() {
         })
     });
 
+    // 기술 스택을 카테고리별로 그룹화
     const transformSkillsData = (skills: any[]) => {
-        return skills.filter(skill => skill.show === 'show').reduce((acc: Array<{ category: string; skills: Array<{ name: string; summary: string }> }>, skill) => {
-            const category = skill.category || 'Other';
-            let categoryObj = acc.find(cat => cat.category === category);
+        return skills
+            .filter(skill => skill.show === 'show')
+            .reduce((acc: Array<{ category: string; skills: Array<{ name: string[]; summary: string }> }>, skill) => {
+                const category = skill.title || 'Other';
+                let categoryObj = acc.find(cat => cat.category === category);
 
-            if (!categoryObj) {
-                categoryObj = { category, skills: [] };
-                acc.push(categoryObj);
-            }
+                if (!categoryObj) {
+                    categoryObj = { category, skills: [] };
+                    acc.push(categoryObj);
+                }
 
-            skill.name.forEach((techName: string) => {
                 categoryObj.skills.push({
-                    name: techName,
+                    name: skill.skills,
                     summary: ''
                 });
-            });
 
-            return acc;
-        }, []);
+                return acc;
+            }, []);
     };
 
-    const transformValuesData = (values: any[]) => {
-        return values.filter(value => value.show === 'show').map(value => ({
-            title: value.title,
-            items: value.description
-        }));
-    };
 
+    // 도구 데이터를 카테고리별로 그룹화
     const transformToolsData = (tools: any[]) => {
-        return tools.filter(tool => tool.show === 'show').reduce((acc: Array<{ category: string; tools: Array<{ name: string; description: string }> }>, tool) => {
-            // tool.category가 실제 카테고리 (Title), tool.name이 도구명 (Select)
-            const category = tool.category || 'Other';
-            let categoryObj = acc.find(cat => cat.category === category);
+        return tools
+            .filter(tool => tool.show === 'show')
+            .reduce((acc: Array<{ category: string; tools: Array<{ title: string; description: string }> }>, tool) => {
+                const category = tool.category || 'Other';
+                let categoryObj = acc.find(cat => cat.category === category);
 
-            if (!categoryObj) {
-                categoryObj = { category, tools: [] };
-                acc.push(categoryObj);
-            }
+                if (!categoryObj) {
+                    categoryObj = { category, tools: [] };
+                    acc.push(categoryObj);
+                }
 
-            categoryObj.tools.push({
-                name: tool.name,  // 도구명
-                description: tool.description || ''
-            });
+                categoryObj.tools.push({
+                    title: tool.title,
+                    description: tool.description || ''
+                });
 
-            return acc;
-        }, []);
+                return acc;
+            }, []);
     };
 
-    // 변환된 데이터
+    // 데이터 변환 실행
     const contactInfo = transformContactInfo(personalInfo);
     const skillsData = transformSkillsData(skills);
-    const valuesData = transformValuesData(values);
     const otherToolsData = transformToolsData(tools);
 
     return (
@@ -166,10 +165,10 @@ export default function NotionResumePage() {
             <ResumeLayout>
                 <div className="container" style={{ paddingTop: 'var(--space-3xl)', paddingBottom: 'var(--space-3xl)' }}>
 
-                    {/* Header Section */}
+                    {/* 개인정보 섹션 */}
                     <div style={{ marginBottom: 'var(--space-3xl)' }}>
                         <h1 className="text-hero">{personalInfo.name} 이력서</h1>
-                        <p className="text-item-subtitle" style={{ marginBottom: 'var(--space-lg)' }}>{personalInfo.title}</p>
+                        <p className="text-item-subtitle" style={{ marginBottom: 'var(--space-lg)' }}>{personalInfo.position}</p>
 
                         <ContactInfo {...contactInfo} />
 
@@ -180,7 +179,7 @@ export default function NotionResumePage() {
                         )}
                     </div>
 
-                    {/* 사용한 기술 Section */}
+                    {/* 사용한 기술 섹션 */}
                     {skills.some(skill => skill.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">사용한 기술.</h2>
@@ -188,7 +187,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 핵심 역량 Section */}
+                    {/* 핵심 역량 섹션 */}
                     {coreCompetencies.some(competency => competency.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">핵심 역량.</h2>
@@ -196,7 +195,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 업무 경험 Section */}
+                    {/* 업무 경험 섹션 */}
                     {(experiences.some(exp => exp.show === 'show') || achievementSections.some(ach => ach.show === 'show')) && (
                         <div className="section">
                             <h2 className="text-section-title">업무 경험.</h2>
@@ -209,14 +208,13 @@ export default function NotionResumePage() {
                                 </div>
                             ))}
 
-                            {/* 성과 섹션들 */}
                             {achievementSections && achievementSections.filter(ach => ach.show === 'show').length > 0 && (
                                 <WorkAchievementSection sections={achievementSections.filter(ach => ach.show === 'show')} />
                             )}
                         </div>
                     )}
 
-                    {/* 프로젝트 경험 Section */}
+                    {/* 프로젝트 경험 섹션 */}
                     {projects.some(project => project.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">프로젝트 경험.</h2>
@@ -224,11 +222,11 @@ export default function NotionResumePage() {
                             {projects.filter(project => project.show === 'show').map((project: any, index: number) => (
                                 <ProjectItem
                                     key={index}
-                                    name={project.name}
+                                    title={project.title}
                                     description={project.description}
                                     period={project.period}
                                     skills={project.skills}
-                                    features={project.features}
+                                    details={project.details}
                                     contribution={project.contribution}
                                     github={project.github}
                                     website={project.website}
@@ -240,7 +238,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 포트폴리오 Section */}
+                    {/* 포트폴리오 섹션 */}
                     {portfolio.some(item => item.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">포트폴리오.</h2>
@@ -248,11 +246,11 @@ export default function NotionResumePage() {
                             {portfolio.filter(item => item.show === 'show').map((item: any, index: number) => (
                                 <ProjectItem
                                     key={index}
-                                    name={item.name}
+                                    title={item.title}
                                     description={item.description}
                                     period={item.period}
                                     skills={item.skills}
-                                    features={item.features}
+                                    details={item.details}
                                     contribution={item.contribution}
                                     github={item.github}
                                     website={item.website}
@@ -264,15 +262,15 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 가치관 Section */}
+                    {/* 가치관 섹션 */}
                     {values.some(value => value.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">가치관.</h2>
-                            <ValueSection values={valuesData} />
+                            <ValueSection values={values.filter(value => value.show === 'show')} />
                         </div>
                     )}
 
-                    {/* 개발 외 툴 활용 역량 Section */}
+                    {/* 개발 외 툴 활용 역량 섹션 */}
                     {tools.some(tool => tool.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
@@ -280,7 +278,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 학력 Section */}
+                    {/* 학력 섹션 */}
                     {education.some(edu => edu.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">학력.</h2>
@@ -288,7 +286,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 자격증 및 어학 Section */}
+                    {/* 자격증 및 어학 섹션 */}
                     {certifications.some(cert => cert.show === 'show') && (
                         <div className="section">
                             <h2 className="text-section-title">자격증 및 어학.</h2>
@@ -296,7 +294,7 @@ export default function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 병역 Section */}
+                    {/* 병역 섹션 */}
                     <div className="section">
                         <h2 className="text-section-title">병역.</h2>
                         <MilitaryServiceSection militaryService={militaryService} />

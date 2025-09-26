@@ -1,11 +1,6 @@
 import TechChips from '@/components/ui/TechChips';
 
-interface CoreCompetency {
-    title: string;
-    description: string;
-    skills: string[];
-    examples?: string[];
-}
+import { CoreCompetency } from '@/types';
 
 interface CoreCompetencySectionProps {
     competencies: CoreCompetency[];
@@ -29,11 +24,11 @@ export default function CoreCompetencySection({ competencies }: CoreCompetencySe
                     {/* Description */}
                     <p className="text-body">{competency.description}</p>
 
-                    {/* Examples */}
-                    {competency.examples && competency.examples.length > 0 && (
+                    {/* Details */}
+                    {competency.details && competency.details.length > 0 && (
                         <ul className="list">
-                            {competency.examples.map((example, exampleIndex) => (
-                                <li key={exampleIndex} className="list-item">{example}</li>
+                            {competency.details.filter(detail => detail.trim().length > 0).map((detail, detailIndex) => (
+                                <li key={detailIndex} className="list-item">{detail}</li>
                             ))}
                         </ul>
                     )}

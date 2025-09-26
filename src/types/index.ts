@@ -1,7 +1,7 @@
-// Notion API에서 가져올 데이터 타입 정의
+// 개인정보 타입
 export interface PersonalInfo {
     name: string;
-    title: string;
+    position: string;
     email: string;
     phone: string;
     location: string;
@@ -12,7 +12,7 @@ export interface PersonalInfo {
     website?: string;
 }
 
-// Notion API 응답 타입들
+// Notion API 응답 타입
 export interface NotionPage {
     id: string;
     properties: Record<string, any>;
@@ -24,109 +24,121 @@ export interface NotionDatabaseResponse {
     next_cursor?: string;
 }
 
+// 기술 스택 타입
 export interface Skill {
-    name: string[]; // 쉼표로 구분된 기술들을 배열로 저장
-    category: string; // Notion에서 자유롭게 설정 가능
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    skills: string[];
+    title: string;
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 핵심 역량 타입
 export interface CoreCompetency {
     title: string;
     description: string;
-    skills: string[]; // Multi-select로 추가될 기술 스택
-    examples?: string[];
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    skills: string[];
+    details?: string[];
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 업무 경험 타입
 export interface Experience {
     company: string;
     position: string;
     period: string;
     description: string;
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 성과 섹션 타입
 export interface AchievementSection {
-    name: string; // 소제목
-    achievements: string[]; // 성과 목록
-    skills: string[]; // 기술 스택 (Multi-select)
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    title: string;
+    achievements: string;
+    skills: string[];
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 프로젝트 타입
 export interface Project {
-    name: string;
+    title: string;
     description: string;
     period: string;
     skills: string[];
-    features: string[];
+    details: string[];
     github?: string;
     website?: string;
     ios?: string;
     android?: string;
-    post?: string; // 블로그 글 링크
-    contribution?: string; // 기여도
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    post?: string;
+    contribution?: string;
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 포트폴리오 타입
 export interface Portfolio {
-    name: string;
+    title: string;
     description: string;
     period: string;
     skills: string[];
-    features: string[];
+    details: string[];
     github?: string;
     website?: string;
     ios?: string;
     android?: string;
-    post?: string; // 블로그 글 링크
-    contribution?: string; // 기여도
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    post?: string;
+    contribution?: string;
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 가치관 타입
 export interface Value {
     title: string;
-    description: string[];
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    detail: string;
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 도구 타입
 export interface Tool {
-    name: string; // 단일 텍스트로 변경
-    category: string; // Select로 유지
-    description: string; // 설명 추가
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    title: string;
+    category: string;
+    description: string;
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 학력 타입
 export interface Education {
-    institution: string;
+    title: string;
     degree: string;
     period: string;
     location: string;
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 자격증 타입
 export interface Certification {
-    name: string;
+    title: string;
     date: string;
     number: string;
     issuer: string;
-    order: number; // 정렬 순서
-    show: 'show' | 'hide'; // 표시 여부
+    order: number;
+    show: 'show' | 'hide';
 }
 
+// 병역 타입
 export interface MilitaryService {
-    name: string;
+    title: string;
     period: string;
 }
 
+// 전체 이력서 데이터 타입
 export interface ResumeData {
     personalInfo: PersonalInfo;
     skills: Skill[];

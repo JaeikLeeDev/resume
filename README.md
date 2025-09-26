@@ -113,7 +113,7 @@ src/
 
 #### Personal Info 데이터베이스
 - **name** (Title)
-- **title** (Rich Text) - 직책/포지션
+- **position** (Rich Text) - 직책/포지션
 - **email** (Email)
 - **phone** (Phone Number)
 - **location** (Rich Text)
@@ -124,15 +124,15 @@ src/
 - **website** (URL)
 
 #### Skills 데이터베이스
-- **category** (Title)
-- **name** (Multi-select): 각 기술을 개별 옵션으로 추가 (예: React, TypeScript, Python, Docker 등)
+- **title** (Title)
+- **skills** (Multi-select): 각 기술을 개별 옵션으로 추가 (예: React, TypeScript, Python, Docker 등)
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Core Competencies 데이터베이스
 - **title** (Title)
 - **description** (Rich Text): 역량 설명
 - **skills** (Multi-select): 관련 기술 스택
-- **examples** (Rich Text): 세미콜론(;)으로 구분된 예시들
+- **details** (Rich Text): 세미콜론(;)으로 구분된 예시들
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Experiences 데이터베이스
@@ -143,17 +143,17 @@ src/
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Achievement Sections 데이터베이스
-- **name** (Title)
+- **title** (Title)
 - **achievements** (Rich Text): 세미콜론(;)으로 구분된 성과 목록
 - **skills** (Multi-select): 해당 섹션에서 사용한 기술 스택
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Projects 데이터베이스
-- **name** (Title)
+- **title** (Title)
 - **description** (Rich Text): 프로젝트 설명
 - **period** (Rich Text): 개발 기간
 - **skills** (Multi-select): 사용한 기술 스택
-- **features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
+- **details** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
 - **github** (URL): GitHub 저장소 링크
 - **website** (URL): 웹사이트 링크
 - **ios** (URL): iOS 앱스토어 링크
@@ -162,11 +162,11 @@ src/
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Portfolio 데이터베이스 (Projects와 동일한 구조)
-- **name** (Title)
+- **title** (Title)
 - **description** (Rich Text): 포트폴리오 설명
 - **period** (Rich Text): 개발 기간
 - **skills** (Multi-select): 사용한 기술 스택
-- **features** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
+- **details** (Rich Text): 세미콜론(;)으로 구분된 주요 기능들
 - **github** (URL): GitHub 저장소 링크
 - **website** (URL): 웹사이트 링크
 - **ios** (URL): iOS 앱스토어 링크
@@ -176,31 +176,31 @@ src/
 
 #### Values 데이터베이스
 - **title** (Title)
-- **description** (Rich Text)
+- **detail** (Rich Text): 상세 내용
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Tools 데이터베이스
+- **title** (Select) - 도구명 선택 (예: Premiere Pro, After Effects, Figma 등)
 - **category** (Title) - 카테고리명 (예: Graphic Design Tool (Adobe), UI Design Tool 등)
-- **name** (Select) - 도구명 선택 (예: Premiere Pro, After Effects, Figma 등)
 - **description** (Rich Text) - 숙련도 및 경험 설명 (예: 숙련 | 실사 기반 영상 편집 20건+)
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Education 데이터베이스
-- **institution** (Title)
+- **title** (Title)
 - **degree** (Rich Text): 학위/전공 (예: 컴퓨터공학)
 - **period** (Rich Text): 학력 기간 (예: 2012.02 ~ 2021.02)
 - **location** (Rich Text): 위치 (예: 포항, 4년제)
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Certifications 데이터베이스
-- **name** (Title)
+- **title** (Title)
 - **date** (Rich Text): 취득일 (예: 2020.11.12)
 - **number** (Rich Text): 자격증 번호 (예: 20203220072C)
 - **issuer** (Rich Text): 발행기관 (예: 한국산업인력공단)
 - **order** (Number): 정렬 순서 (1이 맨 위로)
 
 #### Military Service 데이터베이스
-- **name** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
+- **title** (Rich Text): 병역 정보 (예: 육군 | 병장 | 만기 전역)
 - **period** (Rich Text): 복무기간 (예: 2013.03 ~ 2014.12)
 
 ### 3. 정렬 시스템
@@ -260,9 +260,9 @@ Name (Multi-select): [React, TypeScript, Next.js, Tailwind CSS]
 Category (Select): Frontend
 ```
 
-**Core Competencies - Examples:**
+**Core Competencies - Details:**
 ```
-Examples (Rich Text): 
+Details (Rich Text): 
 머신러닝 모델 개발부터 배포까지 전체 파이프라인 구축; 대용량 데이터 처리 및 전처리 자동화; 모델 성능 최적화 및 하이퍼파라미터 튜닝; MLOps 파이프라인 구축 및 모니터링 시스템 개발
 ```
 
@@ -272,10 +272,10 @@ Achievements (Rich Text):
 (2024) '네츠모빌리티' 서비스 소요시간 예측 AI 개발; (2024) '네츠모빌리티' 서비스 예약 앱 개발; (2023) '아트봇' 태블릿용 3D 페인팅 앱 개발; (2023) '아하소풍' 웰다잉 앱 '엔딩노트' 개발
 ```
 
-**Projects/Portfolio - Skills & Features:**
+**Projects/Portfolio - Skills & Details:**
 ```
 Skills (Multi-select): [Flutter, Firebase, GCP, Unity, React, TypeScript]
-Features (Rich Text): 실시간 데이터 동기화; 오프라인 모드 지원; 푸시 알림; 사용자 인증
+Details (Rich Text): 실시간 데이터 동기화; 오프라인 모드 지원; 푸시 알림; 사용자 인증
 Contribution (Rich Text): 프론트엔드 개발 100%, 백엔드 API 설계 80%
 ```
 

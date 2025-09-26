@@ -1,5 +1,5 @@
 interface Tool {
-    name: string;
+    title: string;
     description: string;
 }
 
@@ -21,7 +21,7 @@ export default function ToolSection({ categories }: ToolSectionProps) {
 
                     {category.tools.map((tool, toolIndex) => (
                         <div key={toolIndex} className="skill-item">
-                            <span className="text-item-subtitle">{tool.name}</span>
+                            <span className="text-item-subtitle">{tool.title}</span>
                             <span className="skill-separator">|</span>
                             <span className="text-body" style={{ marginBottom: 0 }}>{tool.description}</span>
                         </div>

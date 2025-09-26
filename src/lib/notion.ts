@@ -2,27 +2,23 @@ import { Client } from '@notionhq/client';
 import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, Education, Certification, MilitaryService, NotionPage } from '@/types';
 import type { PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
-// Notion 클라이언트 초기화
+// Notion API 클라이언트 초기화
 const notion = new Client({
     auth: process.env.NOTION_TOKEN,
 });
 
-// 정렬을 위한 상수
+// 정렬을 위한 기본값
 const DEFAULT_ORDER_VALUE = 999;
 
-// 범용적인 데이터베이스 ID 가져오기 함수
-function getDatabaseId(key: string): string {
-    return DATABASE_CONFIGS[key]?.id || '';
-}
 
-// 데이터베이스 설정 타입 정의
+// Notion 데이터베이스 설정을 위한 타입 정의
 interface DatabaseConfig {
     id: string;
     name: string;
     required: boolean;
 }
 
-// 데이터베이스 설정
+// Notion 데이터베이스 ID 설정 (환경변수에서 가져옴)
 const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
     personalInfo: {
         id: process.env.NOTION_PERSONAL_INFO_DB_ID || '',
@@ -107,7 +103,7 @@ function validateEnvironmentVariables() {
     return true;
 }
 
-// Notion 속성에서 텍스트 추출하는 헬퍼 함수
+// Notion 속성에서 텍스트 추출
 function extractText(property: any): string {
     if (!property) return '';
 
@@ -145,7 +141,7 @@ function extractText(property: any): string {
         return property.number.toString();
     }
 
-    // 이미지 파일 처리
+    // Notion 파일 속성에서 이미지 URL 추출
     if (property.files && property.files.length > 0) {
         const file = property.files[0];
         if (file.type === 'external' && file.external?.url) {
@@ -159,7 +155,7 @@ function extractText(property: any): string {
     return '';
 }
 
-// Notion 속성에서 배열 추출하는 헬퍼 함수
+// Notion 속성에서 배열 추출
 function extractArray(property: any): string[] {
     if (!property) return [];
 
@@ -168,14 +164,12 @@ function extractArray(property: any): string[] {
     }
 
     if (property.rich_text) {
-        // Rich text의 경우 전체 텍스트를 하나로 합치고 세미콜론으로 분할
         const fullText = property.rich_text
             .map((item: any) => item.text?.content || '')
             .join('')
             .trim();
 
         if (fullText) {
-            // 세미콜론(;)으로만 구분
             return fullText
                 .split(';')
                 .map((item: string) => item.trim())
@@ -186,7 +180,7 @@ function extractArray(property: any): string[] {
     return [];
 }
 
-// Notion 페이지가 유효한 페이지 객체인지 확인하는 타입 가드
+// Notion 페이지 유효성 검사
 function isValidPageObject(item: any): item is PageObjectResponse {
     return item &&
         typeof item === 'object' &&
@@ -196,116 +190,120 @@ function isValidPageObject(item: any): item is PageObjectResponse {
         item.properties !== undefined;
 }
 
-// 속성 매핑 타입 정의
+// 속성 매핑 타입
 interface PropertyMapping {
-    [key: string]: string; // Notion 속성명 -> 출력 필드명
+    [key: string]: string;
 }
 
-// 데이터 타입별 속성 매핑 설정
+// 데이터 타입별 속성 매핑
+// 주석은 <설명>(<Notion property 타입>) 형식으로 작성했습니다.
+//
 const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     personalInfo: {
-        name: 'name',
-        title: 'title',
-        email: 'email',
-        phone: 'phone',
-        location: 'location',
-        photo: 'photo',
-        introduction: 'introduction',
-        github: 'github',
-        linkedin: 'linkedin',
-        website: 'website'
+        name: 'name', // 이름 (Title)
+        position: 'position', // 직책/포지션 (Rich Text)
+        email: 'email', // 이메일 (Email)
+        phone: 'phone', // 전화번호 (Phone Number)
+        location: 'location', // 위치 (Rich Text)
+        photo: 'photo', // 프로필 사진 (Files & media)
+        introduction: 'introduction', // 짧은 소개 (Rich Text)
+        github: 'github', // 깃허브 (URL)
+        linkedin: 'linkedin', // 링크드인 (URL)
+        website: 'website', // 웹사이트 (URL)
     },
     skills: {
-        name: 'name',
-        category: 'category',
-        order: 'order',
-        show: 'show'
+        skills: 'skills', // 기술 스택 (Multi-select)
+        title: 'title', // 카테고리 (Title)
+        order: 'order', // 정렬 순서 (Number)
+        show: 'show', // 표시 여부 (Select)
     },
     coreCompetencies: {
-        title: 'title',
-        description: 'description',
-        skills: 'skills',
-        examples: 'examples',
+        title: 'title', // 제목 (Title)
+        description: 'description', // 설명 (Rich Text)
+        skills: 'skills', // 관련 기술 스택 (Multi-select)
+        details: 'details', // 사례, bullet point 설명 (Rich Text)
         order: 'order',
-        show: 'show'
+        show: 'show',
     },
+    // 업무 경험 - intro
     experiences: {
-        company: 'company',
-        position: 'position',
-        period: 'period',
-        description: 'description',
+        company: 'company', // 회사 (Title)
+        position: 'position', // 직책 (Rich Text)
+        period: 'period', // 근무 기간 (Rich Text)
+        description: 'description', // 회사 설명 (Rich Text)
         order: 'order',
         show: 'show'
     },
+    // 업무 경험 - 성과 나열
     achievementSections: {
-        name: 'name',
-        achievements: 'achievements',
-        skills: 'skills',
+        title: 'title', // 성과 소제목 (Title)
+        achievements: 'achievements', // 성과 디테일 (Rich Text)
+        skills: 'skills', // 해당 성과 관련 기술 스택 (Multi-select)
         order: 'order',
         show: 'show'
     },
     projects: {
-        name: 'name',
-        description: 'description',
-        period: 'period',
-        skills: 'skills',
-        features: 'features',
-        github: 'github',
+        title: 'title', // 프로젝트 제목 (Title)
+        description: 'description', // 프로젝트 설명 (Rich Text)
+        period: 'period', // 개발 기간 (Rich Text)
+        skills: 'skills', // 사용한 기술 스택 (Multi-select)
+        details: 'details', // 성과 상세 (Rich Text)
+        contribution: 'contribution', // 기여도 정보 (Rich Text)
+        github: 'github',   // GitHub 저장소 링크 (URL)
         website: 'website',
-        ios: 'ios',
-        android: 'android',
-        post: 'post',
-        contribution: 'contribution',
+        ios: 'ios', // iOS 앱스토어 링크 (URL)
+        android: 'android', // Android 플레이스토어 링크 (URL)
+        post: 'post', // 블로그 글 링크 (URL)
         order: 'order',
         show: 'show'
     },
     portfolio: {
-        name: 'name',
-        description: 'description',
-        period: 'period',
-        skills: 'skills',
-        features: 'features',
-        github: 'github',
-        website: 'website',
-        ios: 'ios',
-        android: 'android',
-        post: 'post',
-        contribution: 'contribution',
+        title: 'title', // 포트폴리오 제목 (Title)
+        description: 'description', // 포트폴리오 설명 (Rich Text)
+        period: 'period', // 개발 기간 (Rich Text)
+        skills: 'skills', // 사용한 기술 스택 (Multi-select)
+        details: 'details', // 주요 기능들 (Rich Text)
+        github: 'github', // GitHub 저장소 링크 (URL)
+        website: 'website', // 웹사이트 링크 (URL)
+        ios: 'ios', // iOS 앱스토어 링크 (URL)
+        android: 'android', // Android 플레이스토어 링크 (URL)
+        post: 'post', // 블로그 글 링크 (URL)
+        contribution: 'contribution', // 기여도 정보 (Rich Text)
         order: 'order',
         show: 'show'
     },
     values: {
-        title: 'title',
-        description: 'description',
+        title: 'title', // 가치관 제목 (Title)
+        detail: 'detail', // 상세 내용 (Rich Text)
         order: 'order',
         show: 'show'
     },
     tools: {
-        category: 'category',  // Title 속성
-        name: 'name',         // Select 속성
-        description: 'description',
+        title: 'title',         // 도구명 (Select)
+        category: 'category',  // 카테고리 (Title)
+        description: 'description', // 숙련도 및 경험 설명 (Rich Text)
         order: 'order',
         show: 'show'
     },
     education: {
-        institution: 'institution',
-        degree: 'degree',
-        period: 'period',
-        location: 'location',
+        title: 'title', // 학교명 (Title)
+        degree: 'degree', // 학위/전공 (Rich Text)
+        period: 'period', // 학력 기간 (Rich Text)
+        location: 'location', // 위치 (Rich Text)
         order: 'order',
         show: 'show'
     },
     certifications: {
-        name: 'name',
-        date: 'date',
-        number: 'number',
-        issuer: 'issuer',
+        title: 'title', // 자격증명 (Title)
+        date: 'date', // 취득일 (Rich Text)
+        number: 'number', // 자격증 번호 (Rich Text)
+        issuer: 'issuer', // 발행기관 (Rich Text)
         order: 'order',
         show: 'show'
     },
     militaryService: {
-        name: 'name',
-        period: 'period'
+        title: 'title', // 병역 정보 (Rich Text)
+        period: 'period' // 복무기간 (Rich Text)
     }
 };
 
@@ -332,7 +330,7 @@ async function queryDatabase(
         if (transformFunction) {
             results = validPages.map(transformFunction);
         } else {
-            // 기본 변환 함수: 속성 매핑을 사용하여 객체 생성
+            // Notion 속성을 우리 타입에 맞게 변환
             results = validPages.map((page) => {
                 const result: any = {};
                 for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
@@ -367,7 +365,7 @@ async function queryDatabase(
 }
 
 
-// 개인 정보 가져오기
+// Notion에서 개인정보 데이터 조회
 export async function getPersonalInfo(): Promise<PersonalInfo> {
     try {
         if (!validateEnvironmentVariables()) {
@@ -387,13 +385,13 @@ export async function getPersonalInfo(): Promise<PersonalInfo> {
     }
 }
 
-// 기술 스택 가져오기 (Multi-select 전용)
+// Notion에서 기술 스택 데이터 조회
 export async function getSkills(): Promise<Skill[]> {
     try {
         return await queryDatabase('skills', PROPERTY_MAPPINGS.skills, (page) => {
             return {
-                name: extractArray(page.properties.name),
-                category: extractText(page.properties.category) || 'other',
+                skills: extractArray(page.properties.skills),
+                title: extractText(page.properties.title) || 'other',
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -404,7 +402,7 @@ export async function getSkills(): Promise<Skill[]> {
     }
 }
 
-// 핵심 역량 가져오기
+// Notion에서 핵심 역량 데이터 조회
 export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
     try {
         return await queryDatabase('coreCompetencies', PROPERTY_MAPPINGS.coreCompetencies, (page) => {
@@ -412,7 +410,7 @@ export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
                 title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
                 skills: extractArray(page.properties.skills),
-                examples: extractArray(page.properties.examples),
+                details: extractArray(page.properties.details),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -423,7 +421,7 @@ export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
     }
 }
 
-// 업무 경험 가져오기
+// Notion에서 업무 경험 데이터 조회
 export async function getExperiences(): Promise<Experience[]> {
     try {
         return await queryDatabase('experiences', PROPERTY_MAPPINGS.experiences, (page) => {
@@ -442,7 +440,7 @@ export async function getExperiences(): Promise<Experience[]> {
     }
 }
 
-// 성과 섹션 가져오기
+// Notion에서 성과 섹션 데이터 조회
 export async function getAchievementSections(): Promise<AchievementSection[]> {
     try {
         return await queryDatabase('achievementSections', PROPERTY_MAPPINGS.achievementSections, (page) => {
@@ -457,8 +455,8 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
             }
 
             return {
-                name: extractText(page.properties.name),
-                achievements: extractArray(page.properties.achievements),
+                title: extractText(page.properties.title),
+                achievements: extractText(page.properties.achievements),
                 skills: skillsArray,
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
@@ -470,16 +468,16 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
     }
 }
 
-// 프로젝트 경험 가져오기
+// Notion에서 프로젝트 경험 데이터 조회
 export async function getProjects(): Promise<Project[]> {
     try {
         return await queryDatabase('projects', PROPERTY_MAPPINGS.projects, (page) => {
             return {
-                name: extractText(page.properties.name),
+                title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
                 period: extractText(page.properties.period),
                 skills: extractArray(page.properties.skills),
-                features: extractArray(page.properties.features),
+                details: extractArray(page.properties.details),
                 github: extractText(page.properties.github),
                 website: extractText(page.properties.website),
                 ios: extractText(page.properties.ios),
@@ -496,16 +494,16 @@ export async function getProjects(): Promise<Project[]> {
     }
 }
 
-// 포트폴리오 가져오기
+// Notion에서 포트폴리오 데이터 조회
 export async function getPortfolio(): Promise<Portfolio[]> {
     try {
         return await queryDatabase('portfolio', PROPERTY_MAPPINGS.portfolio, (page) => {
             return {
-                name: extractText(page.properties.name),
+                title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
                 period: extractText(page.properties.period),
                 skills: extractArray(page.properties.skills),
-                features: extractArray(page.properties.features),
+                details: extractArray(page.properties.details),
                 github: extractText(page.properties.github),
                 website: extractText(page.properties.website),
                 ios: extractText(page.properties.ios),
@@ -522,16 +520,13 @@ export async function getPortfolio(): Promise<Portfolio[]> {
     }
 }
 
-// 가치관 가져오기
+// Notion에서 가치관 데이터 조회
 export async function getValues(): Promise<Value[]> {
     try {
         return await queryDatabase('values', PROPERTY_MAPPINGS.values, (page) => {
-            const descriptionProperty = page.properties.description;
-            const descriptionArray = descriptionProperty ? extractArray(descriptionProperty) : [];
-
             return {
                 title: extractText(page.properties.title),
-                description: descriptionArray,
+                detail: extractText(page.properties.detail),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -542,12 +537,12 @@ export async function getValues(): Promise<Value[]> {
     }
 }
 
-// 개발 외 툴 가져오기
+// Notion에서 개발 외 툴 데이터 조회
 export async function getTools(): Promise<Tool[]> {
     try {
         return await queryDatabase('tools', PROPERTY_MAPPINGS.tools, (page) => {
             return {
-                name: extractText(page.properties.name),
+                title: extractText(page.properties.title),
                 category: extractText(page.properties.category),
                 description: extractText(page.properties.description),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
@@ -560,12 +555,12 @@ export async function getTools(): Promise<Tool[]> {
     }
 }
 
-// 학력 가져오기
+// Notion에서 학력 데이터 조회
 export async function getEducation(): Promise<Education[]> {
     try {
         return await queryDatabase('education', PROPERTY_MAPPINGS.education, (page) => {
             return {
-                institution: extractText(page.properties.institution),
+                title: extractText(page.properties.title),
                 degree: extractText(page.properties.degree),
                 period: extractText(page.properties.period),
                 location: extractText(page.properties.location),
@@ -579,12 +574,12 @@ export async function getEducation(): Promise<Education[]> {
     }
 }
 
-// 자격증 가져오기
+// Notion에서 자격증 데이터 조회
 export async function getCertifications(): Promise<Certification[]> {
     try {
         return await queryDatabase('certifications', PROPERTY_MAPPINGS.certifications, (page) => {
             return {
-                name: extractText(page.properties.name),
+                title: extractText(page.properties.title),
                 date: extractText(page.properties.date),
                 number: extractText(page.properties.number),
                 issuer: extractText(page.properties.issuer),
@@ -598,7 +593,7 @@ export async function getCertifications(): Promise<Certification[]> {
     }
 }
 
-// 병역 가져오기
+// Notion에서 병역 데이터 조회
 export async function getMilitaryService(): Promise<MilitaryService | null> {
     try {
         const results = await queryDatabase('militaryService', PROPERTY_MAPPINGS.militaryService);
@@ -609,7 +604,7 @@ export async function getMilitaryService(): Promise<MilitaryService | null> {
     }
 }
 
-// 전체 이력서 데이터 가져오기
+// Notion에서 모든 이력서 데이터를 통합 조회
 export async function getResumeData(): Promise<ResumeData> {
     try {
         if (!validateEnvironmentVariables()) {
@@ -657,7 +652,7 @@ export async function getResumeData(): Promise<ResumeData> {
             education,
             certifications,
             militaryService: militaryService || {
-                name: '병역 정보 없음',
+                title: '병역 정보 없음',
                 period: '정보 없음'
             },
         };

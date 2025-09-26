@@ -1,9 +1,9 @@
 interface ProjectItemProps {
-    name: string;
+    title: string;
     description: string;
     period: string;
     skills: string[];
-    features: string[];
+    details: string[];
     contribution?: string;
     github?: string;
     website?: string;
@@ -13,11 +13,11 @@ interface ProjectItemProps {
 }
 
 export default function ProjectItem({
-    name,
+    title,
     description,
     period,
     skills,
-    features,
+    details,
     contribution,
     github,
     website,
@@ -27,7 +27,7 @@ export default function ProjectItem({
 }: ProjectItemProps) {
     return (
         <div className="item">
-            <h3 className="text-subsection-title">{name}</h3>
+            <h3 className="text-subsection-title">{title}</h3>
             <p className="text-meta">{period}</p>
 
             <p className="text-body">{description}</p>
@@ -46,10 +46,10 @@ export default function ProjectItem({
                 </div>
             )}
 
-            {features.length > 0 && (
+            {details.length > 0 && (
                 <ul className="list">
-                    {features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="list-item">{feature}</li>
+                    {details.filter(detail => detail.trim().length > 0).map((detail, detailIndex) => (
+                        <li key={detailIndex} className="list-item">{detail}</li>
                     ))}
                 </ul>
             )}

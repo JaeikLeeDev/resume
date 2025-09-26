@@ -6,12 +6,14 @@ const A4_WIDTH = 210;
 const A4_HEIGHT = 297;
 const MARGIN = 20;
 
+// PDF 생성 시 사용할 옵션 설정
 export interface PDFOptions {
   filename?: string;
   quality?: number;
   scale?: number;
 }
 
+// HTML 요소를 PDF로 변환
 export async function generatePDF(
   elementId: string,
   options: PDFOptions = {}
@@ -45,7 +47,7 @@ export async function generatePDF(
     let heightLeft = imgHeight;
     let position = 0;
 
-    // PDF 생성
+    // jsPDF로 PDF 문서 생성
     const pdf = new jsPDF('p', 'mm', 'a4');
 
     // 첫 번째 페이지 추가
@@ -68,7 +70,7 @@ export async function generatePDF(
   }
 }
 
-// 페이지 나누기를 위한 CSS 클래스 생성
+// PDF 출력 시 페이지 나누기를 위한 CSS 스타일 동적 추가
 export function addPageBreakStyles(): void {
   const style = document.createElement('style');
   style.textContent = `
