@@ -211,7 +211,7 @@ body {
 /* Contact info layout */
 .contact-container {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: var(--space-lg);
 }
 
@@ -220,8 +220,8 @@ body {
 }
 
 .profile-photo {
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
 }
 

@@ -26,14 +26,18 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
           </div>
         )}
         <div className="contact-details">
-          <div className="contact-row">
-            <span className="text-meta">Email.</span>
-            <span className="text-body">{email}</span>
-          </div>
-          <div className="contact-row">
-            <span className="text-meta">Phone.</span>
-            <span className="text-body">{phone}</span>
-          </div>
+          {email && (
+            <div className="contact-row">
+              <span className="text-meta">Email.</span>
+              <span className="text-body">{email}</span>
+            </div>
+          )}
+          {phone && (
+            <div className="contact-row">
+              <span className="text-meta">Phone.</span>
+              <span className="text-body">{phone}</span>
+            </div>
+          )}
           {blog && (
             <div className="contact-row">
               <span className="text-meta">Blog.</span>
