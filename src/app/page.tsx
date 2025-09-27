@@ -144,23 +144,19 @@ export default async function NotionResumePage() {
                     )}
 
                     {/* 업무 경험 섹션 */}
-                    {(experiences.some(exp => exp.show === 'show') || achievementSections.some(ach => ach.show === 'show')) && (
-                        <div className="section">
-                            <h2 className="text-section-title">업무 경험.</h2>
+                    <div className="section">
+                        <h2 className="text-section-title">업무 경험.</h2>
 
-                            {experiences.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
-                                <div key={index} className="item">
-                                    <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
-                                    <p className="text-meta">{experience.period}</p>
-                                    <p className="text-body">{experience.description}</p>
-                                </div>
-                            ))}
+                        {experiences.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
+                            <div key={index} className="item">
+                                <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
+                                <p className="text-meta">{experience.period}</p>
+                                <p className="text-body">{experience.description}</p>
+                            </div>
+                        ))}
 
-                            {achievementSections && achievementSections.filter(ach => ach.show === 'show').length > 0 && (
-                                <WorkAchievementSection sections={achievementSections.filter(ach => ach.show === 'show')} />
-                            )}
-                        </div>
-                    )}
+                        <WorkAchievementSection sections={achievementSections.filter(ach => ach.show === 'show')} />
+                    </div>
 
                     {/* 프로젝트 경험 섹션 */}
                     {projects.some(project => project.show === 'show') && (

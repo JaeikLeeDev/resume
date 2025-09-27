@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, Education, Certification, MilitaryService, NotionPage } from '@/types';
-import type { PageObjectResponse, PartialPageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, Education, Certification, MilitaryService } from '@/types';
+import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion API 클라이언트 초기화
 const notion = new Client({
@@ -89,8 +89,8 @@ function validateEnvironmentVariables() {
 
     // 필수 데이터베이스 ID 검증
     const missingRequiredDbs = Object.entries(DATABASE_CONFIGS)
-        .filter(([_, config]) => config.required && !config.id)
-        .map(([key, _]) => key);
+        .filter(([, config]) => config.required && !config.id)
+        .map(([key]) => key);
 
     if (missingVars.length > 0) {
         return false;
@@ -237,7 +237,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     // 업무 경험 - 성과 나열
     achievementSections: {
         title: 'title', // 성과 소제목 (Title)
-        achievements: 'achievements', // 성과 디테일 (Rich Text)
+        details: 'details', // 성과 디테일 (Rich Text)
         skills: 'skills', // 해당 성과 관련 기술 스택 (Multi-select)
         order: 'order',
         show: 'show'
@@ -456,7 +456,7 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
 
             return {
                 title: extractText(page.properties.title),
-                achievements: extractText(page.properties.achievements),
+                detail: extractText(page.properties.details),
                 skills: skillsArray,
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',

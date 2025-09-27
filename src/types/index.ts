@@ -55,7 +55,7 @@ export interface Experience {
 // 성과 섹션 타입
 export interface AchievementSection {
     title: string;
-    achievements: string;
+    detail: string | string[];
     skills: string[];
     order: number;
     show: 'show' | 'hide';

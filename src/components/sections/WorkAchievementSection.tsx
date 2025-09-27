@@ -1,5 +1,3 @@
-import TechChips from '@/components/ui/TechChips';
-
 import { AchievementSection } from '@/types';
 
 interface WorkAchievementSectionProps {
@@ -13,15 +11,14 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
                 <div key={index} className="item">
                     <h3 className="text-item-title">{section.title}</h3>
 
-
                     {/* Achievements */}
-                    {section.achievements && (
+                    {section.detail && (
                         <ul className="list">
-                            {Array.isArray(section.achievements)
-                                ? section.achievements.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                            {Array.isArray(section.detail)
+                                ? section.detail.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
                                     <li key={achievementIndex} className="list-item">{achievement}</li>
                                 ))
-                                : section.achievements.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                                : section.detail.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
                                     <li key={achievementIndex} className="list-item">{achievement.trim()}</li>
                                 ))
                             }
