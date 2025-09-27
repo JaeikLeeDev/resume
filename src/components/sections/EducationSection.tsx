@@ -1,7 +1,7 @@
-import { Education } from '@/types';
+import { EducationDB } from '@/types';
 
 interface EducationSectionProps {
-    education: Education[];
+    education: EducationDB[];
 }
 
 export default function EducationSection({ education }: EducationSectionProps) {

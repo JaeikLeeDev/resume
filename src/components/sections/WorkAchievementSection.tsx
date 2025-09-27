@@ -1,7 +1,7 @@
-import { AchievementSection } from '@/types';
+import { WorkAchievementDB } from '@/types';
 
 interface WorkAchievementSectionProps {
-    sections: AchievementSection[];
+    sections: WorkAchievementDB[];
 }
 
 export default function WorkAchievementSection({ sections }: WorkAchievementSectionProps) {

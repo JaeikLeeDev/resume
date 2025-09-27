@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfo, Skill, CoreCompetency, Experience, AchievementSection, Project, Portfolio, Value, Tool, Education, Certification, MilitaryService } from '@/types';
+import { ResumeData, PersonalInfoDB, SkillDB, CoreCompetencyDB, WorkSummaryDB, WorkAchievementDB, ProjectDB, PortfolioDB, ValueDB, OtherToolDB, EducationDB, CertificationDB, MilitaryServiceDB } from '@/types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion API 클라이언트 초기화
@@ -20,62 +20,62 @@ interface DatabaseConfig {
 
 // Notion 데이터베이스 ID 설정 (환경변수에서 가져옴)
 const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
-    personalInfo: {
+    personalInfoDB: {
         id: process.env.NOTION_PERSONAL_INFO_DB_ID || '',
         name: 'Personal Info',
         required: true
     },
-    skills: {
+    skillDB: {
         id: process.env.NOTION_SKILL_DB_ID || '',
         name: 'Skill',
         required: false
     },
-    coreCompetencies: {
+    coreCompetencyDB: {
         id: process.env.NOTION_CORE_COMPETENCIE_DB_ID || '',
         name: 'Core Competency',
         required: false
     },
-    workExperienceSummary: {
+    workSummaryDB: {
         id: process.env.NOTION_WORK_SUMMARY_DB_ID || '',
         name: 'Work Summary',
         required: false
     },
-    workExperienceAchievement: {
+    workAchievementDB: {
         id: process.env.NOTION_WORK_ACHIEVEMENT_DB_ID || '',
         name: 'Work Achievement',
         required: false
     },
-    projects: {
+    projectDB: {
         id: process.env.NOTION_PROJECT_DB_ID || '',
         name: 'Project',
         required: false
     },
-    portfolio: {
+    portfolioDB: {
         id: process.env.NOTION_PORTFOLIO_DB_ID || '',
         name: 'Portfolio',
         required: false
     },
-    values: {
+    valueDB: {
         id: process.env.NOTION_VALUE_DB_ID || '',
         name: 'Value',
         required: false
     },
-    tools: {
+    otherToolDB: {
         id: process.env.NOTION_OTHER_TOOL_DB_ID || '',
         name: 'Other Tool',
         required: false
     },
-    education: {
+    educationDB: {
         id: process.env.NOTION_EDUCATION_DB_ID || '',
         name: 'Education',
         required: false
     },
-    certifications: {
+    certificationDB: {
         id: process.env.NOTION_CERTIFICATION_DB_ID || '',
         name: 'Certification',
         required: false
     },
-    militaryService: {
+    militaryServiceDB: {
         id: process.env.NOTION_MILITARY_SERVICE_DB_ID || '',
         name: 'Military Service',
         required: false
@@ -199,7 +199,7 @@ interface PropertyMapping {
 // 주석은 <설명>(<Notion property 타입>) 형식으로 작성했습니다.
 //
 const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
-    personalInfo: {
+    personalInfoDB: {
         name: 'name', // 이름 (Title)
         position: 'position', // 직책/포지션 (Rich Text)
         email: 'email', // 이메일 (Email)
@@ -211,13 +211,13 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         linkedin: 'linkedin', // 링크드인 (URL)
         website: 'website', // 웹사이트 (URL)
     },
-    skills: {
+    skillDB: {
         skills: 'skills', // 기술 스택 (Multi-select)
         title: 'title', // 카테고리 (Title)
         order: 'order', // 정렬 순서 (Number)
         show: 'show', // 표시 여부 (Select)
     },
-    coreCompetencies: {
+    coreCompetencyDB: {
         title: 'title', // 제목 (Title)
         description: 'description', // 설명 (Rich Text)
         skills: 'skills', // 관련 기술 스택 (Multi-select)
@@ -225,8 +225,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show',
     },
-    // 업무 경험 - intro
-    experiences: {
+    // 업무 경험 요약
+    workSummaryDB: {
         company: 'company', // 회사 (Title)
         position: 'position', // 직책 (Rich Text)
         period: 'period', // 근무 기간 (Rich Text)
@@ -234,15 +234,15 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show'
     },
-    // 업무 경험 - 성과 나열
-    achievementSections: {
+    // 업무 경험 성과
+    workAchievementDB: {
         title: 'title', // 성과 소제목 (Title)
-        details: 'details', // 성과 디테일 (Rich Text)
+        detail: 'details', // 성과 디테일 (Rich Text)
         skills: 'skills', // 해당 성과 관련 기술 스택 (Multi-select)
         order: 'order',
         show: 'show'
     },
-    projects: {
+    projectDB: {
         title: 'title', // 프로젝트 제목 (Title)
         description: 'description', // 프로젝트 설명 (Rich Text)
         period: 'period', // 개발 기간 (Rich Text)
@@ -257,7 +257,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show'
     },
-    portfolio: {
+    portfolioDB: {
         title: 'title', // 포트폴리오 제목 (Title)
         description: 'description', // 포트폴리오 설명 (Rich Text)
         period: 'period', // 개발 기간 (Rich Text)
@@ -272,20 +272,20 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show'
     },
-    values: {
+    valueDB: {
         title: 'title', // 가치관 제목 (Title)
         detail: 'detail', // 상세 내용 (Rich Text)
         order: 'order',
         show: 'show'
     },
-    tools: {
+    otherToolDB: {
         title: 'title',         // 도구명 (Select)
         category: 'category',  // 카테고리 (Title)
         description: 'description', // 숙련도 및 경험 설명 (Rich Text)
         order: 'order',
         show: 'show'
     },
-    education: {
+    educationDB: {
         title: 'title', // 학교명 (Title)
         degree: 'degree', // 학위/전공 (Rich Text)
         period: 'period', // 학력 기간 (Rich Text)
@@ -293,7 +293,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show'
     },
-    certifications: {
+    certificationDB: {
         title: 'title', // 자격증명 (Title)
         date: 'date', // 취득일 (Rich Text)
         number: 'number', // 자격증 번호 (Rich Text)
@@ -301,7 +301,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         order: 'order',
         show: 'show'
     },
-    militaryService: {
+    militaryServiceDB: {
         title: 'title', // 병역 정보 (Rich Text)
         period: 'period' // 복무기간 (Rich Text)
     }
@@ -366,29 +366,29 @@ async function queryDatabase(
 
 
 // Notion에서 개인정보 데이터 조회
-export async function getPersonalInfo(): Promise<PersonalInfo> {
+export async function getPersonalInfoDB(): Promise<PersonalInfoDB> {
     try {
         if (!validateEnvironmentVariables()) {
             throw new Error('Missing required environment variables');
         }
 
-        const results = await queryDatabase('personalInfo', PROPERTY_MAPPINGS.personalInfo);
+        const results = await queryDatabase('personalInfoDB', PROPERTY_MAPPINGS.personalInfoDB);
 
         if (results.length === 0) {
-            throw new Error('Personal info not found');
+            throw new Error('Personal info DB not found');
         }
 
-        return results[0] as PersonalInfo;
+        return results[0] as PersonalInfoDB;
     } catch (error) {
-        console.error('Error fetching personal info:', error);
+        console.error('Error fetching personal info DB:', error);
         throw error;
     }
 }
 
 // Notion에서 기술 스택 데이터 조회
-export async function getSkills(): Promise<Skill[]> {
+export async function getSkillDB(): Promise<SkillDB[]> {
     try {
-        return await queryDatabase('skills', PROPERTY_MAPPINGS.skills, (page) => {
+        return await queryDatabase('skillDB', PROPERTY_MAPPINGS.skillDB, (page) => {
             return {
                 skills: extractArray(page.properties.skills),
                 title: extractText(page.properties.title) || 'other',
@@ -397,15 +397,15 @@ export async function getSkills(): Promise<Skill[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching skills:', error);
+        console.error('Error fetching skill DB:', error);
         return [];
     }
 }
 
 // Notion에서 핵심 역량 데이터 조회
-export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
+export async function getCoreCompetencyDB(): Promise<CoreCompetencyDB[]> {
     try {
-        return await queryDatabase('coreCompetencies', PROPERTY_MAPPINGS.coreCompetencies, (page) => {
+        return await queryDatabase('coreCompetencyDB', PROPERTY_MAPPINGS.coreCompetencyDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
@@ -416,15 +416,15 @@ export async function getCoreCompetencies(): Promise<CoreCompetency[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching core competencies:', error);
+        console.error('Error fetching core competency DB:', error);
         return [];
     }
 }
 
 // Notion에서 업무 경험 데이터 조회
-export async function getExperiences(): Promise<Experience[]> {
+export async function getWorkSummaryDB(): Promise<WorkSummaryDB[]> {
     try {
-        return await queryDatabase('experiences', PROPERTY_MAPPINGS.experiences, (page) => {
+        return await queryDatabase('workSummaryDB', PROPERTY_MAPPINGS.workSummaryDB, (page) => {
             return {
                 company: extractText(page.properties.company),
                 position: extractText(page.properties.position),
@@ -435,15 +435,15 @@ export async function getExperiences(): Promise<Experience[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching experiences:', error);
+        console.error('Error fetching work summary DB:', error);
         return [];
     }
 }
 
-// Notion에서 성과 섹션 데이터 조회
-export async function getAchievementSections(): Promise<AchievementSection[]> {
+// Notion에서 업무 경험 성과 데이터 조회
+export async function getWorkAchievementDB(): Promise<WorkAchievementDB[]> {
     try {
-        return await queryDatabase('achievementSections', PROPERTY_MAPPINGS.achievementSections, (page) => {
+        return await queryDatabase('workAchievementDB', PROPERTY_MAPPINGS.workAchievementDB, (page) => {
             const skillsProperty = page.properties.skills;
             let skillsArray: string[] = [];
 
@@ -463,15 +463,15 @@ export async function getAchievementSections(): Promise<AchievementSection[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching achievement sections:', error);
+        console.error('Error fetching work achievement DB:', error);
         return [];
     }
 }
 
 // Notion에서 프로젝트 경험 데이터 조회
-export async function getProjects(): Promise<Project[]> {
+export async function getProjectDB(): Promise<ProjectDB[]> {
     try {
-        return await queryDatabase('projects', PROPERTY_MAPPINGS.projects, (page) => {
+        return await queryDatabase('projectDB', PROPERTY_MAPPINGS.projectDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
@@ -489,15 +489,15 @@ export async function getProjects(): Promise<Project[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching project DB:', error);
         return [];
     }
 }
 
 // Notion에서 포트폴리오 데이터 조회
-export async function getPortfolio(): Promise<Portfolio[]> {
+export async function getPortfolioDB(): Promise<PortfolioDB[]> {
     try {
-        return await queryDatabase('portfolio', PROPERTY_MAPPINGS.portfolio, (page) => {
+        return await queryDatabase('portfolioDB', PROPERTY_MAPPINGS.portfolioDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 description: extractText(page.properties.description),
@@ -515,15 +515,15 @@ export async function getPortfolio(): Promise<Portfolio[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching portfolio:', error);
+        console.error('Error fetching portfolio DB:', error);
         return [];
     }
 }
 
 // Notion에서 가치관 데이터 조회
-export async function getValues(): Promise<Value[]> {
+export async function getValueDB(): Promise<ValueDB[]> {
     try {
-        return await queryDatabase('values', PROPERTY_MAPPINGS.values, (page) => {
+        return await queryDatabase('valueDB', PROPERTY_MAPPINGS.valueDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 detail: extractText(page.properties.detail),
@@ -538,9 +538,9 @@ export async function getValues(): Promise<Value[]> {
 }
 
 // Notion에서 개발 외 툴 데이터 조회
-export async function getTools(): Promise<Tool[]> {
+export async function getOtherToolDB(): Promise<OtherToolDB[]> {
     try {
-        return await queryDatabase('tools', PROPERTY_MAPPINGS.tools, (page) => {
+        return await queryDatabase('otherToolDB', PROPERTY_MAPPINGS.otherToolDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 category: extractText(page.properties.category),
@@ -550,15 +550,15 @@ export async function getTools(): Promise<Tool[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching tools:', error);
+        console.error('Error fetching other tool DB:', error);
         return [];
     }
 }
 
 // Notion에서 학력 데이터 조회
-export async function getEducation(): Promise<Education[]> {
+export async function getEducationDB(): Promise<EducationDB[]> {
     try {
-        return await queryDatabase('education', PROPERTY_MAPPINGS.education, (page) => {
+        return await queryDatabase('educationDB', PROPERTY_MAPPINGS.educationDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 degree: extractText(page.properties.degree),
@@ -569,15 +569,15 @@ export async function getEducation(): Promise<Education[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching education:', error);
+        console.error('Error fetching education DB:', error);
         return [];
     }
 }
 
 // Notion에서 자격증 데이터 조회
-export async function getCertifications(): Promise<Certification[]> {
+export async function getCertificationDB(): Promise<CertificationDB[]> {
     try {
-        return await queryDatabase('certifications', PROPERTY_MAPPINGS.certifications, (page) => {
+        return await queryDatabase('certificationDB', PROPERTY_MAPPINGS.certificationDB, (page) => {
             return {
                 title: extractText(page.properties.title),
                 date: extractText(page.properties.date),
@@ -588,18 +588,18 @@ export async function getCertifications(): Promise<Certification[]> {
             };
         });
     } catch (error) {
-        console.error('Error fetching certifications:', error);
+        console.error('Error fetching certification DB:', error);
         return [];
     }
 }
 
 // Notion에서 병역 데이터 조회
-export async function getMilitaryService(): Promise<MilitaryService | null> {
+export async function getMilitaryServiceDB(): Promise<MilitaryServiceDB | null> {
     try {
-        const results = await queryDatabase('militaryService', PROPERTY_MAPPINGS.militaryService);
-        return results.length > 0 ? results[0] as MilitaryService : null;
+        const results = await queryDatabase('militaryServiceDB', PROPERTY_MAPPINGS.militaryServiceDB);
+        return results.length > 0 ? results[0] as MilitaryServiceDB : null;
     } catch (error) {
-        console.error('Error fetching military service:', error);
+        console.error('Error fetching military service DB:', error);
         return null;
     }
 }
@@ -612,46 +612,46 @@ export async function getResumeData(): Promise<ResumeData> {
         }
 
         const [
-            personalInfo,
-            skills,
-            coreCompetencies,
-            experiences,
-            achievementSections,
-            projects,
-            portfolio,
-            values,
-            tools,
-            education,
-            certifications,
-            militaryService,
+            personalInfoDB,
+            skillDB,
+            coreCompetencyDB,
+            workSummaryDB,
+            workAchievementDB,
+            projectDB,
+            portfolioDB,
+            valueDB,
+            otherToolDB,
+            educationDB,
+            certificationDB,
+            militaryServiceDB,
         ] = await Promise.all([
-            getPersonalInfo(),
-            getSkills(),
-            getCoreCompetencies(),
-            getExperiences(),
-            getAchievementSections(),
-            getProjects(),
-            getPortfolio(),
-            getValues(),
-            getTools(),
-            getEducation(),
-            getCertifications(),
-            getMilitaryService(),
+            getPersonalInfoDB(),
+            getSkillDB(),
+            getCoreCompetencyDB(),
+            getWorkSummaryDB(),
+            getWorkAchievementDB(),
+            getProjectDB(),
+            getPortfolioDB(),
+            getValueDB(),
+            getOtherToolDB(),
+            getEducationDB(),
+            getCertificationDB(),
+            getMilitaryServiceDB(),
         ]);
 
         return {
-            personalInfo,
-            skills,
-            coreCompetencies,
-            experiences,
-            achievementSections,
-            projects,
-            portfolio,
-            values,
-            tools,
-            education,
-            certifications,
-            militaryService: militaryService || {
+            personalInfoDB,
+            skillDB,
+            coreCompetencyDB,
+            workSummaryDB,
+            workAchievementDB,
+            projectDB,
+            portfolioDB,
+            valueDB,
+            otherToolDB,
+            educationDB,
+            certificationDB,
+            militaryServiceDB: militaryServiceDB || {
                 title: '병역 정보 없음',
                 period: '정보 없음'
             },

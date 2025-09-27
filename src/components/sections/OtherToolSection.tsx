@@ -1,18 +1,18 @@
-interface Tool {
+interface OtherTool {
     title: string;
     description: string;
 }
 
-interface ToolCategory {
+interface OtherToolCategory {
     category: string;
-    tools: Tool[];
+    tools: OtherTool[];
 }
 
-interface ToolSectionProps {
-    categories: ToolCategory[];
+interface OtherToolSectionProps {
+    categories: OtherToolCategory[];
 }
 
-export default function ToolSection({ categories }: ToolSectionProps) {
+export default function OtherToolSection({ categories }: OtherToolSectionProps) {
     return (
         <div>
             {categories.map((category, categoryIndex) => (

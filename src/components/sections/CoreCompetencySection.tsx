@@ -1,9 +1,9 @@
 import TechChips from '@/components/ui/TechChips';
 
-import { CoreCompetency } from '@/types';
+import { CoreCompetencyDB } from '@/types';
 
 interface CoreCompetencySectionProps {
-    competencies: CoreCompetency[];
+    competencies: CoreCompetencyDB[];
 }
 
 export default function CoreCompetencySection({ competencies }: CoreCompetencySectionProps) {

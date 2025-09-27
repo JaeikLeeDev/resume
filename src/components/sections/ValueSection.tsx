@@ -1,7 +1,7 @@
-import { Value } from '@/types';
+import { ValueDB } from '@/types';
 
 interface ValueSectionProps {
-  values: Value[];
+  values: ValueDB[];
 }
 
 export default function ValueSection({ values }: ValueSectionProps) {

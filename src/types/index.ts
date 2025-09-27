@@ -1,5 +1,5 @@
 // 개인정보 타입
-export interface PersonalInfo {
+export interface PersonalInfoDB {
     name: string;
     position: string;
     email: string;
@@ -25,7 +25,7 @@ export interface NotionDatabaseResponse {
 }
 
 // 기술 스택 타입
-export interface Skill {
+export interface SkillDB {
     skills: string[];
     title: string;
     order: number;
@@ -33,7 +33,7 @@ export interface Skill {
 }
 
 // 핵심 역량 타입
-export interface CoreCompetency {
+export interface CoreCompetencyDB {
     title: string;
     description: string;
     skills: string[];
@@ -42,8 +42,8 @@ export interface CoreCompetency {
     show: 'show' | 'hide';
 }
 
-// 업무 경험 타입
-export interface Experience {
+// 업무 경험 요약 타입
+export interface WorkSummaryDB {
     company: string;
     position: string;
     period: string;
@@ -52,8 +52,8 @@ export interface Experience {
     show: 'show' | 'hide';
 }
 
-// 성과 섹션 타입
-export interface AchievementSection {
+// 업무 경험 성과 타입
+export interface WorkAchievementDB {
     title: string;
     detail: string | string[];
     skills: string[];
@@ -62,7 +62,7 @@ export interface AchievementSection {
 }
 
 // 프로젝트 타입
-export interface Project {
+export interface ProjectDB {
     title: string;
     description: string;
     period: string;
@@ -79,7 +79,7 @@ export interface Project {
 }
 
 // 포트폴리오 타입
-export interface Portfolio {
+export interface PortfolioDB {
     title: string;
     description: string;
     period: string;
@@ -96,7 +96,7 @@ export interface Portfolio {
 }
 
 // 가치관 타입
-export interface Value {
+export interface ValueDB {
     title: string;
     detail: string | string[];
     order: number;
@@ -104,7 +104,7 @@ export interface Value {
 }
 
 // 도구 타입
-export interface Tool {
+export interface OtherToolDB {
     title: string;
     category: string;
     description: string;
@@ -113,7 +113,7 @@ export interface Tool {
 }
 
 // 학력 타입
-export interface Education {
+export interface EducationDB {
     title: string;
     degree: string;
     period: string;
@@ -123,7 +123,7 @@ export interface Education {
 }
 
 // 자격증 타입
-export interface Certification {
+export interface CertificationDB {
     title: string;
     date: string;
     number: string;
@@ -133,23 +133,23 @@ export interface Certification {
 }
 
 // 병역 타입
-export interface MilitaryService {
+export interface MilitaryServiceDB {
     title: string;
     period: string;
 }
 
 // 전체 이력서 데이터 타입
 export interface ResumeData {
-    personalInfo: PersonalInfo;
-    skills: Skill[];
-    coreCompetencies: CoreCompetency[];
-    experiences: Experience[];
-    achievementSections: AchievementSection[];
-    projects: Project[];
-    portfolio: Portfolio[];
-    values: Value[];
-    tools: Tool[];
-    education: Education[];
-    certifications: Certification[];
-    militaryService: MilitaryService;
+    personalInfoDB: PersonalInfoDB;
+    skillDB: SkillDB[];
+    coreCompetencyDB: CoreCompetencyDB[];
+    workSummaryDB: WorkSummaryDB[];
+    workAchievementDB: WorkAchievementDB[];
+    projectDB: ProjectDB[];
+    portfolioDB: PortfolioDB[];
+    valueDB: ValueDB[];
+    otherToolDB: OtherToolDB[];
+    educationDB: EducationDB[];
+    certificationDB: CertificationDB[];
+    militaryServiceDB: MilitaryServiceDB;
 }

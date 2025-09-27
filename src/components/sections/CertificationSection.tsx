@@ -1,7 +1,7 @@
-import { Certification } from '@/types';
+import { CertificationDB } from '@/types';
 
 interface CertificationSectionProps {
-    certifications: Certification[];
+    certifications: CertificationDB[];
 }
 
 export default function CertificationSection({ certifications }: CertificationSectionProps) {

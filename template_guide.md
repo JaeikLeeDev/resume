@@ -47,16 +47,16 @@ src/
 │   │   ├── Page.tsx        # A4 페이지 래퍼
 │   │   └── ResumeLayout.tsx # 이력서 전체 레이아웃
 │   ├── sections/           # 이력서 섹션별 컴포넌트
+│   │   ├── CertificationSection.tsx # 자격증 및 어학 섹션
 │   │   ├── ContactInfo.tsx # 연락처 정보 섹션 (프로필 사진 포함)
+│   │   ├── CoreCompetencySection.tsx # 핵심 역량 섹션
+│   │   ├── EducationSection.tsx # 학력 섹션
+│   │   ├── MilitaryServiceSection.tsx # 병역 섹션
+│   │   ├── OtherToolSection.tsx # 개발 외 툴 섹션
 │   │   ├── ProjectItem.tsx # 프로젝트/포트폴리오 아이템 (공통 컴포넌트)
 │   │   ├── SkillSection.tsx # 기술 스택 섹션
-│   │   ├── CoreCompetencySection.tsx # 핵심 역량 섹션
-│   │   ├── WorkAchievementSection.tsx # 업무 성과 섹션 (소제목별)
 │   │   ├── ValueSection.tsx # 가치관 섹션
-│   │   ├── ToolSection.tsx # 개발 외 툴 섹션
-│   │   ├── EducationSection.tsx # 학력 섹션
-│   │   ├── CertificationSection.tsx # 자격증 및 어학 섹션
-│   │   └── MilitaryServiceSection.tsx # 병역 섹션
+│   │   └── WorkAchievementSection.tsx # 업무 성과 섹션 (소제목별)
 │   └── ui/                 # 재사용 가능한 UI 컴포넌트
 │       └── TechChips.tsx   # 기술 스택 칩
 ├── lib/                    # 유틸리티 함수
@@ -117,13 +117,13 @@ src/
 - **linkedin** (URL) - 링크드인
 - **website** (URL) - 웹사이트
 
-#### Skills 데이터베이스
+#### Skill 데이터베이스
 - **title** (Title) - 카테고리
 - **skills** (Multi-select) - 기술 스택
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Core Competencies 데이터베이스
+#### Core Competency 데이터베이스
 - **title** (Title) - 제목
 - **description** (Rich Text) - 설명
 - **skills** (Multi-select) - 관련 기술 스택
@@ -131,7 +131,7 @@ src/
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Experiences 데이터베이스
+#### Work Summary 데이터베이스
 - **company** (Title) - 회사
 - **position** (Rich Text) - 직책
 - **period** (Rich Text) - 근무 기간
@@ -139,14 +139,14 @@ src/
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Work Achievement Sections 데이터베이스
+#### Work Achievement 데이터베이스
 - **title** (Title) - 성과 소제목
 - **details** (Rich Text) - 성과 디테일
 - **skills** (Multi-select) - 해당 성과 관련 기술 스택
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Projects 데이터베이스
+#### Project 데이터베이스
 - **title** (Title) - 프로젝트 제목
 - **description** (Rich Text) - 프로젝트 설명
 - **period** (Rich Text) - 개발 기간
@@ -176,13 +176,13 @@ src/
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Values 데이터베이스
+#### Value 데이터베이스
 - **title** (Title) - 가치관 제목
 - **detail** (Rich Text) - 상세 내용
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Tools 데이터베이스
+#### Other Tool 데이터베이스
 - **title** (Select) - 도구명
 - **category** (Title) - 카테고리
 - **description** (Rich Text) - 숙련도 및 경험 설명
@@ -197,7 +197,7 @@ src/
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
 
-#### Certifications 데이터베이스
+#### Certification 데이터베이스
 - **title** (Title) - 자격증명
 - **date** (Rich Text) - 취득일
 - **number** (Rich Text) - 자격증 번호
@@ -220,7 +220,7 @@ src/
 
 **정렬 예시:**
 ```
-Skills 데이터베이스:
+Skill 데이터베이스:
 - Frontend (order: 1) → 맨 위
 - Backend (order: 2) → 두 번째
 - DevOps (order: 3) → 세 번째
@@ -236,18 +236,18 @@ Skills 데이터베이스:
 NOTION_TOKEN=your_notion_integration_token_here
 
 # Notion Database IDs (각 데이터베이스 URL에서 32자리 ID 추출)
-NOTION_PERSONAL_INFO_DB_ID=your_personal_info_database_id_here
-NOTION_SKILLS_DB_ID=your_skills_database_id_here
-NOTION_CORE_COMPETENCIES_DB_ID=your_core_competencies_database_id_here
-NOTION_EXPERIENCES_DB_ID=your_experiences_database_id_here
-NOTION_ACHIEVEMENT_SECTIONS_DB_ID=your_achievement_sections_database_id_here
-NOTION_PROJECTS_DB_ID=your_projects_database_id_here
-NOTION_PORTFOLIO_DB_ID=your_portfolio_database_id_here
-NOTION_VALUES_DB_ID=your_values_database_id_here
-NOTION_TOOLS_DB_ID=your_tools_database_id_here
+NOTION_CERTIFICATION_DB_ID=your_certification_database_id_here
+NOTION_CORE_COMPETENCY_DB_ID=your_core_competency_database_id_here
 NOTION_EDUCATION_DB_ID=your_education_database_id_here
-NOTION_CERTIFICATIONS_DB_ID=your_certifications_database_id_here
 NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
+NOTION_OTHER_TOOL_DB_ID=your_other_tool_database_id_here
+NOTION_PERSONAL_INFO_DB_ID=your_personal_info_database_id_here
+NOTION_PORTFOLIO_DB_ID=your_portfolio_database_id_here
+NOTION_PROJECT_DB_ID=your_project_database_id_here
+NOTION_SKILL_DB_ID=your_skill_database_id_here
+NOTION_VALUE_DB_ID=your_value_database_id_here
+NOTION_WORK_ACHIEVEMENT_DB_ID=your_work_achievement_database_id_here
+NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 ```
 
 ### 5. 데이터 입력 방법 및 파싱 규칙
@@ -260,25 +260,25 @@ NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
 
 #### 📋 데이터베이스별 입력 예시
 
-**Skills 데이터베이스:**
+**Skill 데이터베이스:**
 ```
 Name (Multi-select): [React, TypeScript, Next.js, Tailwind CSS]
 Category (Select): Frontend
 ```
 
-**Core Competencies - Details:**
+**Core Competency - Details:**
 ```
 Details (Rich Text): 
 머신러닝 모델 개발부터 배포까지 전체 파이프라인 구축; 대용량 데이터 처리 및 전처리 자동화; 모델 성능 최적화 및 하이퍼파라미터 튜닝; MLOps 파이프라인 구축 및 모니터링 시스템 개발
 ```
 
-**Achievement Sections - Achievements:**
+**Work Achievement Sections - Details:**
 ```
 Achievements (Rich Text):
 (2024) '네츠모빌리티' 서비스 소요시간 예측 AI 개발; (2024) '네츠모빌리티' 서비스 예약 앱 개발; (2023) '아트봇' 태블릿용 3D 페인팅 앱 개발; (2023) '아하소풍' 웰다잉 앱 '엔딩노트' 개발
 ```
 
-**Projects/Portfolio - Skills & Details:**
+**Project/Portfolio - Skills & Details:**
 ```
 Skills (Multi-select): [Flutter, Firebase, GCP, Unity, React, TypeScript]
 Details (Rich Text): 실시간 데이터 동기화; 오프라인 모드 지원; 푸시 알림; 사용자 인증
@@ -287,7 +287,7 @@ Contribution (Rich Text): 프론트엔드 개발 100%, 백엔드 API 설계 80%
 
 #### 🎯 UI 표시 결과
 
-**Skills 섹션:**
+**Skill 섹션:**
 ```
 Frontend
 [React] [TypeScript] [Next.js] [Tailwind CSS]

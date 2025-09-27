@@ -1,7 +1,7 @@
-import { MilitaryService } from '@/types';
+import { MilitaryServiceDB } from '@/types';
 
 interface MilitaryServiceSectionProps {
-    militaryService: MilitaryService;
+    militaryService: MilitaryServiceDB;
 }
 
 export default function MilitaryServiceSection({ militaryService }: MilitaryServiceSectionProps) {
