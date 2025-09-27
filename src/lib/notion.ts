@@ -26,28 +26,28 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
         required: true
     },
     skills: {
-        id: process.env.NOTION_SKILLS_DB_ID || '',
-        name: 'Skills',
+        id: process.env.NOTION_SKILL_DB_ID || '',
+        name: 'Skill',
         required: false
     },
     coreCompetencies: {
-        id: process.env.NOTION_CORE_COMPETENCIES_DB_ID || '',
-        name: 'Core Competencies',
+        id: process.env.NOTION_CORE_COMPETENCIE_DB_ID || '',
+        name: 'Core Competency',
         required: false
     },
-    experiences: {
-        id: process.env.NOTION_EXPERIENCES_DB_ID || '',
-        name: 'Experiences',
+    workExperienceSummary: {
+        id: process.env.NOTION_WORK_SUMMARY_DB_ID || '',
+        name: 'Work Summary',
         required: false
     },
-    achievementSections: {
-        id: process.env.NOTION_ACHIEVEMENT_SECTIONS_DB_ID || '',
-        name: 'Achievement Sections',
+    workExperienceAchievement: {
+        id: process.env.NOTION_WORK_ACHIEVEMENT_DB_ID || '',
+        name: 'Work Achievement',
         required: false
     },
     projects: {
-        id: process.env.NOTION_PROJECTS_DB_ID || '',
-        name: 'Projects',
+        id: process.env.NOTION_PROJECT_DB_ID || '',
+        name: 'Project',
         required: false
     },
     portfolio: {
@@ -56,13 +56,13 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
         required: false
     },
     values: {
-        id: process.env.NOTION_VALUES_DB_ID || '',
-        name: 'Values',
+        id: process.env.NOTION_VALUE_DB_ID || '',
+        name: 'Value',
         required: false
     },
     tools: {
-        id: process.env.NOTION_TOOLS_DB_ID || '',
-        name: 'Tools',
+        id: process.env.NOTION_OTHER_TOOL_DB_ID || '',
+        name: 'Other Tool',
         required: false
     },
     education: {
@@ -71,8 +71,8 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
         required: false
     },
     certifications: {
-        id: process.env.NOTION_CERTIFICATIONS_DB_ID || '',
-        name: 'Certifications',
+        id: process.env.NOTION_CERTIFICATION_DB_ID || '',
+        name: 'Certification',
         required: false
     },
     militaryService: {
