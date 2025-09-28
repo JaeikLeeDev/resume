@@ -144,19 +144,21 @@ export default async function NotionResumePage() {
                     )}
 
                     {/* 업무 경험 섹션 */}
-                    <div className="section">
-                        <h2 className="text-section-title">업무 경험.</h2>
+                    {(workSummaryDB.some(experience => experience.show === 'show') || workAchievementDB.some(ach => ach.show === 'show')) && (
+                        <div className="section">
+                            <h2 className="text-section-title">업무 경험.</h2>
 
-                        {workSummaryDB.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
-                            <div key={index} className="item">
-                                <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
-                                <p className="text-meta">{experience.period}</p>
-                                <p className="text-body">{experience.description}</p>
-                            </div>
-                        ))}
+                            {workSummaryDB.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
+                                <div key={index} className="item">
+                                    <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
+                                    <p className="text-meta">{experience.period}</p>
+                                    <p className="text-body">{experience.description}</p>
+                                </div>
+                            ))}
 
-                        <WorkAchievementSection sections={workAchievementDB.filter(ach => ach.show === 'show')} />
-                    </div>
+                            <WorkAchievementSection sections={workAchievementDB.filter(ach => ach.show === 'show')} />
+                        </div>
+                    )}
 
                     {/* 프로젝트 경험 섹션 */}
                     {projectDB.some(project => project.show === 'show') && (
