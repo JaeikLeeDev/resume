@@ -31,7 +31,7 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
         required: false
     },
     coreCompetencyDB: {
-        id: process.env.NOTION_CORE_COMPETENCIE_DB_ID || '',
+        id: process.env.NOTION_CORE_COMPETENCY_DB_ID || '',
         name: 'Core Competency',
         required: false
     },
