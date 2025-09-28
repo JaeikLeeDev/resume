@@ -1,6 +1,6 @@
-# 이재익 이력서 사이트
+# Notion DB 연동 개발자 이력서 빌더
 
-React와 Next.js로 구축된 개인 이력서 빌더입니다. Notioin Database API를 연동하여 Notion 데이터베이스를 수정하면 이력서 페이지에 반영되도록 구현했습니다.
+React와 Next.js로 구축된 개인 이력서 빌더입니다. Notioin Database API를 연동하여 Notion 데이터베이스를 수정하면 이력서 페이지에 반영되도록 구현했습니다. 개발자 이력에 최적화되어 있습니다.
 
 이재익 이력서 페이지: https://jaeikleedev.github.io/jaeiklee-resume/
 

@@ -1,4 +1,4 @@
-# 이재익 이력서
+# 개발자 이재익 이력서
 
 **Embedded & Mobile App Engineer**
 

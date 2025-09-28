@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { getPersonalInfoDB } from "@/lib/notion";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,10 +15,22 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
-export const metadata: Metadata = {
-  title: "이재익 - Frontend Developer",
-  description: "이재익의 이력서 웹사이트",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const personalInfo = await getPersonalInfoDB();
+    return {
+      title: `개발자 ${personalInfo.name} 이력서`,
+      description: `${personalInfo.position} ${personalInfo.name} 이력서`,
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    // Fallback metadata in case of error
+    return {
+      title: "개발자 이력서",
+      description: "개발자 이력서 웹사이트",
+    };
+  }
+}
 
 export default function RootLayout({
   children,
