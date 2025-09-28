@@ -208,14 +208,6 @@ export default async function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* 학력 섹션 */}
-                    {educationDB.some(edu => edu.show === 'show') && (
-                        <div className="section page-break-before">
-                            <h2 className="text-section-title">학력.</h2>
-                            <EducationSection education={educationDB.filter(edu => edu.show === 'show')} />
-                        </div>
-                    )}
-
                     {/* 가치관 섹션 */}
                     {valueDB.some(value => value.show === 'show') && (
                         <div className="section">
@@ -229,6 +221,14 @@ export default async function NotionResumePage() {
                         <div className="section">
                             <h2 className="text-section-title">개발 외 툴 활용 역량.</h2>
                             <OtherToolSection categories={otherToolsData} />
+                        </div>
+                    )}
+
+                    {/* 학력 섹션 */}
+                    {educationDB.some(edu => edu.show === 'show') && (
+                        <div className="section page-break-before">
+                            <h2 className="text-section-title">학력.</h2>
+                            <EducationSection education={educationDB.filter(edu => edu.show === 'show')} />
                         </div>
                     )}
 
