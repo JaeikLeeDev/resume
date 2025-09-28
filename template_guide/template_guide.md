@@ -303,11 +303,11 @@ Skill 데이터베이스:
 
 #### 예시: 
 
-데이터베이스: 가치관 DB 내용 X, 고등학교의 'degree' 프로퍼티 없음
+데이터베이스: 학력 DB 내용 X, 정보처리기사 'number' 프로퍼티 없음
 
 ![Screenshot_8](./img/Screenshot_8_empty_data.png)
 
-페이지 결과
+페이지 결과: 학력 섹션 표시 안 됨. 정보처리기사 자격번호 표시하지 않음
 
 ![Screenshot_9](./img/Screenshot_9_empty_data_result.png)
 

@@ -2,6 +2,8 @@
 
 **Embedded & Mobile App Engineer**
 
+이 프로젝트를 템플릿으로 사용하는 방법은 [template_guide/template_guide.md](https://github.com/JaeikLeeDev/jaeiklee-resume/blob/main/template_guide/template_guide.md)를 참고해주세요.
+
 ## 📧 연락처
 
 - **Email**: jaeiklee.pro@gmail.com
