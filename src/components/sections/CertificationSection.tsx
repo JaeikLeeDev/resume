@@ -11,7 +11,7 @@ export default function CertificationSection({ certifications }: CertificationSe
                 <div key={index} className="item">
                     <h3 className="text-item-title">{cert.title}</h3>
                     <div className="text-meta">
-                        <p>{cert.date} | {cert.number} | {cert.issuer}</p>
+                        <p>{[cert.date, cert.number, cert.issuer].filter(Boolean).join(' | ')}</p>
                     </div>
                 </div>
             ))}
