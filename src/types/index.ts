@@ -151,5 +151,5 @@ export interface ResumeData {
     otherToolDB: OtherToolDB[];
     educationDB: EducationDB[];
     certificationDB: CertificationDB[];
-    militaryServiceDB: MilitaryServiceDB;
+    militaryServiceDB: MilitaryServiceDB | null;
 }

@@ -651,10 +651,7 @@ export async function getResumeData(): Promise<ResumeData> {
             otherToolDB,
             educationDB,
             certificationDB,
-            militaryServiceDB: militaryServiceDB || {
-                title: '병역 정보 없음',
-                period: '정보 없음'
-            },
+            militaryServiceDB,
         };
     } catch (error) {
         console.error('Error fetching resume data:', error);

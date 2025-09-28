@@ -241,10 +241,12 @@ export default async function NotionResumePage() {
                     )}
 
                     {/* 병역 섹션 */}
-                    <div className="section">
-                        <h2 className="text-section-title">병역.</h2>
-                        <MilitaryServiceSection militaryService={militaryServiceDB} />
-                    </div>
+                    {militaryServiceDB && militaryServiceDB.title && militaryServiceDB.title.trim() !== '' && (
+                        <div className="section">
+                            <h2 className="text-section-title">병역.</h2>
+                            <MilitaryServiceSection militaryService={militaryServiceDB} />
+                        </div>
+                    )}
 
                 </div>
             </ResumeLayout>
