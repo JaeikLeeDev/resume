@@ -103,81 +103,92 @@ function validateEnvironmentVariables() {
     return true;
 }
 
-// Notion 속성에서 텍스트 추출
-function extractText(property: any): string {
-    if (!property) return '';
-
-    if (property.title) {
-        return property.title
-            .map((item: any) => item.text?.content || '')
-            .join('')
-            .trim();
-    }
-
-    if (property.rich_text) {
-        return property.rich_text
-            .map((item: any) => item.text?.content || '')
-            .join('')
-            .trim();
-    }
-
-    if (property.select) {
-        return property.select.name || '';
-    }
-
-    if (property.email) {
-        return property.email || '';
-    }
-
-    if (property.phone_number) {
-        return property.phone_number || '';
-    }
-
-    if (property.url) {
-        return property.url || '';
-    }
-
-    if (property.number !== undefined && property.number !== null) {
-        return property.number.toString();
-    }
-
-    // Notion 파일 속성에서 이미지 URL 추출
-    if (property.files && property.files.length > 0) {
-        const file = property.files[0];
-        if (file.type === 'external' && file.external?.url) {
-            return file.external.url;
-        }
-        if (file.type === 'file' && file.file?.url) {
-            return file.file.url;
-        }
-    }
-
-    return '';
+// Notion Title 프로퍼티에서 텍스트 추출
+function extractTitle(property: any): string {
+    if (!property || !property.title) return '';
+    return property.title
+        .map((item: any) => item.text?.content || '')
+        .join('')
+        .trim();
 }
 
-// Notion 속성에서 배열 추출
-function extractArray(property: any): string[] {
-    if (!property) return [];
+// Notion Rich Text 프로퍼티에서 텍스트 추출
+function extractRichText(property: any): string {
+    if (!property || !property.rich_text) return '';
+    return property.rich_text
+        .map((item: any) => item.text?.content || '')
+        .join('')
+        .trim();
+}
 
-    if (property.multi_select) {
-        return property.multi_select.map((item: any) => item.name);
-    }
+// Notion Rich Text 프로퍼티에서 세미콜론으로 구분된 배열 추출
+function extractRichTextArray(property: any): string[] {
+    if (!property || !property.rich_text) return [];
 
-    if (property.rich_text) {
-        const fullText = property.rich_text
-            .map((item: any) => item.text?.content || '')
-            .join('')
-            .trim();
+    const fullText = property.rich_text
+        .map((item: any) => item.text?.content || '')
+        .join('')
+        .trim();
 
-        if (fullText) {
-            return fullText
-                .split(';')
-                .map((item: string) => item.trim())
-                .filter((item: string) => item.length > 0);
-        }
+    if (fullText) {
+        return fullText
+            .split(';')
+            .map((item: string) => item.trim())
+            .filter((item: string) => item.length > 0);
     }
 
     return [];
+}
+
+// Notion Multi-select 프로퍼티에서 배열 추출
+function extractMultiSelect(property: any): string[] {
+    if (!property || !property.multi_select) return [];
+    return property.multi_select.map((item: any) => item.name);
+}
+
+// Notion Select 프로퍼티에서 텍스트 추출
+function extractSelect(property: any): string {
+    if (!property || !property.select) return '';
+    return property.select.name || '';
+}
+
+// Notion Email 프로퍼티에서 텍스트 추출
+function extractEmail(property: any): string {
+    if (!property || !property.email) return '';
+    return property.email || '';
+}
+
+// Notion Phone Number 프로퍼티에서 텍스트 추출
+function extractPhoneNumber(property: any): string {
+    if (!property || !property.phone_number) return '';
+    return property.phone_number || '';
+}
+
+// Notion URL 프로퍼티에서 텍스트 추출
+function extractUrl(property: any): string {
+    if (!property || !property.url) return '';
+    return property.url || '';
+}
+
+// Notion Number 프로퍼티에서 숫자 추출
+function extractNumber(property: any): number {
+    if (!property || property.number === undefined || property.number === null) return 0;
+    return property.number;
+}
+
+// Notion Files 프로퍼티에서 파일 URL 추출
+function extractFiles(property: any): string {
+    if (!property || !property.files || property.files.length === 0) return '';
+
+    const file = property.files[0];
+    if (file.type === 'external' && file.external?.url) {
+        return file.external.url;
+    }
+    if (file.type === 'file' && file.file?.url) {
+        return file.file.url;
+    }
+
+    return '';
 }
 
 // Notion 페이지 유효성 검사
@@ -280,8 +291,8 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         show: 'show'
     },
     otherToolDB: {
-        title: 'title',         // 도구명 (Select)
-        category: 'category',  // 카테고리 (Title)
+        title: 'title',         // 도구명 (Title)
+        category: 'category',  // 카테고리 (Select)
         description: 'description', // 숙련도 및 경험 설명 (Rich Text)
         order: 'order',
         show: 'show'
@@ -303,7 +314,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         show: 'show'
     },
     militaryServiceDB: {
-        title: 'title', // 병역 정보 (Rich Text)
+        title: 'title', // 병역 정보 (Title)
         period: 'period' // 복무기간 (Rich Text)
     }
 };
@@ -337,11 +348,26 @@ async function queryDatabase(
                 for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
                     const property = page.properties[notionProperty];
                     if (property) {
-                        // 배열 속성인지 동적으로 확인
-                        if ('multi_select' in property || 'rich_text' in property) {
-                            result[outputField] = extractArray(property);
-                        } else {
-                            result[outputField] = extractText(property);
+                        const prop = property as any;
+                        // Notion 프로퍼티 타입에 따라 적절한 함수 선택
+                        if (prop.title) {
+                            result[outputField] = extractTitle(prop);
+                        } else if (prop.rich_text) {
+                            result[outputField] = extractRichText(prop);
+                        } else if (prop.multi_select) {
+                            result[outputField] = extractMultiSelect(prop);
+                        } else if (prop.select) {
+                            result[outputField] = extractSelect(prop);
+                        } else if (prop.email) {
+                            result[outputField] = extractEmail(prop);
+                        } else if (prop.phone_number) {
+                            result[outputField] = extractPhoneNumber(prop);
+                        } else if (prop.url) {
+                            result[outputField] = extractUrl(prop);
+                        } else if (prop.number !== undefined && prop.number !== null) {
+                            result[outputField] = extractNumber(prop);
+                        } else if (prop.files) {
+                            result[outputField] = extractFiles(prop);
                         }
                     }
                 }
@@ -391,10 +417,10 @@ export async function getSkillDB(): Promise<SkillDB[]> {
     try {
         return await queryDatabase('skillDB', PROPERTY_MAPPINGS.skillDB, (page) => {
             return {
-                skills: extractArray(page.properties.skills),
-                title: extractText(page.properties.title) || 'other',
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                skills: extractMultiSelect(page.properties.skills),
+                title: extractTitle(page.properties.title) || 'other',
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -408,12 +434,12 @@ export async function getCoreCompetencyDB(): Promise<CoreCompetencyDB[]> {
     try {
         return await queryDatabase('coreCompetencyDB', PROPERTY_MAPPINGS.coreCompetencyDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                description: extractText(page.properties.description),
-                skills: extractArray(page.properties.skills),
-                details: extractArray(page.properties.details),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextArray(page.properties.details),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -427,12 +453,12 @@ export async function getWorkSummaryDB(): Promise<WorkSummaryDB[]> {
     try {
         return await queryDatabase('workSummaryDB', PROPERTY_MAPPINGS.workSummaryDB, (page) => {
             return {
-                company: extractText(page.properties.company),
-                position: extractText(page.properties.position),
-                period: extractText(page.properties.period),
-                description: extractText(page.properties.description),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                company: extractTitle(page.properties.company),
+                position: extractRichText(page.properties.position),
+                period: extractRichText(page.properties.period),
+                description: extractRichText(page.properties.description),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -456,12 +482,12 @@ export async function getWorkAchievementDB(): Promise<WorkAchievementDB[]> {
             }
 
             return {
-                title: extractText(page.properties.title),
-                details: extractText(page.properties.details),
+                title: extractTitle(page.properties.title),
+                details: extractRichText(page.properties.details),
                 skills: skillsArray,
-                company: extractText(page.properties.company),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                company: extractRichText(page.properties.company),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -475,19 +501,19 @@ export async function getProjectDB(): Promise<ProjectDB[]> {
     try {
         return await queryDatabase('projectDB', PROPERTY_MAPPINGS.projectDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                description: extractText(page.properties.description),
-                period: extractText(page.properties.period),
-                skills: extractArray(page.properties.skills),
-                details: extractArray(page.properties.details),
-                github: extractText(page.properties.github),
-                website: extractText(page.properties.website),
-                ios: extractText(page.properties.ios),
-                android: extractText(page.properties.android),
-                post: extractText(page.properties.post),
-                contribution: extractText(page.properties.contribution),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                period: extractRichText(page.properties.period),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextArray(page.properties.details),
+                github: extractUrl(page.properties.github),
+                website: extractUrl(page.properties.website),
+                ios: extractUrl(page.properties.ios),
+                android: extractUrl(page.properties.android),
+                post: extractUrl(page.properties.post),
+                contribution: extractRichText(page.properties.contribution),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -501,19 +527,19 @@ export async function getPortfolioDB(): Promise<PortfolioDB[]> {
     try {
         return await queryDatabase('portfolioDB', PROPERTY_MAPPINGS.portfolioDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                description: extractText(page.properties.description),
-                period: extractText(page.properties.period),
-                skills: extractArray(page.properties.skills),
-                details: extractArray(page.properties.details),
-                github: extractText(page.properties.github),
-                website: extractText(page.properties.website),
-                ios: extractText(page.properties.ios),
-                android: extractText(page.properties.android),
-                post: extractText(page.properties.post),
-                contribution: extractText(page.properties.contribution),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                period: extractRichText(page.properties.period),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextArray(page.properties.details),
+                github: extractUrl(page.properties.github),
+                website: extractUrl(page.properties.website),
+                ios: extractUrl(page.properties.ios),
+                android: extractUrl(page.properties.android),
+                post: extractUrl(page.properties.post),
+                contribution: extractRichText(page.properties.contribution),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -527,10 +553,10 @@ export async function getValueDB(): Promise<ValueDB[]> {
     try {
         return await queryDatabase('valueDB', PROPERTY_MAPPINGS.valueDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                details: extractText(page.properties.details),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                details: extractRichText(page.properties.details),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -544,11 +570,11 @@ export async function getOtherToolDB(): Promise<OtherToolDB[]> {
     try {
         return await queryDatabase('otherToolDB', PROPERTY_MAPPINGS.otherToolDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                category: extractText(page.properties.category),
-                description: extractText(page.properties.description),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                category: extractSelect(page.properties.category),
+                description: extractRichText(page.properties.description),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -562,12 +588,12 @@ export async function getEducationDB(): Promise<EducationDB[]> {
     try {
         return await queryDatabase('educationDB', PROPERTY_MAPPINGS.educationDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                degree: extractText(page.properties.degree),
-                period: extractText(page.properties.period),
-                location: extractText(page.properties.location),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                degree: extractRichText(page.properties.degree),
+                period: extractRichText(page.properties.period),
+                location: extractRichText(page.properties.location),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
@@ -581,12 +607,12 @@ export async function getCertificationDB(): Promise<CertificationDB[]> {
     try {
         return await queryDatabase('certificationDB', PROPERTY_MAPPINGS.certificationDB, (page) => {
             return {
-                title: extractText(page.properties.title),
-                date: extractText(page.properties.date),
-                number: extractText(page.properties.number),
-                issuer: extractText(page.properties.issuer),
-                order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
-                show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
+                title: extractTitle(page.properties.title),
+                date: extractRichText(page.properties.date),
+                number: extractRichText(page.properties.number),
+                issuer: extractRichText(page.properties.issuer),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {

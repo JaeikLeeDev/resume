@@ -63,6 +63,20 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 ## 📋 Notion DB 구성
 
+각 필드(Notion의 property)를 '프로퍼티명 (프로퍼티 타입)'으로 표시.
+
+> [!NOTE] 프로퍼티 타입 종류 (Notion 앱에서 설정하는 방법)
+> - **Title**: 데이터베이스 생성 시 기본으로 제공되는 "Name" 필드 (이름 변경 가능)
+> - **Rich Text**: 프로퍼티 추가 → "Text" 선택 (앱에서는 "Text"로 표시)
+> - **Multi-select**: 프로퍼티 추가 → "Multi-select" 선택 → 옵션 추가
+> - **Select**: 프로퍼티 추가 → "Select" 선택 → 옵션 추가
+> - **Number**: 프로퍼티 추가 → "Number" 선택
+> - **URL**: 프로퍼티 추가 → "URL" 선택
+> - **Email**: 프로퍼티 추가 → "Email" 선택
+> - **Phone**: 프로퍼티 추가 → "Phone" 선택
+> - **Files & media**: 프로퍼티 추가 → "Files & media" 선택 
+
+
 #### Personal Info 데이터베이스
 - **name** (Title) - 이름
 - **position** (Rich Text) - 직책/포지션
@@ -142,8 +156,8 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **show** (Select)
 
 #### Other Tool 데이터베이스
-- **title** (Select) - 도구명
-- **category** (Title) - 카테고리
+- **title** (Title) - 도구명
+- **category** (Select) - 카테고리
 - **description** (Rich Text) - 숙련도 및 경험 설명
 - **order** (Number)
 - **show** (Select)
@@ -165,7 +179,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **show** (Select)
 
 #### Military Service 데이터베이스
-- **title** (Rich Text) - 병역 정보
+- **title** (Title) - 병역 정보
 - **period** (Rich Text) - 복무기간
 
 ## 🚀 템플릿 사용하기
