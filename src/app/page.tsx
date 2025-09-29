@@ -11,6 +11,26 @@ import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection
 import { ResumeData } from '@/types';
 import { getResumeData } from '@/lib/notion';
 
+// Bullet point 텍스트를 렌더링하는 헬퍼 함수
+function renderTextWithBullets(text: string) {
+    if (text.startsWith('BULLET_LIST:')) {
+        try {
+            const bulletItems = JSON.parse(text.substring(12));
+            return (
+                <ul className="list">
+                    {bulletItems.map((item: string, index: number) => (
+                        <li key={index} className="list-item">{item}</li>
+                    ))}
+                </ul>
+            );
+        } catch (error) {
+            console.error('Error parsing bullet list:', error);
+            return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+        }
+    }
+    return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+}
+
 export default async function NotionResumePage() {
     let resumeData: ResumeData;
 
@@ -120,9 +140,7 @@ export default async function NotionResumePage() {
                         <ContactInfo {...contactInfo} />
 
                         {personalInfoDB.introduction && (
-                            <div className="text-body" style={{ whiteSpace: 'pre-line' }}>
-                                {personalInfoDB.introduction}
-                            </div>
+                            renderTextWithBullets(personalInfoDB.introduction)
                         )}
                     </div>
 
@@ -169,11 +187,7 @@ export default async function NotionResumePage() {
                                                         <div key={achIndex} className="achievement-item">
                                                             <h4 className="text-item-title">{achievement.title}</h4>
                                                             {achievement.details && (
-                                                                <ul className="list">
-                                                                    {achievement.details.split(';').filter((detail: string) => detail.trim().length > 0).map((detail: string, detailIndex: number) => (
-                                                                        <li key={detailIndex} className="list-item">{detail.trim()}</li>
-                                                                    ))}
-                                                                </ul>
+                                                                renderTextWithBullets(achievement.details)
                                                             )}
                                                         </div>
                                                     ))}

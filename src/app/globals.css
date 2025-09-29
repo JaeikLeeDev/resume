@@ -450,3 +450,8 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-foreground-secondary);
 }
+
+/* Bullet point styles for text starting with dash */
+.text-body[style*="white-space: pre-line"] {
+  line-height: 1.6;
+}

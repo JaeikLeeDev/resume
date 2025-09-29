@@ -204,7 +204,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 [이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)를 Duplicate 합니다.
 
-![Screenshot_1](template_guide/img/Screenshot_1_notion-template-duplicate.png)
+![Screenshot](template_guide/img/Screenshot_notion-template-duplicate.png)
 
 duplicate as template 실패하는 경우가 많습니다. 다양한 브라우저, 시크릿 모드, 모바일에서 캐시 삭제 후 시도해보시길 바랍니다.
 
@@ -246,11 +246,11 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 
 각 데이터베이스의 세팅 > 'Manage data sources'
 
-![Screenshot_2](template_guide/img/Screenshot_2_notion-db-id_1.png)
+![Screenshot](template_guide/img/Screenshot_notion-db-id_1.png)
 
 점 세개 메뉴 > 'Copy data source ID'
 
-![Screenshot_3](template_guide/img/Screenshot_3_notion-db-id_2.png)
+![Screenshot](template_guide/img/Screenshot_notion-db-id_2.png)
 
 
 ### 4. 정렬 시스템
@@ -266,11 +266,11 @@ Notion Database API는 순서를 보장하지 않습니다. 모든 데이터베�
 
 Skill 데이터베이스:
 
-![Screenshot_4](template_guide/img/Screenshot_4_sorting_system_1.png)
+![Screenshot](template_guide/img/Screenshot_sorting_system_1.png)
 
 웹사이트 화면
 
-![Screenshot_5](template_guide/img/Screenshot_5_sorting_system_2.png)
+![Screenshot](template_guide/img/Screenshot_sorting_system_2.png)
 
 ### 5. 업무 경험 데이터 구조
 
@@ -287,21 +287,31 @@ Skill 데이터베이스:
 
 ### 6. 데이터 입력 방법 및 파싱 규칙
 
-#### 📝 텍스트 구분자 규칙
-이 템플릿에서는 **세미콜론(;)**을 구분자로 사용합니다:
+#### 📝 Rich Text, Multi-select 필드의 파싱 규칙
 
-- **Rich Text 필드**: 세미콜론(;)으로 구분하여 여러 항목 입력
+- **'- ' (대시 + 공백)으로 시작하는 줄**: 자동으로 bullet point로 변환
+- **줄바꿈**: Notion에서 입력한 그대로 줄바꿈이 유지되어 표시
+- **일반 텍스트**: 그대로 표시
 - **Multi-select 필드**: 각 항목을 개별 옵션으로 선택
 
-예시:
+#### 예시: skills 필드는 Multi-select, details필드는 Rich Text
+
+**Notion에서 입력할 때:**
+
+![Screenshot](template_guide/img/Screenshot_text_parsing_rule_1.png)
+
+**웹사이트에서 표시될 때:**
+![Screenshot](template_guide/img/Screenshot_text_parsing_rule_2.png)
+
+일반 텍스트도 함께 입력 가능합니다.
 
 핵심 역량 데이터베이스
 
-![Screenshot_6](template_guide/img/Screenshot_6_delimiter_1.png)
+![Screenshot](template_guide/img/Screenshot_delimiter_1.png)
 
 웹사이트 화면 핵심 역량 섹션
 
-![Screenshot_7](template_guide/img/Screenshot_7_delimiter_2.png)
+![Screenshot](template_guide/img/Screenshot_delimiter_2.png)
 
 ### 7. 사용하지 않는 섹션(DB)/프로퍼티
 
@@ -311,9 +321,9 @@ Skill 데이터베이스:
 
 데이터베이스: 학력 DB 내용 X, 정보처리기사 'number' 프로퍼티 없음
 
-![Screenshot_8](template_guide/img/Screenshot_8_empty_data.png)
+![Screenshot](template_guide/img/Screenshot_empty_data.png)
 
 페이지 결과: 학력 섹션 표시 안 됨. 정보처리기사 자격번호 표시하지 않음
 
-![Screenshot_9](template_guide/img/Screenshot_9_empty_data_result.png)
+![Screenshot](template_guide/img/Screenshot_empty_data_result.png)
 

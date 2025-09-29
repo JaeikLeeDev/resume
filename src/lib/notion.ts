@@ -112,18 +112,9 @@ function extractTitle(property: any): string {
         .trim();
 }
 
-// Notion Rich Text 프로퍼티에서 텍스트 추출
+// Notion Rich Text 프로퍼티에서 텍스트 추출 (대시로 구분된 bullet point 지원)
 function extractRichText(property: any): string {
     if (!property || !property.rich_text) return '';
-    return property.rich_text
-        .map((item: any) => item.text?.content || '')
-        .join('')
-        .trim();
-}
-
-// Notion Rich Text 프로퍼티에서 세미콜론으로 구분된 배열 추출
-function extractRichTextArray(property: any): string[] {
-    if (!property || !property.rich_text) return [];
 
     const fullText = property.rich_text
         .map((item: any) => item.text?.content || '')
@@ -131,13 +122,37 @@ function extractRichTextArray(property: any): string[] {
         .trim();
 
     if (fullText) {
-        return fullText
-            .split(';')
-            .map((item: string) => item.trim())
-            .filter((item: string) => item.length > 0);
+        // 문장을 줄바꿈으로 분리하고, 각 줄을 처리
+        const lines = fullText.split('\n').map((line: string) => line.trim()).filter((line: string) => line.length > 0);
+
+        // 각 줄이 '- '로 시작하면 bullet point로 처리
+        const processedLines = lines.map((line: string) => {
+            if (line.startsWith('- ')) {
+                return line.substring(2).trim(); // '- ' 제거하고 앞뒤 공백 제거
+            }
+            return line;
+        });
+
+        // bullet point가 있는 경우와 없는 경우를 구분
+        const hasBulletPoints = lines.some((line: string) => line.startsWith('- '));
+
+        if (hasBulletPoints) {
+            // bullet point가 있는 경우: HTML 형태로 반환
+            const bulletItems = lines
+                .filter((line: string) => line.startsWith('- '))
+                .map((line: string) => line.substring(2).trim())
+                .filter((line: string) => line.length > 0);
+
+            if (bulletItems.length > 0) {
+                return `BULLET_LIST:${JSON.stringify(bulletItems)}`;
+            }
+        }
+
+        // bullet point가 없는 경우: 일반 텍스트로 반환
+        return fullText;
     }
 
-    return [];
+    return '';
 }
 
 // Notion Multi-select 프로퍼티에서 배열 추출
@@ -437,7 +452,7 @@ export async function getCoreCompetencyDB(): Promise<CoreCompetencyDB[]> {
                 title: extractTitle(page.properties.title),
                 description: extractRichText(page.properties.description),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichTextArray(page.properties.details),
+                details: extractRichText(page.properties.details),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -505,7 +520,7 @@ export async function getProjectDB(): Promise<ProjectDB[]> {
                 description: extractRichText(page.properties.description),
                 period: extractRichText(page.properties.period),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichTextArray(page.properties.details),
+                details: extractRichText(page.properties.details),
                 github: extractUrl(page.properties.github),
                 website: extractUrl(page.properties.website),
                 ios: extractUrl(page.properties.ios),
@@ -531,7 +546,7 @@ export async function getPortfolioDB(): Promise<PortfolioDB[]> {
                 description: extractRichText(page.properties.description),
                 period: extractRichText(page.properties.period),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichTextArray(page.properties.details),
+                details: extractRichText(page.properties.details),
                 github: extractUrl(page.properties.github),
                 website: extractUrl(page.properties.website),
                 ios: extractUrl(page.properties.ios),

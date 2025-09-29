@@ -37,7 +37,7 @@ export interface CoreCompetencyDB {
     title: string;
     description: string;
     skills: string[];
-    details?: string[];
+    details?: string;
     order: number;
     show: 'show' | 'hide';
 }
@@ -68,7 +68,7 @@ export interface ProjectDB {
     description: string;
     period: string;
     skills: string[];
-    details: string[];
+    details: string;
     github?: string;
     website?: string;
     ios?: string;
@@ -85,7 +85,7 @@ export interface PortfolioDB {
     description: string;
     period: string;
     skills: string[];
-    details: string[];
+    details: string;
     github?: string;
     website?: string;
     ios?: string;
