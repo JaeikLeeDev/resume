@@ -1,3 +1,5 @@
+import TechChips from '@/components/ui/TechChips';
+
 interface ProjectItemProps {
     title: string;
     description: string;
@@ -39,11 +41,10 @@ export default function ProjectItem({
             )}
 
             {skills.length > 0 && (
-                <div className="tech-container" style={{ marginBottom: 'var(--space-md)' }}>
-                    {skills.map((tech, techIndex) => (
-                        <span key={techIndex} className="tech-chip">{tech}</span>
-                    ))}
-                </div>
+                <TechChips
+                    technologies={skills}
+                    marginBottom="var(--space-md)"
+                />
             )}
 
             {details.length > 0 && (

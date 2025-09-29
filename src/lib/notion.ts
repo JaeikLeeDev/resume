@@ -331,7 +331,7 @@ async function queryDatabase(
             results = validPages.map(transformFunction);
         } else {
             // Notion 속성을 우리 타입에 맞게 변환
-            results = validPages.map((page) => {
+            results = validPages.map((page: PageObjectResponse) => {
                 const result: any = {};
                 for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
                     const property = page.properties[notionProperty];

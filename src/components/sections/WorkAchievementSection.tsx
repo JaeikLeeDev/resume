@@ -14,14 +14,9 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
                     {/* Achievements */}
                     {section.details && (
                         <ul className="list">
-                            {Array.isArray(section.details)
-                                ? section.details.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
-                                    <li key={achievementIndex} className="list-item">{achievement}</li>
-                                ))
-                                : section.details.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
-                                    <li key={achievementIndex} className="list-item">{achievement.trim()}</li>
-                                ))
-                            }
+                            {section.details.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                                <li key={achievementIndex} className="list-item">{achievement.trim()}</li>
+                            ))}
                         </ul>
                     )}
                 </div>
