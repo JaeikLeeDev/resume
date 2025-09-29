@@ -152,7 +152,10 @@ export default async function NotionResumePage() {
                                 <div key={index} className="work-experience-item">
                                     <div className="work-experience-left">
                                         <div className="work-company text-subsection-title">{experience.company}</div>
-                                        <div className="work-period">{experience.period}</div>
+                                        <div className="work-period-desktop text-meta">{experience.period}</div>
+                                        <div className="work-position-period-mobile text-meta">
+                                            {experience.position} | {experience.period}
+                                        </div>
                                     </div>
                                     <div className="work-experience-right">
                                         <div className="work-position text-subsection-title">{experience.position}</div>

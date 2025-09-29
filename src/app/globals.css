@@ -343,6 +343,20 @@ body {
 
 .work-position {
   margin-bottom: var(--space-xs);
+  display: block;
+  /* Show by default on desktop */
+}
+
+.work-period-desktop {
+  display: block;
+  /* Show on desktop */
+  margin-bottom: 0;
+}
+
+.work-position-period-mobile {
+  display: none;
+  /* Hidden on desktop */
+  margin-bottom: 0;
 }
 
 .work-period {
@@ -403,6 +417,19 @@ body {
   .work-experience-left {
     flex: none;
     min-width: auto;
+  }
+
+  /* Mobile: Show mobile position-period, hide desktop elements */
+  .work-period-desktop {
+    display: none;
+  }
+
+  .work-position-period-mobile {
+    display: block;
+  }
+
+  .work-experience-right .work-position {
+    display: none;
   }
 }
 
