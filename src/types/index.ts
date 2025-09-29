@@ -55,7 +55,7 @@ export interface WorkSummaryDB {
 // 업무 경험 성과 타입
 export interface WorkAchievementDB {
     title: string;
-    detail: string | string[];
+    details: string | string[];
     skills: string[];
     order: number;
     show: 'show' | 'hide';
@@ -98,7 +98,7 @@ export interface PortfolioDB {
 // 가치관 타입
 export interface ValueDB {
     title: string;
-    detail: string | string[];
+    details: string | string[];
     order: number;
     show: 'show' | 'hide';
 }

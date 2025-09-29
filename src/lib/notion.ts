@@ -237,7 +237,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     // 업무 경험 성과
     workAchievementDB: {
         title: 'title', // 성과 소제목 (Title)
-        detail: 'details', // 성과 디테일 (Rich Text)
+        details: 'details', // 성과 디테일 (Rich Text)
         skills: 'skills', // 해당 성과 관련 기술 스택 (Multi-select)
         order: 'order',
         show: 'show'
@@ -274,7 +274,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
     },
     valueDB: {
         title: 'title', // 가치관 제목 (Title)
-        detail: 'detail', // 상세 내용 (Rich Text)
+        details: 'details', // 상세 내용 (Rich Text)
         order: 'order',
         show: 'show'
     },
@@ -456,7 +456,7 @@ export async function getWorkAchievementDB(): Promise<WorkAchievementDB[]> {
 
             return {
                 title: extractText(page.properties.title),
-                detail: extractText(page.properties.details),
+                details: extractText(page.properties.details),
                 skills: skillsArray,
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
@@ -526,7 +526,7 @@ export async function getValueDB(): Promise<ValueDB[]> {
         return await queryDatabase('valueDB', PROPERTY_MAPPINGS.valueDB, (page) => {
             return {
                 title: extractText(page.properties.title),
-                detail: extractText(page.properties.detail),
+                details: extractText(page.properties.details),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };

@@ -12,13 +12,13 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
                     <h3 className="text-item-title">{section.title}</h3>
 
                     {/* Achievements */}
-                    {section.detail && (
+                    {section.details && (
                         <ul className="list">
-                            {Array.isArray(section.detail)
-                                ? section.detail.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                            {Array.isArray(section.details)
+                                ? section.details.filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
                                     <li key={achievementIndex} className="list-item">{achievement}</li>
                                 ))
-                                : section.detail.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
+                                : section.details.split(';').filter(achievement => achievement.trim().length > 0).map((achievement, achievementIndex) => (
                                     <li key={achievementIndex} className="list-item">{achievement.trim()}</li>
                                 ))
                             }
