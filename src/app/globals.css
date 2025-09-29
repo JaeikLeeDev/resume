@@ -306,6 +306,71 @@ body {
   margin-bottom: 0;
 }
 
+/* Work experience layout */
+.work-experience-item {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.work-experience-left {
+  flex: 0 0 200px;
+  min-width: 200px;
+}
+
+.work-experience-right {
+  flex: 1;
+}
+
+.work-company {
+  margin-bottom: var(--space-xs);
+}
+
+.work-period {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--foreground-tertiary);
+}
+
+.work-position {
+  margin-bottom: var(--space-sm);
+}
+
+.work-description {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--foreground);
+  white-space: pre-line;
+  margin-bottom: var(--space-md);
+}
+
+.work-achievements {
+  margin-top: var(--space-md);
+}
+
+.achievement-item {
+  margin-bottom: var(--space-md);
+}
+
+.achievement-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile responsive for work experience */
+@media (max-width: 768px) {
+  .work-experience-item {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .work-experience-left {
+    flex: none;
+    min-width: auto;
+  }
+}
+
 /* Custom scrollbar - Minimal */
 ::-webkit-scrollbar {
   width: 6px;

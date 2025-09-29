@@ -149,14 +149,35 @@ export default async function NotionResumePage() {
                             <h2 className="text-section-title">업무 경험.</h2>
 
                             {workSummaryDB.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
-                                <div key={index} className="item">
-                                    <h3 className="text-subsection-title">{experience.company} | {experience.position}</h3>
-                                    <p className="text-meta">{experience.period}</p>
-                                    <p className="text-body">{experience.description}</p>
+                                <div key={index} className="work-experience-item">
+                                    <div className="work-experience-left">
+                                        <div className="work-company text-subsection-title">{experience.company}</div>
+                                        <div className="work-period">{experience.period}</div>
+                                    </div>
+                                    <div className="work-experience-right">
+                                        <div className="work-position text-subsection-title">{experience.position}</div>
+                                        <div className="work-description">{experience.description}</div>
+
+                                        {/* Work Achievements - Show only for the first experience */}
+                                        {index === 0 && workAchievementDB.filter(ach => ach.show === 'show').length > 0 && (
+                                            <div className="work-achievements">
+                                                {workAchievementDB.filter(ach => ach.show === 'show').map((achievement: any, achIndex: number) => (
+                                                    <div key={achIndex} className="achievement-item">
+                                                        <h4 className="text-item-title">{achievement.title}</h4>
+                                                        {achievement.details && (
+                                                            <ul className="list">
+                                                                {achievement.details.split(';').filter(detail => detail.trim().length > 0).map((detail: string, detailIndex: number) => (
+                                                                    <li key={detailIndex} className="list-item">{detail.trim()}</li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
-
-                            <WorkAchievementSection sections={workAchievementDB.filter(ach => ach.show === 'show')} />
                         </div>
                     )}
 
