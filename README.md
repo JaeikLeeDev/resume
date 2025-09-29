@@ -76,7 +76,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **website** (URL) - 웹사이트
 
 #### Skill 데이터베이스
-- **title** (Title) - 카테고리
+- **title** (Title) - 카테고리 분류를 위한 필드. 화면에는 나타나지 않음.
 - **skills** (Multi-select) - 기술 스택
 - **order** (Number) - 정렬 순서 (1이 맨 위로)
 - **show** (Select) - 표시 여부
@@ -101,6 +101,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **title** (Title) - 성과 소제목
 - **details** (Rich Text) - 성과 디테일
 - **skills** (Multi-select) - 해당 성과 관련 기술 스택
+- **company** (Rich Text) - Work Summary DB > 'company'와 같은 값
 - **order** (Number)
 - **show** (Select)
 
@@ -257,7 +258,20 @@ Skill 데이터베이스:
 
 ![Screenshot_5](template_guide/img/Screenshot_5_sorting_system_2.png)
 
-### 5. 데이터 입력 방법 및 파싱 규칙
+### 5. 업무 경험 데이터 구조
+
+**여러 회사에서 근무한 경험이 있고, 각 회사별로 여러 성과를 보여주고 싶다면** 이렇게 구성하세요:
+
+#### 회사별 기본 정보 입력 (Work Summary DB)
+- 각 회사마다 하나의 레코드 생성
+- 회사명, 직책, 근무기간, 회사 설명 등 입력
+
+#### 성과별 상세 정보 입력 (Work Achievement DB)
+- 각 성과마다 개별 레코드 생성
+- **핵심**: `company` 필드에 해당 성과가 속한 회사명 입력
+- 성과 제목, 상세 내용, 관련 기술 스택 등 입력
+
+### 6. 데이터 입력 방법 및 파싱 규칙
 
 #### 📝 텍스트 구분자 규칙
 이 템플릿에서는 **세미콜론(;)**을 구분자로 사용합니다:
@@ -275,7 +289,7 @@ Skill 데이터베이스:
 
 ![Screenshot_7](template_guide/img/Screenshot_7_delimiter_2.png)
 
-### 6. 사용하지 않는 섹션(DB)/프로퍼티
+### 7. 사용하지 않는 섹션(DB)/프로퍼티
 
 내용이 없는 데이터베이스/프로퍼티는 페이지에 표시하지 않도록 설계
 

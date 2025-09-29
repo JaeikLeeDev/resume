@@ -52,11 +52,12 @@ export interface WorkSummaryDB {
     show: 'show' | 'hide';
 }
 
-// 업무 경험 성과 타입
+// 업무 경험 성과 타입 (회사별 그룹화 지원)
 export interface WorkAchievementDB {
     title: string;
     details: string;
     skills: string[];
+    company: string; // 어떤 회사의 성과인지 연결
     order: number;
     show: 'show' | 'hide';
 }

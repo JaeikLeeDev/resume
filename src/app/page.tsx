@@ -4,7 +4,6 @@ import SkillSection from '@/components/sections/SkillSection';
 import ValueSection from '@/components/sections/ValueSection';
 import OtherToolSection from '@/components/sections/OtherToolSection';
 import CoreCompetencySection from '@/components/sections/CoreCompetencySection';
-import WorkAchievementSection from '@/components/sections/WorkAchievementSection';
 import ProjectItem from '@/components/sections/ProjectItem';
 import EducationSection from '@/components/sections/EducationSection';
 import CertificationSection from '@/components/sections/CertificationSection';
@@ -161,21 +160,23 @@ export default async function NotionResumePage() {
                                         <div className="work-position text-subsection-title">{experience.position}</div>
                                         <div className="work-description">{experience.description}</div>
 
-                                        {/* Work Achievements - Show only for the first experience */}
-                                        {index === 0 && workAchievementDB.filter(ach => ach.show === 'show').length > 0 && (
+                                        {/* Work Achievements - Show achievements for this specific company */}
+                                        {workAchievementDB.filter(ach => ach.show === 'show' && ach.company === experience.company).length > 0 && (
                                             <div className="work-achievements">
-                                                {workAchievementDB.filter(ach => ach.show === 'show').map((achievement: any, achIndex: number) => (
-                                                    <div key={achIndex} className="achievement-item">
-                                                        <h4 className="text-item-title">{achievement.title}</h4>
-                                                        {achievement.details && (
-                                                            <ul className="list">
-                                                                {achievement.details.split(';').filter(detail => detail.trim().length > 0).map((detail: string, detailIndex: number) => (
-                                                                    <li key={detailIndex} className="list-item">{detail.trim()}</li>
-                                                                ))}
-                                                            </ul>
-                                                        )}
-                                                    </div>
-                                                ))}
+                                                {workAchievementDB
+                                                    .filter(ach => ach.show === 'show' && ach.company === experience.company)
+                                                    .map((achievement: any, achIndex: number) => (
+                                                        <div key={achIndex} className="achievement-item">
+                                                            <h4 className="text-item-title">{achievement.title}</h4>
+                                                            {achievement.details && (
+                                                                <ul className="list">
+                                                                    {achievement.details.split(';').filter((detail: string) => detail.trim().length > 0).map((detail: string, detailIndex: number) => (
+                                                                        <li key={detailIndex} className="list-item">{detail.trim()}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            )}
+                                                        </div>
+                                                    ))}
                                             </div>
                                         )}
                                     </div>

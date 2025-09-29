@@ -239,6 +239,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         title: 'title', // 성과 소제목 (Title)
         details: 'details', // 성과 디테일 (Rich Text)
         skills: 'skills', // 해당 성과 관련 기술 스택 (Multi-select)
+        company: 'company', // 회사명 (Rich Text)
         order: 'order',
         show: 'show'
     },
@@ -458,6 +459,7 @@ export async function getWorkAchievementDB(): Promise<WorkAchievementDB[]> {
                 title: extractText(page.properties.title),
                 details: extractText(page.properties.details),
                 skills: skillsArray,
+                company: extractText(page.properties.company),
                 order: parseInt(extractText(page.properties.order)) || DEFAULT_ORDER_VALUE,
                 show: extractText(page.properties.show) as 'show' | 'hide' || 'show',
             };
