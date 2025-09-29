@@ -1,18 +1,18 @@
 # Notion DB 연동 개발자 이력서 사이트
 
-React와 Next.js로 구축된 공개 이력서 사이트입니다. Notioin Database API를 연동하여 Notion 데이터베이스를 수정하면 이력서 페이지에 반영되도록 구현했습니다.
+React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 연동된 Notion 데이터베이스를 수정하면 이력서 페이지에 반영되도록 구현했습니다.
 
-이재익 이력서 페이지: https://jaeikleedev.github.io/jaeiklee-resume/
-<br>
-이재익 이력서 Notion 데이터베이스: https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a
+### Notion DB 및 이력서 사이트 예시
+
+- [이재익 이력서 페이지](https://jaeikleedev.github.io/jaeiklee-resume/)
+- [이재익 이력서 Notion 데이터베이스](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)
 
 ## ✨ 주요 기능
 
 - 🔄 **Notion API 연동**: Notion에서 이력서 내용을 수정하면 페이지에 반영
 - 📱 **반응형 디자인**: 모바일과 데스크톱 최적화
-- 👨‍💻 **개발자 최적화**: GitHub 링크 기술, 프로젝트, 포트폴리오 등 개발자 이력 최적화 구성
+- 👨‍💻 **개발자 최적화**: 기술 스택, 포트폴리오 등 개발자 이력에 최적화된 구성
 - 👁️ **show/hide**: 각 항목을 show/hide 할 수 있는 기능
-- 🛠️ **Tech chip**: 기술스택을 chip UI로 표현
 
 ## 🛠 기술 스택
 
@@ -23,52 +23,24 @@ React와 Next.js로 구축된 공개 이력서 사이트입니다. Notioin Datab
 
 ## 📋 이력서 섹션 구성
 
-1. **개인 정보**: (연락처, 사진, 소개, ...)
-2. **사용한 기술**:
-3. **핵심 역량**
-4. **업무 경험**
-5. **프로젝트 경험**
-6. **포트폴리오** (개인 프로젝트)
-7. **가치관**
-8. **개발 외 툴 활용 역량**
-9. **학력**
-10. **자격증 및 어학**
-11. **병역**
-
-## 📁 프로젝트 구조
-
-```
-src/
-├── app/                     # Next.js App Router
-│   ├── globals.css         # 글로벌 스타일 및 디자인 시스템
-│   ├── layout.tsx          # 루트 레이아웃
-│   ├── page.tsx            # 메인 이력서 페이지 (Notion API 연동)
-│   └── api/                # API 라우트
-│       └── resume/         # 이력서 데이터 API
-├── components/              # React 컴포넌트
-│   ├── layout/             # 레이아웃 컴포넌트
-│   │   ├── Page.tsx        # A4 페이지 래퍼
-│   │   └── ResumeLayout.tsx # 이력서 전체 레이아웃
-│   ├── sections/           # 이력서 섹션별 컴포넌트
-│   │   ├── CertificationSection.tsx # 자격증 및 어학 섹션
-│   │   ├── ContactInfo.tsx # 연락처 정보 섹션 (프로필 사진 포함)
-│   │   ├── CoreCompetencySection.tsx # 핵심 역량 섹션
-│   │   ├── EducationSection.tsx # 학력 섹션
-│   │   ├── MilitaryServiceSection.tsx # 병역 섹션
-│   │   ├── OtherToolSection.tsx # 개발 외 툴 섹션
-│   │   ├── ProjectItem.tsx # 프로젝트/포트폴리오 아이템 (공통 컴포넌트)
-│   │   ├── SkillSection.tsx # 기술 스택 섹션
-│   │   ├── ValueSection.tsx # 가치관 섹션
-│   │   └── WorkAchievementSection.tsx # 업무 성과 섹션 (소제목별)
-│   └── ui/                 # 재사용 가능한 UI 컴포넌트
-│       └── TechChips.tsx   # 기술 스택 칩
-├── lib/                    # 유틸리티 함수
-│   └── notion.ts          # Notion API 클라이언트 및 데이터 fetching
-└── types/                 # TypeScript 타입 정의
-    └── index.ts           # 공통 타입 정의
-```
+1. 개인 정보
+2. 사용한 기술
+3. 핵심 역량
+4. 업무 경험
+5. 프로젝트 경험
+6. 포트폴리오
+7. 가치관
+8. 개발 외 툴 활용 역량
+9. 학력
+10. 자격증 및 어학
+11. 병역
 
 ## 🎨 디자인 시스템
+
+### 레이아웃 특징
+- **업무 경험 2컬럼 레이아웃**: 회사명/기간(왼쪽) + 직책/설명/성과(오른쪽)
+- **반응형 디자인**: 모바일에서는 세로 배치로 자동 전환
+- **기술 스택 칩**: 컴팩트한 칩 디자인으로 기술 스택 표시
 
 ### 타이포그래피 위계
 - **Hero** (40px, 700): 메인 제목
@@ -80,6 +52,7 @@ src/
 - **Meta** (14px, 400): 메타 정보
 
 ### Spacing 시스템
+- `--space-xxs`: 6px
 - `--space-xs`: 8px
 - `--space-sm`: 16px  
 - `--space-md`: 24px
@@ -200,8 +173,8 @@ src/
 
 - **클론** 본 리포지토리를 로컬 환경에 클론
 - **의존성 설치**: `npm install`
-- **이력서 페이지**: `http://localhost:3000`
 - **개발 서버**: `npm run dev`로 로컬 개발 서버 실행
+- **이력서 페이지**: `http://localhost:3000`
 - **빌드**: `npm run build`로 정적 사이트 생성
 
 ### 1. Notion Integration 생성
@@ -218,7 +191,12 @@ src/
 
 ![Screenshot_1](template_guide/img/Screenshot_1_notion-template-duplicate.png)
 
-> duplicate as template 실패하는 경우가 많습니다. 다양한 브라우저, 시크릿 모드, 모바일에서 캐시 삭제 후 시도해보시길 바랍니다. <br> 그래도 안 되는 경우, [이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)와 위의 'Notion DB 구성' 참고해서 직접 구성해주시면 됩니다. **각 property 이름은 소문자**로 해주세요. **notion.ts의 interface와 정확히 동일**해야 합니다.
+duplicate as template 실패하는 경우가 많습니다. 다양한 브라우저, 시크릿 모드, 모바일에서 캐시 삭제 후 시도해보시길 바랍니다.
+
+그래도 안 되는 경우, [이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)와 위의 'Notion DB 구성' 참고해서 직접 구성해주시면 됩니다. 
+
+> [!IMPORTANT]
+> **각 property 이름은 소문자**로 해주세요. **notion.ts의 interface와 정확히 동일**해야 합니다.
 
 ### 3. 환경 변수 설정
 
