@@ -1,21 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  /* Hyunseob Style - Exact Match */
-  --primary: #000000;
-  --secondary: #666666;
-  --tertiary: #999999;
-  --background: #ffffff;
-  --foreground: #000000;
-  --foreground-secondary: #666666;
-  --foreground-tertiary: #999999;
-  --border: #e5e5e5;
+  /* ===== COLOR SYSTEM ===== */
+  --color-primary: #000000;
+  --color-secondary: #666666;
+  --color-tertiary: #999999;
+  --color-accent: #4A90E2;
 
-  /* Tech chip colors */
-  --tech-chip-bg: #f0f0f0;
-  --tech-chip-text: var(--foreground-secondary);
+  --color-background: #ffffff;
+  --color-foreground: var(--color-primary);
+  --color-foreground-secondary: var(--color-secondary);
+  --color-foreground-tertiary: var(--color-tertiary);
+  --color-border: #e5e5e5;
 
-  /* Spacing System - Consistent Design Tokens */
+  /* ===== COMPONENT COLORS ===== */
+  --color-tech-chip-bg: #f0f0f0;
+  --color-tech-chip-text: var(--color-foreground-secondary);
+
+  /* ===== SPACING SYSTEM ===== */
   --space-xxs: 0.375rem;
   /* 6px - minimal spacing */
   --space-xs: 0.5rem;
@@ -32,17 +34,53 @@
   /* 64px - major section spacing */
   --space-3xl: 6rem;
   /* 96px - page section spacing */
-  --contact-font-size: 0.9rem;
+
+  /* ===== TYPOGRAPHY SCALE ===== */
+  --font-size-hero: 2.5rem;
+  /* 40px */
+  --font-size-section-title: 1.75rem;
+  /* 28px */
+  --font-size-subsection-title: 1.375rem;
+  /* 22px */
+  --font-size-item-title: 1.25rem;
+  /* 20px */
+  --font-size-item-subtitle: 1.125rem;
+  /* 18px */
+  --font-size-body: 1rem;
+  /* 16px */
+  --font-size-meta: 0.875rem;
+  /* 14px */
+  --font-size-tech: 0.875rem;
+  /* 14px */
+  --font-size-contact: 0.9rem;
+  /* 14.4px */
+
+  /* ===== FONT WEIGHTS ===== */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ===== LINE HEIGHTS ===== */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  /* ===== LEGACY SUPPORT ===== */
+  --primary: var(--color-primary);
+  --secondary: var(--color-secondary);
+  --tertiary: var(--color-tertiary);
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --foreground-secondary: var(--color-foreground-secondary);
+  --foreground-tertiary: var(--color-foreground-tertiary);
+  --border: var(--color-border);
+  --tech-chip-bg: var(--color-tech-chip-bg);
+  --tech-chip-text: var(--color-tech-chip-text);
+  --contact-font-size: var(--font-size-contact);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-foreground-secondary: var(--foreground-secondary);
-  --color-foreground-tertiary: var(--foreground-tertiary);
-  --color-primary: var(--primary);
-  --color-border: var(--border);
-}
+/* Tailwind CSS theme integration */
 
 body {
   background: var(--background);
@@ -55,78 +93,80 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography Scale - Enhanced with Inter Weights */
+/* ===== TYPOGRAPHY SYSTEM ===== */
+
+/* Base Typography */
 .text-hero {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
   letter-spacing: -0.02em;
   margin-bottom: var(--space-lg);
-  color: var(--foreground);
+  color: var(--color-foreground);
 }
 
 .text-section-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
   letter-spacing: -0.02em;
   margin-bottom: var(--space-lg);
-  color: #4A90E2;
+  color: var(--color-accent);
 }
 
 .text-subsection-title {
-  font-size: 1.375rem;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: var(--font-size-subsection-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
   margin-bottom: var(--space-sm);
-  color: var(--foreground);
-  /* Normalize spacing for mixed Korean/English content */
+  color: var(--color-foreground);
   display: block;
-  vertical-align: baseline;
 }
 
 .text-item-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--font-size-item-title);
+  font-weight: var(--font-weight-bold);
   line-height: 1.3;
   margin-bottom: var(--space-xs);
-  color: var(--foreground);
+  color: var(--color-foreground);
 }
 
 .text-item-subtitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: var(--font-size-item-subtitle);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
   margin-bottom: var(--space-xs);
-  color: var(--foreground-secondary);
+  color: var(--color-foreground-secondary);
 }
 
 .text-body {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.6;
-  color: var(--foreground);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-foreground);
   margin-bottom: var(--space-sm);
   white-space: pre-line;
 }
 
 .text-meta {
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--foreground-tertiary);
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-foreground-tertiary);
   margin-bottom: var(--space-sm);
 }
 
 .text-tech {
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--foreground-secondary);
+  font-size: var(--font-size-tech);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-foreground-secondary);
   font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 }
 
-/* Layout System - Exact Hyunseob Match */
+/* ===== LAYOUT SYSTEM ===== */
+
+/* Container */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -137,6 +177,7 @@ body {
   box-shadow: none;
 }
 
+/* Section Spacing */
 .section {
   margin-bottom: var(--space-3xl);
 }
@@ -149,6 +190,7 @@ body {
   margin-bottom: 0;
 }
 
+/* Item Spacing */
 .item {
   margin-bottom: var(--space-lg);
 }
@@ -157,7 +199,9 @@ body {
   margin-bottom: 0;
 }
 
-/* List styles - Tighter spacing */
+/* ===== COMPONENT STYLES ===== */
+
+/* List Component */
 .list {
   list-style: none;
   padding: 0;
@@ -174,41 +218,48 @@ body {
   content: '•';
   position: absolute;
   left: 0;
-  color: var(--foreground-tertiary);
+  color: var(--color-foreground-tertiary);
 }
 
-/* Tech stack inline - Exact match */
-.tech-stack {
-  display: inline;
-  color: var(--foreground-secondary);
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: 0.875rem;
-}
-
-/* Links - Exact match */
+/* Link Component */
 .link {
-  color: var(--foreground);
+  color: var(--color-foreground);
   text-decoration: none;
-  border-bottom: 1px solid var(--foreground-tertiary);
+  border-bottom: 1px solid var(--color-foreground-tertiary);
   transition: border-color 0.2s ease;
 }
 
 .link:hover {
-  border-bottom-color: var(--foreground);
+  border-bottom-color: var(--color-foreground);
 }
 
-/* Tech chip component */
+/* Tech Stack Component */
+.tech-stack {
+  display: inline;
+  color: var(--color-foreground-secondary);
+  font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: var(--font-size-tech);
+}
+
+/* Tech Chip Component */
 .tech-chip {
   display: inline-block;
-  background-color: var(--tech-chip-bg);
-  color: var(--tech-chip-text);
+  background-color: var(--color-tech-chip-bg);
+  color: var(--color-tech-chip-text);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
-/* Contact info layout */
+.tech-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--space-sm);
+}
+
+/* Contact Info Component */
 .contact-container {
   display: flex;
   align-items: flex-end;
@@ -243,11 +294,81 @@ body {
 .contact-row .text-body,
 .contact-row .link {
   margin-bottom: 0 !important;
-  font-size: var(--contact-font-size);
+  font-size: var(--font-size-contact);
 }
 
-/* Mobile responsive layout */
+
+/* ===== SKILL COMPONENTS ===== */
+.skill-item {
+  margin-bottom: var(--space-xxs);
+}
+
+.skill-separator {
+  margin: 0 var(--space-xs);
+}
+
+.skill-category-item {
+  margin-bottom: var(--space-sm);
+}
+
+.skill-category-item:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== UTILITY CLASSES ===== */
+.contribution-text {
+  margin-top: var(--space-xxs) !important;
+  margin-bottom: var(--space-sm) !important;
+}
+
+/* ===== WORK EXPERIENCE COMPONENT ===== */
+.work-experience-item {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.work-experience-left {
+  flex: 0 0 200px;
+  min-width: 200px;
+}
+
+.work-experience-right {
+  flex: 1;
+}
+
+.work-company {
+  margin-bottom: var(--space-xs);
+}
+
+.work-position {
+  margin-bottom: var(--space-xs);
+}
+
+.work-period {
+  margin-bottom: 0;
+}
+
+.work-description {
+  margin-bottom: var(--space-md);
+}
+
+.work-achievements {
+  margin-top: var(--space-md);
+}
+
+.achievement-item {
+  margin-bottom: var(--space-md);
+}
+
+.achievement-item:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+
+  /* Contact Info Mobile */
   .contact-container {
     flex-direction: column;
     align-items: flex-start;
@@ -272,94 +393,8 @@ body {
     width: 60px;
     margin-right: var(--space-xs);
   }
-}
 
-/* Tech container */
-.tech-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: var(--space-sm);
-}
-
-/* Skill item */
-.skill-item {
-  margin-bottom: var(--space-xxs);
-}
-
-.skill-separator {
-  margin: 0 var(--space-xs);
-}
-
-/* Contribution text */
-.contribution-text {
-  margin-top: var(--space-xxs) !important;
-  margin-bottom: var(--space-sm) !important;
-}
-
-/* Skill category item - reduced spacing */
-.skill-category-item {
-  margin-bottom: var(--space-sm);
-}
-
-.skill-category-item:last-child {
-  margin-bottom: 0;
-}
-
-/* Work experience layout */
-.work-experience-item {
-  display: flex;
-  gap: var(--space-lg);
-  margin-bottom: var(--space-lg);
-}
-
-.work-experience-left {
-  flex: 0 0 200px;
-  min-width: 200px;
-}
-
-.work-experience-right {
-  flex: 1;
-}
-
-.work-company {
-  margin-bottom: var(--space-xs);
-}
-
-.work-period {
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--foreground-tertiary);
-}
-
-.work-position {
-  margin-bottom: var(--space-sm);
-}
-
-.work-description {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.6;
-  color: var(--foreground);
-  white-space: pre-line;
-  margin-bottom: var(--space-md);
-}
-
-.work-achievements {
-  margin-top: var(--space-md);
-}
-
-.achievement-item {
-  margin-bottom: var(--space-md);
-}
-
-.achievement-item:last-child {
-  margin-bottom: 0;
-}
-
-/* Mobile responsive for work experience */
-@media (max-width: 768px) {
+  /* Work Experience Mobile */
   .work-experience-item {
     flex-direction: column;
     gap: var(--space-sm);
@@ -371,7 +406,7 @@ body {
   }
 }
 
-/* Custom scrollbar - Minimal */
+/* ===== CUSTOM SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -381,10 +416,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--foreground-tertiary);
+  background: var(--color-foreground-tertiary);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground-secondary);
+  background: var(--color-foreground-secondary);
 }
