@@ -1,52 +1,71 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chromium } from 'playwright';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
+import { execSync } from 'child_process';
 
 /**
  * PDF 생성 API 엔드포인트
- * Playwright를 사용하여 현재 이력서 페이지를 PDF로 변환
+ * Puppeteer-core + @sparticuz/chromium를 사용하여 현재 이력서 페이지를 PDF로 변환
+ * Vercel 환경에 최적화됨
  */
 export async function POST(request: NextRequest) {
     console.log('PDF generation started');
 
     try {
-        // Vercel 환경에서 Playwright 브라우저 경로 설정
-        const executablePath = process.env.VERCEL
-            ? '/vercel/.cache/ms-playwright/chromium-1193/chrome-linux/chrome'
-            : undefined;
+        let browser;
 
-        // Playwright 브라우저 실행 (Vercel 환경에 최적화)
-        const browser = await chromium.launch({
-            headless: true,
-            executablePath,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-gpu',
-                '--disable-web-security',
-                '--disable-features=VizDisplayCompositor',
-                '--single-process',
-                '--no-zygote',
-                '--disable-background-timer-throttling',
-                '--disable-backgrounding-occluded-windows',
-                '--disable-renderer-backgrounding',
-                '--disable-extensions',
-                '--disable-plugins',
-                '--disable-images',
-                '--disable-javascript',
-                '--memory-pressure-off',
-                '--disable-background-networking',
-                '--disable-default-apps',
-                '--disable-sync',
-                '--disable-translate',
-                '--hide-scrollbars',
-                '--metrics-recording-only',
-                '--mute-audio',
-                '--no-first-run',
-                '--safebrowsing-disable-auto-update',
-                '--disable-ipc-flooding-protection'
-            ]
-        });
+        if (process.env.VERCEL) {
+            // Vercel 환경: @sparticuz/chromium 사용
+            browser = await puppeteer.launch({
+                args: chromium.args,
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath(),
+                headless: chromium.headless,
+            });
+        } else {
+            // 로컬 환경: 시스템 Chrome 자동 감지
+            let executablePath;
+            try {
+                // macOS에서 Chrome 경로 찾기
+                executablePath = execSync('which google-chrome-stable || which google-chrome || which chromium || which chromium-browser || which chrome', { encoding: 'utf8' }).trim();
+            } catch (error) {
+                // 기본 경로들 시도
+                const possiblePaths = [
+                    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+                    '/usr/bin/google-chrome',
+                    '/usr/bin/chromium-browser',
+                    '/usr/bin/chromium'
+                ];
+
+                for (const path of possiblePaths) {
+                    try {
+                        execSync(`test -f "${path}"`, { encoding: 'utf8' });
+                        executablePath = path;
+                        break;
+                    } catch (e) {
+                        // 다음 경로 시도
+                    }
+                }
+            }
+
+            if (!executablePath) {
+                throw new Error('Chrome executable not found. Please install Google Chrome or Chromium.');
+            }
+
+            browser = await puppeteer.launch({
+                executablePath,
+                headless: true,
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-gpu',
+                    '--disable-web-security',
+                    '--disable-features=VizDisplayCompositor',
+                ]
+            });
+        }
 
         const page = await browser.newPage();
 
@@ -59,7 +78,7 @@ export async function POST(request: NextRequest) {
         // 이력서 페이지 로드 (네트워크가 안정될 때까지 대기)
         console.log('Loading page:', targetUrl);
         await page.goto(targetUrl, {
-            waitUntil: 'networkidle',  // 모든 네트워크 요청 완료까지 대기
+            waitUntil: 'networkidle0',  // 모든 네트워크 요청 완료까지 대기
             timeout: 30000              // 30초 타임아웃
         });
         console.log('Page loaded successfully');

@@ -16,7 +16,7 @@ export default function PDFDownloadButton() {
         setIsLoading(true);
 
         try {
-            // Playwright를 사용하는 단일 API 엔드포인트
+            // Puppeteer-core + @sparticuz/chromium를 사용하는 API 엔드포인트
             const response = await fetch('/api/generate-pdf/', {
                 method: 'POST',
                 headers: {
