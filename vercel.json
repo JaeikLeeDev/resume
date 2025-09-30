@@ -5,5 +5,8 @@
     }
   },
   "buildCommand": "npx playwright install chromium && npm run build",
-  "installCommand": "npm install && npx playwright install chromium"
+  "installCommand": "npm install && npx playwright install chromium",
+  "env": {
+    "PLAYWRIGHT_BROWSERS_PATH": "0"
+  }
 }

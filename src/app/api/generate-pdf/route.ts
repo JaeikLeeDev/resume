@@ -9,9 +9,15 @@ export async function POST(request: NextRequest) {
     console.log('PDF generation started');
 
     try {
-        // Playwright 브라우저 실행 (로컬과 Vercel 모두에서 동일하게 작동)
+        // Vercel 환경에서 Playwright 브라우저 경로 설정
+        const executablePath = process.env.VERCEL
+            ? '/vercel/.cache/ms-playwright/chromium-1193/chrome-linux/chrome'
+            : undefined;
+
+        // Playwright 브라우저 실행 (Vercel 환경에 최적화)
         const browser = await chromium.launch({
             headless: true,
+            executablePath,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
@@ -98,7 +104,7 @@ export async function POST(request: NextRequest) {
             {
                 error: 'PDF generation failed',
                 message: error instanceof Error ? error.message : 'Unknown error',
-                details: process.env.NODE_ENV === 'development' ? 
+                details: process.env.NODE_ENV === 'development' ?
                     (error instanceof Error ? error.stack : undefined) : undefined
             },
             { status: 500 }
