@@ -1,23 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 
 /**
  * PDF 생성 API 엔드포인트
- * Puppeteer를 사용하여 현재 이력서 페이지를 PDF로 변환
+ * Playwright를 사용하여 현재 이력서 페이지를 PDF로 변환
  */
 export async function POST(request: NextRequest) {
     console.log('PDF generation started');
 
     try {
-        // Puppeteer 브라우저 실행 (Vercel 환경에 최적화된 설정)
-        const browser = await puppeteer.launch({
+        // Playwright 브라우저 실행 (로컬과 Vercel 모두에서 동일하게 작동)
+        const browser = await chromium.launch({
             headless: true,
             args: [
-                '--no-sandbox',                    // Vercel 서버리스 환경용
-                '--disable-setuid-sandbox',        // 보안 설정
-                '--disable-dev-shm-usage',         // 메모리 절약
-                '--disable-gpu',                   // GPU 비활성화
-                '--memory-pressure-off'            // 메모리 압박 해제
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--disable-web-security',
+                '--disable-features=VizDisplayCompositor',
+                '--single-process',
+                '--no-zygote',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding',
+                '--disable-extensions',
+                '--disable-plugins',
+                '--disable-images',
+                '--disable-javascript',
+                '--memory-pressure-off',
+                '--disable-background-networking',
+                '--disable-default-apps',
+                '--disable-sync',
+                '--disable-translate',
+                '--hide-scrollbars',
+                '--metrics-recording-only',
+                '--mute-audio',
+                '--no-first-run',
+                '--safebrowsing-disable-auto-update',
+                '--disable-ipc-flooding-protection'
             ]
         });
 
@@ -30,12 +51,15 @@ export async function POST(request: NextRequest) {
         console.log('Navigating to:', targetUrl);
 
         // 이력서 페이지 로드 (네트워크가 안정될 때까지 대기)
+        console.log('Loading page:', targetUrl);
         await page.goto(targetUrl, {
             waitUntil: 'networkidle0',  // 모든 네트워크 요청 완료까지 대기
             timeout: 30000              // 30초 타임아웃
         });
+        console.log('Page loaded successfully');
 
         // PDF 생성 설정 (A4 크기, 배경색 포함)
+        console.log('Generating PDF...');
         const pdf = await page.pdf({
             format: 'A4',
             printBackground: true,      // CSS 배경색 포함
@@ -48,9 +72,10 @@ export async function POST(request: NextRequest) {
             displayHeaderFooter: false,
             preferCSSPageSize: true     // CSS page-break 속성 사용
         });
+        console.log('PDF generated successfully, size:', pdf.length, 'bytes');
 
         await browser.close();
-        console.log('PDF generation completed');
+        console.log('Browser closed, PDF generation completed');
 
         // PDF 파일로 응답
         return new Response(Buffer.from(pdf), {
@@ -63,11 +88,18 @@ export async function POST(request: NextRequest) {
 
     } catch (error) {
         console.error('PDF generation failed:', error);
+        console.error('Error details:', {
+            name: error instanceof Error ? error.name : 'Unknown',
+            message: error instanceof Error ? error.message : 'Unknown error',
+            stack: error instanceof Error ? error.stack : undefined
+        });
 
         return NextResponse.json(
             {
                 error: 'PDF generation failed',
-                message: error instanceof Error ? error.message : 'Unknown error'
+                message: error instanceof Error ? error.message : 'Unknown error',
+                details: process.env.NODE_ENV === 'development' ?
+                    (error instanceof Error ? error.stack : undefined) : undefined
             },
             { status: 500 }
         );

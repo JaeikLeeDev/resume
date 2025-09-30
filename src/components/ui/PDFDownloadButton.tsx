@@ -16,6 +16,7 @@ export default function PDFDownloadButton() {
         setIsLoading(true);
 
         try {
+            // Playwright를 사용하는 단일 API 엔드포인트
             const response = await fetch('/api/generate-pdf/', {
                 method: 'POST',
                 headers: {
@@ -24,7 +25,8 @@ export default function PDFDownloadButton() {
             });
 
             if (!response.ok) {
-                throw new Error('PDF 생성에 실패했습니다.');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `PDF 생성에 실패했습니다. (${response.status})`);
             }
 
             const blob = await response.blob();
@@ -40,7 +42,8 @@ export default function PDFDownloadButton() {
             document.body.removeChild(a);
         } catch (error) {
             console.error('PDF 다운로드 실패:', error);
-            alert('PDF 생성에 실패했습니다. 다시 시도해주세요.');
+            const errorMessage = error instanceof Error ? error.message : 'PDF 생성에 실패했습니다. 다시 시도해주세요.';
+            alert(errorMessage);
         } finally {
             setIsLoading(false);
         }
