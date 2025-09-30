@@ -1,6 +1,7 @@
 import { Client } from '@notionhq/client';
 import { ResumeData, PersonalInfoDB, SkillDB, CoreCompetencyDB, WorkSummaryDB, WorkAchievementDB, ProjectDB, PortfolioDB, ValueDB, OtherToolDB, EducationDB, CertificationDB, MilitaryServiceDB } from '@/types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { downloadAndSaveImage, isNotionImageUrl } from './image-downloader';
 
 // Notion API 클라이언트 초기화
 const notion = new Client({
@@ -9,6 +10,32 @@ const notion = new Client({
 
 // 정렬을 위한 기본값
 const DEFAULT_ORDER_VALUE = 999;
+
+/**
+ * Notion 이미지 URL을 안전하게 처리하는 함수
+ * Build-time에 이미지를 다운로드하여 정적 파일로 저장
+ */
+async function processImageUrl(url: string | null): Promise<string | null> {
+    if (!url) return null;
+
+    // Notion 이미지 URL인지 확인
+    if (isNotionImageUrl(url)) {
+        console.log(`🔄 Processing Notion image: ${url}`);
+
+        // Build-time에 이미지 다운로드하여 저장
+        const staticPath = await downloadAndSaveImage(url);
+
+        if (staticPath) {
+            console.log(`✅ Image processed: ${url} → ${staticPath}`);
+            return staticPath;
+        } else {
+            console.warn(`❌ Failed to process image: ${url}`);
+            return null;
+        }
+    }
+
+    return url;
+}
 
 
 // Notion 데이터베이스 설정을 위한 타입 정의
@@ -192,18 +219,21 @@ function extractNumber(property: any): number {
 }
 
 // Notion Files 프로퍼티에서 파일 URL 추출
-function extractFiles(property: any): string {
+async function extractFiles(property: any): Promise<string> {
     if (!property || !property.files || property.files.length === 0) return '';
 
     const file = property.files[0];
+    let url = '';
+
     if (file.type === 'external' && file.external?.url) {
-        return file.external.url;
-    }
-    if (file.type === 'file' && file.file?.url) {
-        return file.file.url;
+        url = file.external.url;
+    } else if (file.type === 'file' && file.file?.url) {
+        url = file.file.url;
     }
 
-    return '';
+    // 이미지 URL 처리 (Build-time 다운로드)
+    const processedUrl = await processImageUrl(url);
+    return processedUrl || '';
 }
 
 // Notion 페이지 유효성 검사
@@ -338,7 +368,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
 async function queryDatabase(
     databaseKey: string,
     propertyMapping: PropertyMapping,
-    transformFunction?: (page: PageObjectResponse) => any
+    transformFunction?: (page: PageObjectResponse) => any | Promise<any>
 ): Promise<any[]> {
     try {
         const config = DATABASE_CONFIGS[databaseKey];
@@ -355,10 +385,13 @@ async function queryDatabase(
         let results: any[];
 
         if (transformFunction) {
-            results = validPages.map(transformFunction);
+            results = await Promise.all(validPages.map(async (page) => {
+                const result = transformFunction(page);
+                return await Promise.resolve(result);
+            }));
         } else {
-            // Notion 속성을 우리 타입에 맞게 변환
-            results = validPages.map((page: PageObjectResponse) => {
+            // Notion 속성을 우리 타입에 맞게 변환 (async 처리)
+            results = await Promise.all(validPages.map(async (page: PageObjectResponse) => {
                 const result: any = {};
                 for (const [notionProperty, outputField] of Object.entries(propertyMapping)) {
                     const property = page.properties[notionProperty];
@@ -382,12 +415,12 @@ async function queryDatabase(
                         } else if (prop.number !== undefined && prop.number !== null) {
                             result[outputField] = extractNumber(prop);
                         } else if (prop.files) {
-                            result[outputField] = extractFiles(prop);
+                            result[outputField] = await extractFiles(prop);
                         }
                     }
                 }
                 return result;
-            });
+            }));
         }
 
         // order 프로퍼티가 있으면 정렬
