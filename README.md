@@ -13,6 +13,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - 📱 **반응형 디자인**: 모바일과 데스크톱 최적화
 - 👨‍💻 **개발자 최적화**: 기술 스택, 포트폴리오 등 개발자 이력에 최적화된 구성
 - 👁️ **show/hide**: 원하는 섹션/프로퍼티만 show/hide 할 수 있는 기능
+- 📄 **PDF 다운로드**: 이력서를 PDF로 다운로드 가능
 
 ## 🛠 기술 스택
 
@@ -20,6 +21,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **Styling**: Tailwind CSS, Custom CSS Variables
 - **Fonts**: Pretendard (주요 폰트), JetBrains Mono (코드/기술 스택)
 - **API Integration**: Notion API (@notionhq/client)
+- **PDF Generation**: Puppeteer + @sparticuz/chromium
 - **Deployment**: Vercel
 
 ## 📋 이력서 섹션 구성
@@ -351,15 +353,44 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 2. 배포 완료까지 2-3분 대기
 3. 제공된 URL로 접속하여 확인
 
-### 6. 커스텀 도메인 설정 (선택사항)
+### 6. PDF 생성 기능을 위한 Vercel 설정
+
+PDF 다운로드 기능이 정상 작동하려면 Vercel 설정을 조정해야 합니다:
+
+1. **Vercel 대시보드** → 프로젝트 선택
+2. **Settings** → **Deployment Protection**
+3. **Vercel Authentication**: **Disabled**
+
+> PDF 생성 시 Vercel 로그인 화면이 나타나는 문제를 해결하기 위해 필요합니다.
+> 이력서 사이트는 공개 정보이므로 보안상 문제없습니다.
+
+### 7. 업데이트 방식
+
+#### **코드 변경 시 (자동 배포)**
+- **GitHub Push**: 코드 수정 후 `git push` → Vercel 자동 배포
+
+#### **Notion 데이터 변경 시 (수동 배포)**
+1. **Notion에서 이력서 내용 수정**
+2. **Vercel Dashboard** → 프로젝트 선택
+3. **"Redeploy" 버튼 클릭**
+4. **2-3분 후 완료** → 웹사이트에 반영
+
+
+### 8. 커스텀 도메인 설정 (선택사항)
 
 1. Vercel 프로젝트 설정에서 **"Domains"** 섹션으로 이동
 2. 원하는 도메인 입력
 3. DNS 설정에 따라 도메인 연결
 
-### 7. 자동 배포 확인
+## 📄 PDF 생성 기능
 
-1. GitHub에서 코드 수정 후 push
-2. Vercel에서 자동으로 재배포 실행
-3. Notion에서 데이터 수정 후 웹사이트 새로고침하여 실시간 반영 확인
-4. 
+### 특징
+- **완전한 렌더링**: 웹페이지와 100% 동일한 PDF 생성
+- **자동 동기화**: Notion 데이터 변경 시 PDF도 자동 반영
+- **A4 최적화**: 인쇄에 최적화된 레이아웃
+- **폰트 포함**: Pretendard 폰트가 PDF에 정확히 적용
+
+### 기술 구현
+- **Puppeteer**: 브라우저 자동화로 HTML을 PDF로 변환
+- **@sparticuz/chromium**: Vercel 서버리스 환경에 최적화된 Chromium
+- **실시간 렌더링**: Notion API → 웹페이지 → PDF 변환
