@@ -171,6 +171,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
+  box-sizing: border-box;
 }
 
 .resume-container {
@@ -381,6 +382,12 @@ body {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  /* Container Mobile */
+  .container {
+    padding: 0 var(--space-md);
+    width: 100%;
+    box-sizing: border-box;
+  }
 
   /* Contact Info Mobile */
   .contact-container {
