@@ -8,10 +8,14 @@ import ProjectItem from '@/components/sections/ProjectItem';
 import EducationSection from '@/components/sections/EducationSection';
 import CertificationSection from '@/components/sections/CertificationSection';
 import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection';
+import PDFDownloadButton from '@/components/ui/PDFDownloadButton';
 import { ResumeData } from '@/types';
 import { getResumeData } from '@/lib/notion';
 
-// Bullet point 텍스트를 렌더링하는 헬퍼 함수
+/**
+ * Bullet point 텍스트를 렌더링하는 헬퍼 함수
+ * Notion에서 가져온 텍스트를 HTML 리스트로 변환
+ */
 function renderTextWithBullets(text: string) {
     if (text.startsWith('BULLET_LIST:')) {
         try {
@@ -31,10 +35,15 @@ function renderTextWithBullets(text: string) {
     return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
 }
 
+/**
+ * 메인 이력서 페이지 컴포넌트
+ * Notion API에서 데이터를 가져와 이력서를 렌더링
+ */
 export default async function NotionResumePage() {
     let resumeData: ResumeData;
 
     try {
+        // Notion API에서 이력서 데이터 가져오기
         resumeData = await getResumeData();
     } catch (error) {
         console.error('Failed to fetch resume data:', error);
@@ -134,8 +143,13 @@ export default async function NotionResumePage() {
 
                     {/* 개인정보 섹션 */}
                     <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                        <h1 className="text-hero">{personalInfoDB.name} 이력서</h1>
-                        <p className="text-item-subtitle" style={{ marginBottom: 'var(--space-lg)' }}>{personalInfoDB.position}</p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-lg)' }}>
+                            <div>
+                                <h1 className="text-hero">{personalInfoDB.name} 이력서</h1>
+                                <p className="text-item-subtitle">{personalInfoDB.position}</p>
+                            </div>
+                            <PDFDownloadButton />
+                        </div>
 
                         <ContactInfo {...contactInfo} />
 
