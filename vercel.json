@@ -1,7 +1,9 @@
 {
-    "functions": {
-        "src/app/api/generate-pdf/route.ts": {
-            "maxDuration": 30
-        }
+  "functions": {
+    "src/app/api/generate-pdf/route.ts": {
+      "maxDuration": 30
     }
+  },
+  "buildCommand": "npx playwright install chromium && npm run build",
+  "installCommand": "npm install && npx playwright install chromium"
 }

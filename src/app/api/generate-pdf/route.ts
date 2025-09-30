@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
             {
                 error: 'PDF generation failed',
                 message: error instanceof Error ? error.message : 'Unknown error',
-                details: process.env.NODE_ENV === 'development' ?
+                details: process.env.NODE_ENV === 'development' ? 
                     (error instanceof Error ? error.stack : undefined) : undefined
             },
             { status: 500 }
