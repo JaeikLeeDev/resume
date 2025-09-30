@@ -85,7 +85,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Pretendard', var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: -0.01em;
@@ -98,16 +98,16 @@ body {
 /* Base Typography */
 .text-hero {
   font-size: var(--font-size-hero);
-  font-weight: var(--font-weight-bold);
+  font-weight: 800;
   line-height: var(--line-height-tight);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin-bottom: var(--space-lg);
   color: var(--color-foreground);
 }
 
 .text-section-title {
   font-size: var(--font-size-section-title);
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   line-height: var(--line-height-tight);
   letter-spacing: -0.02em;
   margin-bottom: var(--space-lg);
@@ -116,52 +116,58 @@ body {
 
 .text-subsection-title {
   font-size: var(--font-size-subsection-title);
-  font-weight: var(--font-weight-semibold);
+  font-weight: 600;
   line-height: var(--line-height-normal);
   margin-bottom: var(--space-sm);
   color: var(--color-foreground);
   display: block;
+  letter-spacing: -0.01em;
 }
 
 .text-item-title {
   font-size: var(--font-size-item-title);
-  font-weight: var(--font-weight-bold);
+  font-weight: 600;
   line-height: 1.3;
   margin-bottom: var(--space-xs);
   color: var(--color-foreground);
+  letter-spacing: -0.01em;
 }
 
 .text-item-subtitle {
   font-size: var(--font-size-item-subtitle);
-  font-weight: var(--font-weight-semibold);
+  font-weight: 500;
   line-height: var(--line-height-normal);
   margin-bottom: var(--space-xs);
   color: var(--color-foreground-secondary);
+  letter-spacing: -0.005em;
 }
 
 .text-body {
   font-size: var(--font-size-body);
-  font-weight: var(--font-weight-normal);
+  font-weight: 400;
   line-height: var(--line-height-relaxed);
   color: var(--color-foreground);
   margin-bottom: var(--space-sm);
   white-space: pre-line;
+  letter-spacing: -0.005em;
 }
 
 .text-meta {
   font-size: var(--font-size-meta);
-  font-weight: var(--font-weight-normal);
+  font-weight: 400;
   line-height: var(--line-height-normal);
   color: var(--color-foreground-tertiary);
   margin-bottom: var(--space-sm);
+  letter-spacing: -0.005em;
 }
 
 .text-tech {
   font-size: var(--font-size-tech);
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   line-height: var(--line-height-normal);
   color: var(--color-foreground-secondary);
   font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  letter-spacing: -0.005em;
 }
 
 /* ===== LAYOUT SYSTEM ===== */
@@ -382,6 +388,7 @@ body {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+
   /* Container Mobile */
   .container {
     padding: 0 var(--space-md);
