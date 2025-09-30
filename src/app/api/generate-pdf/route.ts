@@ -69,8 +69,10 @@ export async function POST(request: NextRequest) {
 
         const page = await browser.newPage();
 
-        // 환경변수에서 사이트 URL 가져오기 (Vercel 배포 시 자동 설정됨)
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        // Vercel 환경에서는 VERCEL_URL 자동 사용, 로컬에서는 localhost 사용
+        const baseUrl = process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : 'http://localhost:3000';
         const targetUrl = `${baseUrl}/`;
 
         console.log('Navigating to:', targetUrl);
