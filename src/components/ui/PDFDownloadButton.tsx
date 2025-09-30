@@ -1,75 +1,114 @@
 'use client';
 
+import { useState, useRef } from 'react';
+
 /**
  * PDF 다운로드 버튼 컴포넌트
  * 클라이언트에서 PDF 생성 API를 호출하여 이력서를 PDF로 다운로드
  */
 export default function PDFDownloadButton() {
-    const handleDownloadPDF = () => {
-        const button = document.querySelector('button[data-pdf-button]') as HTMLButtonElement;
+    const [isLoading, setIsLoading] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-        // 버튼 상태 변경 (로딩 중)
-        if (button) {
-            button.disabled = true;
-            button.textContent = '⏳ PDF 생성 중...';
-        }
+    const handleDownloadPDF = async () => {
+        if (isLoading) return;
 
-        // PDF 생성 API 호출
-        fetch('/api/generate-pdf/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('PDF 생성에 실패했습니다.');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                // PDF 파일 다운로드
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'resume.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-            })
-            .catch(error => {
-                console.error('PDF 다운로드 실패:', error);
-                alert('PDF 생성에 실패했습니다. 다시 시도해주세요.');
-            })
-            .finally(() => {
-                // 버튼 상태 복원
-                if (button) {
-                    button.disabled = false;
-                    button.textContent = '📄 PDF 다운로드';
-                }
+        setIsLoading(true);
+
+        try {
+            const response = await fetch('/api/generate-pdf/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
+
+            if (!response.ok) {
+                throw new Error('PDF 생성에 실패했습니다.');
+            }
+
+            const blob = await response.blob();
+
+            // PDF 파일 다운로드
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resume.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('PDF 다운로드 실패:', error);
+            alert('PDF 생성에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <button
-            data-pdf-button
+            ref={buttonRef}
             onClick={handleDownloadPDF}
+            disabled={isLoading}
             style={{
-                background: 'var(--color-accent)',
-                color: 'white',
+                background: 'transparent',
+                color: 'var(--color-accent)',
                 border: 'none',
-                padding: 'var(--space-sm) var(--space-md)',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: 'var(--font-size-body)',
-                fontWeight: 'var(--font-weight-medium)',
-                transition: 'background-color 0.2s ease'
+                padding: '6px 10px',
+                borderRadius: '6px',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
+                opacity: '1',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '14px',
+                fontWeight: '500'
             }}
-            onMouseOver={(e) => e.currentTarget.style.background = '#357ABD'}
-            onMouseOut={(e) => e.currentTarget.style.background = 'var(--color-accent)'}
+            onMouseOver={(e) => {
+                if (!isLoading) {
+                    e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)';
+                }
+            }}
+            onMouseOut={(e) => {
+                e.currentTarget.style.background = 'transparent';
+            }}
+            title="PDF 다운로드"
         >
-            📄 PDF 다운로드
+            {isLoading ? (
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0 12 12;360 12 12" />
+                    </path>
+                </svg>
+            ) : (
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7,10 12,15 17,10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+            )}
+            <span>{isLoading ? '생성 중...' : 'PDF'}</span>
         </button>
     );
 }
