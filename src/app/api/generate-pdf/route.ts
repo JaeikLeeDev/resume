@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         // 이력서 페이지 로드 (네트워크가 안정될 때까지 대기)
         console.log('Loading page:', targetUrl);
         await page.goto(targetUrl, {
-            waitUntil: 'networkidle0',  // 모든 네트워크 요청 완료까지 대기
+            waitUntil: 'networkidle',  // 모든 네트워크 요청 완료까지 대기
             timeout: 30000              // 30초 타임아웃
         });
         console.log('Page loaded successfully');
