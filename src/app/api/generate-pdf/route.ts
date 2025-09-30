@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         console.log('PDF generation completed');
 
         // PDF 파일로 응답
-        return new NextResponse(pdf as BodyInit, {
+        return new Response(Buffer.from(pdf), {
             status: 200,
             headers: {
                 'Content-Type': 'application/pdf',
