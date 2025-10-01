@@ -4,7 +4,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 ### Notion DB 및 이력서 사이트 예시
 
-- [이재익 이력서 페이지](https://jaeikleedev.github.io/jaeiklee-resume/)
+- [이재익 이력서 페이지](https://jaeikleedev.github.io/resume/)
 - [이재익 이력서 Notion 데이터베이스](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)
 
 ## ✨ 주요 기능
