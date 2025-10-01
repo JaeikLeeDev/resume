@@ -17,7 +17,7 @@ interface ContactInfoProps {
 export default function ContactInfo({ email, phone, photo, blog, github }: ContactInfoProps) {
   // photo는 이미 Notion API에서 처리된 정적 파일 경로
   // 추가 URL 변환 불필요
-  
+
   return (
     <div style={{ marginBottom: 'var(--space-lg)' }}>
       <div className="contact-container">
@@ -56,7 +56,7 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
           {blog && (
             <div className="contact-row">
               <span className="text-meta">Blog.</span>
-              <a href={blog.url} className="link" target="_blank" rel="noopener noreferrer">
+              <a href={blog.url} className="text-body link" target="_blank" rel="noopener noreferrer">
                 {blog.display}
               </a>
             </div>
@@ -64,7 +64,7 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
           {github && (
             <div className="contact-row">
               <span className="text-meta">Github.</span>
-              <a href={github.url} className="link" target="_blank" rel="noopener noreferrer">
+              <a href={github.url} className="text-body link" target="_blank" rel="noopener noreferrer">
                 {github.display}
               </a>
             </div>

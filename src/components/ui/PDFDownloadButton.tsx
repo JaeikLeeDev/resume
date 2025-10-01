@@ -52,6 +52,7 @@ export default function PDFDownloadButton() {
     return (
         <button
             ref={buttonRef}
+            className="pdf-download-button"
             onClick={handleDownloadPDF}
             disabled={isLoading}
             style={{

@@ -75,30 +75,30 @@ export default function ProjectItem({
                 <p className="text-meta" style={{ marginTop: 'var(--space-sm)' }}>
                     {github && (
                         <>
-                            <a href={github} className="link" target="_blank" rel="noopener noreferrer">GitHub</a>
+                            <a href={github} className="text-meta" target="_blank" rel="noopener noreferrer">GitHub</a>
                             {(website || ios || android || post) && ' | '}
                         </>
                     )}
                     {website && (
                         <>
-                            <a href={website} className="link" target="_blank" rel="noopener noreferrer">Website</a>
+                            <a href={website} className="text-meta" target="_blank" rel="noopener noreferrer">Website</a>
                             {(ios || android || post) && ' | '}
                         </>
                     )}
                     {ios && (
                         <>
-                            <a href={ios} className="link" target="_blank" rel="noopener noreferrer">iOS</a>
+                            <a href={ios} className="text-meta" target="_blank" rel="noopener noreferrer">iOS</a>
                             {(android || post) && ' | '}
                         </>
                     )}
                     {android && (
                         <>
-                            <a href={android} className="link" target="_blank" rel="noopener noreferrer">Android</a>
+                            <a href={android} className="text-meta" target="_blank" rel="noopener noreferrer">Android</a>
                             {post && ' | '}
                         </>
                     )}
                     {post && (
-                        <a href={post} className="link" target="_blank" rel="noopener noreferrer">Post</a>
+                        <a href={post} className="text-meta" target="_blank" rel="noopener noreferrer">Post</a>
                     )}
                 </p>
             )}

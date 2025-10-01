@@ -85,6 +85,29 @@ export async function POST(request: NextRequest) {
         });
         console.log('Page loaded successfully');
 
+        // PDF 모드 활성화 및 2열 배치 구현
+        await page.evaluate(() => {
+            // PDF 모드 클래스 추가
+            document.body.classList.add('pdf-mode');
+
+            // PDF 레이아웃 적용
+            const container = document.querySelector('.container');
+            if (container) {
+                container.classList.add('pdf-mobile-layout');
+
+                // 성경책처럼 2열 텍스트 흐름 적용
+                container.style.cssText = 'column-count: 2; column-gap: 3rem; column-fill: auto;';
+            }
+
+            // 개인정보 헤더에 PDF 모드 클래스 추가
+            const personalHeader = document.querySelector('[style*="display: flex"][style*="justify-content: space-between"]');
+            if (personalHeader) {
+                personalHeader.classList.add('personal-info-header');
+            }
+
+            console.log('PDF mode activated with manual 2-column layout');
+        });
+
         // PDF 생성 설정 (A4 크기, 배경색 포함)
         console.log('Generating PDF...');
         const pdf = await page.pdf({
@@ -96,8 +119,8 @@ export async function POST(request: NextRequest) {
                 left: '1cm',
                 right: '1cm'
             },
-            displayHeaderFooter: false,
-            preferCSSPageSize: true     // CSS page-break 속성 사용
+            displayHeaderFooter: false
+            // preferCSSPageSize 제거 - 웹 화면과 동일하게 렌더링
         });
         console.log('PDF generated successfully, size:', pdf.length, 'bytes');
 

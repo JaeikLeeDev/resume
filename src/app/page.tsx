@@ -147,7 +147,7 @@ export default async function NotionResumePage() {
                 <div className="container" style={{ paddingTop: 'var(--space-lg)', paddingBottom: 'var(--space-3xl)' }}>
 
                     {/* 개인정보 섹션 */}
-                    <div style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <div className="section personal-info-section">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-lg)' }}>
                             <div>
                                 <h1 className="text-hero">{personalInfoDB.name} 이력서</h1>
@@ -196,15 +196,15 @@ export default async function NotionResumePage() {
                                     </div>
                                     <div className="work-experience-right">
                                         <div className="work-position text-subsection-title">{experience.position}</div>
-                                        <div className="work-description">{experience.description}</div>
+                                        <div className="work-description text-body">{experience.description}</div>
 
                                         {/* Work Achievements - Show achievements for this specific company */}
                                         {workAchievementDB.filter(ach => ach.show === 'show' && ach.company === experience.company).length > 0 && (
-                                            <div className="work-achievements">
+                                            <div className="work-achievements text-body">
                                                 {workAchievementDB
                                                     .filter(ach => ach.show === 'show' && ach.company === experience.company)
                                                     .map((achievement: any, achIndex: number) => (
-                                                        <div key={achIndex} className="achievement-item">
+                                                        <div key={achIndex} className="achievement-item text-body">
                                                             <h4 className="text-item-title">{achievement.title}</h4>
                                                             {achievement.details && (
                                                                 renderTextWithBullets(achievement.details)

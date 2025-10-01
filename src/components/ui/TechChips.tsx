@@ -7,7 +7,7 @@ export default function TechChips({ technologies, marginBottom = 'var(--space-md
   return (
     <div className="tech-container" style={{ marginBottom }}>
       {technologies.map((tech, index) => (
-        <span key={index} className="tech-chip">
+        <span key={index} className="tech-chip text-tech">
           {tech}
         </span>
       ))}
