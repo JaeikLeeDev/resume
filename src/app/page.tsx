@@ -8,6 +8,7 @@ import ProjectItem from '@/components/sections/ProjectItem';
 import EducationSection from '@/components/sections/EducationSection';
 import CertificationSection from '@/components/sections/CertificationSection';
 import MilitaryServiceSection from '@/components/sections/MilitaryServiceSection';
+import PDFLinkButton from '@/components/ui/PDFLinkButton';
 import PDFDownloadButton from '@/components/ui/PDFDownloadButton';
 import { ResumeData } from '@/types';
 import { getResumeData } from '@/lib/notion';
@@ -40,6 +41,10 @@ function renderTextWithBullets(text: string) {
  * Notion API에서 데이터를 가져와 이력서를 렌더링
  */
 export default async function NotionResumePage() {
+    // 환경변수 확인
+    const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+    console.log('Environment check:', { GITHUB_PAGES: process.env.GITHUB_PAGES, isGitHubPages });
+
     let resumeData: ResumeData;
 
     try {
@@ -148,7 +153,8 @@ export default async function NotionResumePage() {
                                 <h1 className="text-hero">{personalInfoDB.name} 이력서</h1>
                                 <p className="text-item-subtitle">{personalInfoDB.position}</p>
                             </div>
-                            <PDFDownloadButton />
+                            {/* Vercel 모드에서만 PDF 다운로드 버튼 표시 */}
+                            {!isGitHubPages && <PDFDownloadButton />}
                         </div>
 
                         <ContactInfo {...contactInfo} />
@@ -298,6 +304,21 @@ export default async function NotionResumePage() {
                         <div className="section">
                             <h2 className="text-section-title">병역.</h2>
                             <MilitaryServiceSection militaryService={militaryServiceDB} />
+                        </div>
+                    )}
+
+                    {/* PDF 출력 버튼 섹션 - 깃헙 페이지에서만 표시 */}
+                    {isGitHubPages && (
+                        <div className="section" style={{ textAlign: 'center', marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-2xl)', borderTop: '1px solid var(--color-border)' }}>
+                            <PDFLinkButton />
+                            <p style={{
+                                marginTop: '12px',
+                                fontSize: '14px',
+                                color: 'var(--color-text-secondary, #666)',
+                                marginBottom: 0
+                            }}>
+                                PDF 버전으로 이력서를 다운로드하세요
+                            </p>
                         </div>
                     )}
 

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:github": "GITHUB_PAGES=true next dev --turbopack",
+    "dev:vercel": "GITHUB_PAGES=false next dev --turbopack",
     "build": "next build --turbopack",
     "build:github-pages": "GITHUB_PAGES=true next build --turbopack",
     "start": "next start",
