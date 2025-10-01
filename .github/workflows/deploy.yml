@@ -32,8 +32,43 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
-    - name: Build
-      run: npm run build
+    - name: Debug Environment Variables
+      run: |
+        echo "NOTION_TOKEN is set: ${{ secrets.NOTION_TOKEN != '' }}"
+        echo "NOTION_PERSONAL_INFO_DB_ID is set: ${{ secrets.NOTION_PERSONAL_INFO_DB_ID != '' }}"
+        echo "NOTION_SKILL_DB_ID is set: ${{ secrets.NOTION_SKILL_DB_ID != '' }}"
+        echo "NOTION_CORE_COMPETENCY_DB_ID is set: ${{ secrets.NOTION_CORE_COMPETENCY_DB_ID != '' }}"
+        echo "NOTION_WORK_SUMMARY_DB_ID is set: ${{ secrets.NOTION_WORK_SUMMARY_DB_ID != '' }}"
+        echo "NOTION_WORK_ACHIEVEMENT_DB_ID is set: ${{ secrets.NOTION_WORK_ACHIEVEMENT_DB_ID != '' }}"
+        echo "NOTION_PROJECT_DB_ID is set: ${{ secrets.NOTION_PROJECT_DB_ID != '' }}"
+        echo "NOTION_PORTFOLIO_DB_ID is set: ${{ secrets.NOTION_PORTFOLIO_DB_ID != '' }}"
+        echo "NOTION_VALUE_DB_ID is set: ${{ secrets.NOTION_VALUE_DB_ID != '' }}"
+        echo "NOTION_OTHER_TOOL_DB_ID is set: ${{ secrets.NOTION_OTHER_TOOL_DB_ID != '' }}"
+        echo "NOTION_EDUCATION_DB_ID is set: ${{ secrets.NOTION_EDUCATION_DB_ID != '' }}"
+        echo "NOTION_CERTIFICATION_DB_ID is set: ${{ secrets.NOTION_CERTIFICATION_DB_ID != '' }}"
+        echo "NOTION_MILITARY_SERVICE_DB_ID is set: ${{ secrets.NOTION_MILITARY_SERVICE_DB_ID != '' }}"
+        
+    - name: Build for GitHub Pages
+      run: |
+        echo "Starting GitHub Pages build..."
+        echo "Current directory contents:"
+        ls -la
+        echo "Running npm run build:github-pages..."
+        npm run build:github-pages 2>&1 | tee build.log
+        echo "Build command exit code: $?"
+        echo "Build completed. Checking for out directory..."
+        ls -la
+        if [ -d "out" ]; then
+          echo "✅ out directory exists"
+          ls -la out/
+          echo "out directory contents:"
+          find out -type f | head -20
+        else
+          echo "❌ out directory does not exist"
+          echo "Build log contents:"
+          cat build.log
+          exit 1
+        fi
       env:
         NODE_ENV: production
         ESLINT_NO_DEV_ERRORS: true
@@ -50,11 +85,6 @@ jobs:
         NOTION_EDUCATION_DB_ID: ${{ secrets.NOTION_EDUCATION_DB_ID }}
         NOTION_CERTIFICATION_DB_ID: ${{ secrets.NOTION_CERTIFICATION_DB_ID }}
         NOTION_MILITARY_SERVICE_DB_ID: ${{ secrets.NOTION_MILITARY_SERVICE_DB_ID }}
-        
-    - name: Debug Environment Variables
-      run: |
-        echo "NOTION_TOKEN is set: ${{ secrets.NOTION_TOKEN != '' }}"
-        echo "NOTION_PERSONAL_INFO_DB_ID is set: ${{ secrets.NOTION_PERSONAL_INFO_DB_ID != '' }}"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
