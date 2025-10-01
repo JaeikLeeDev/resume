@@ -9,7 +9,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 ## ✨ 주요 기능
 
-- 🔄 **Notion API 연동**: Notion에서 이력서 내용을 수정하면 페이지에 반영
+- 🔄 **Notion API 연동**: Notion에서 이력서 내용을 수정하면 새로고침 시 반영
 - 📱 **반응형 디자인**: 모바일과 데스크톱 최적화
 - 👨‍💻 **개발자 최적화**: 기술 스택, 포트폴리오 등 개발자 이력에 최적화된 구성
 - 👁️ **show/hide**: 원하는 섹션/프로퍼티만 show/hide 할 수 있는 기능
@@ -22,9 +22,11 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 - **Fonts**: Pretendard (주요 폰트), JetBrains Mono (코드/기술 스택)
 - **API Integration**: Notion API (@notionhq/client)
 - **PDF Generation**: Puppeteer + @sparticuz/chromium
-- **Deployment**: Vercel
+- **Deployment**: Vercel + GitHub Pages
 
 ## 📋 이력서 섹션 구성
+
+**모든 섹션을 Notion에서 관리하고, 원하는 것만 보여줄 수 있습니다**
 
 1. 개인 정보
 2. 사용한 기술
@@ -264,13 +266,17 @@ Skill 데이터베이스:
 
 
 
-## 🚀 템플릿 사용하기
-
-### 사용 방법
-
-- **Fork** 본 리포지토리를 fork (또는 클론) 후 깃헙 리포지토리에 푸시
+## 🚀 Getting Started
+### 1. 템플릿 복사
+- **Fork** 이 리포지토리를 fork 또는 클론하여 로컬 환경에 다운로드
 - **의존성 설치**: `npm install`
-- 클론한 리포지토리의 루트에 `.env.local` 파일을 생성하고 다음 환경변수들을 설정:
+
+### 2. Notion 설정
+- Notion에서 이력서 데이터베이스 생성
+- API 키 발급받기
+
+### 3. 환경변수 설정
+`.env.local` 파일을 생성하고 다음 환경변수들을 설정:
 ```env
 # Notion API 설정
 NOTION_TOKEN=your_notion_integration_token_here
@@ -305,18 +311,28 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 
 ![Screenshot](template_guide/img/Screenshot_notion-db-id_2.png)
 
-- **개발 서버**: `npm run dev`로 로컬 개발 서버 실행
-- **이력서 페이지**: `http://localhost:3000`
-- **빌드**: `npm run build`로 정적 사이트 생성
+### 4. 실행하기
+```bash
+npm run dev
+```
+브라우저에서 `http://localhost:3000` 접속하면 이력서 페이지가 나타납니다!
+
+**이제 Notion에서 내용을 수정한 후 웹사이트를 새로고침하면 반영됩니다** ✨
+
+## 🌐 배포하기
+
+**코드만 push하면 자동으로 배포됩니다!**
+
+- **Vercel**: PDF 다운로드 기능, 새로고침 시 Notion 데이터 반영
+- **GitHub Pages**: 정적 사이트, Notion 데이터 변경 시 수동 재배포 필요
 
 ## 🌐 Vercel 배포 가이드
 
 ### Vercel 배포 특징
 
-- 🔄 **실시간 반영**: Notion에서 수정하면 웹사이트 새로고침만으로 즉시 반영
-- 🚀 **자동 배포**: GitHub push 시 자동으로 배포 (2-3분 소요)
-- 💰 **무료 사용**: 무료 플랜(월 4시간 CPU, 360GB-시간 메모리)으로 충분
-- 🌍 **빠른 속도**: 글로벌 CDN으로 전 세계 어디서나 빠른 로딩
+- 🔄 **새로고침 반영**: Notion에서 수정 후 웹사이트 새로고침 시 반영
+- 🚀 **자동 배포**: GitHub push 시 자동으로 배포
+- 📄 **PDF 생성**: 이력서를 PDF로 다운로드 가능
 
 ### 1. Vercel 프로젝트 생성
 
@@ -369,11 +385,10 @@ PDF 다운로드 기능이 정상 작동하려면 Vercel 설정을 조정해야 
 #### **코드 변경 시 (자동 배포)**
 - **GitHub Push**: 코드 수정 후 `git push` → Vercel 자동 배포
 
-#### **Notion 데이터 변경 시 (수동 배포)**
+#### **Notion 데이터 변경 시 (새로고침)**
 1. **Notion에서 이력서 내용 수정**
-2. **Vercel Dashboard** → 프로젝트 선택
-3. **"Redeploy" 버튼 클릭**
-4. **2-3분 후 완료** → 웹사이트에 반영
+2. **Vercel 웹사이트에서 새로고침** (F5 또는 Ctrl+R)
+3. **즉시 반영** → 변경된 내용 확인
 
 
 ### 8. 커스텀 도메인 설정 (선택사항)
@@ -382,15 +397,54 @@ PDF 다운로드 기능이 정상 작동하려면 Vercel 설정을 조정해야 
 2. 원하는 도메인 입력
 3. DNS 설정에 따라 도메인 연결
 
-## 📄 PDF 생성 기능
+## 🌐 GitHub Pages 배포 가이드
 
-### 특징
-- **완전한 렌더링**: 웹페이지와 100% 동일한 PDF 생성
-- **자동 동기화**: Notion 데이터 변경 시 PDF도 자동 반영
-- **A4 최적화**: 인쇄에 최적화된 레이아웃
-- **폰트 포함**: Pretendard 폰트가 PDF에 정확히 적용
+### GitHub Pages 배포 특징
 
-### 기술 구현
-- **Puppeteer**: 브라우저 자동화로 HTML을 PDF로 변환
-- **@sparticuz/chromium**: Vercel 서버리스 환경에 최적화된 Chromium
-- **실시간 렌더링**: Notion API → 웹페이지 → PDF 변환
+- 📄 **정적 사이트**: 정적 HTML/CSS/JS로 구성
+- 🔄 **자동 배포**: GitHub Actions로 push 시 자동 배포
+- 📝 **제한사항**: PDF 생성 기능 없음, Notion 데이터 변경 시 수동 재배포 필요
+
+### 1. GitHub Pages 설정
+
+1. **GitHub 리포지토리** → **Settings** → **Pages** 섹션으로 이동
+2. **Source**: "GitHub Actions" 선택
+3. 저장 후 자동으로 GitHub Actions 워크플로우가 실행됩니다
+
+### 2. 환경 변수 설정
+
+GitHub Pages는 정적 사이트이므로 Notion API를 사용할 수 없습니다. 대신 빌드 시점에 데이터를 가져와서 정적 파일로 생성합니다.
+
+**GitHub Actions Secrets 설정:**
+1. **GitHub 리포지토리** → **Settings** → **Secrets and variables** → **Actions**
+2. **New repository secret** 클릭하여 로컬의 .env.local 과 동일한 환경변수를 등록
+
+### 3. 자동 배포 확인
+
+- **main 브랜치에 push**하면 자동으로 GitHub Actions가 실행됩니다
+- **Actions 탭**에서 배포 진행 상황을 확인할 수 있습니다
+- 배포 완료 후 `https://your-username.github.io/resume`에서 확인
+
+### 4. GitHub Pages 업데이트 방식
+
+#### **코드 변경 시 (자동 배포)**
+- **GitHub Push**: 코드 수정 후 `git push` → GitHub Actions 자동 배포
+
+#### **Notion 데이터 변경 시 (수동 재배포)**
+1. **Notion에서 이력서 내용 수정**
+2. **GitHub Actions** → **"Deploy to GitHub Pages"** 워크플로우 → **"Run workflow"** 클릭
+3. **2-3분 후 완료** → GitHub Pages에 반영
+
+### 5. GitHub Pages 제한사항
+
+- **PDF 생성 기능 없음**: 정적 사이트이므로 서버리스 함수 사용 불가
+- **실시간 API 연동 없음**: 빌드 시점에만 Notion 데이터 가져옴
+- **Notion 데이터 변경 시 수동 재배포 필요**: GitHub Actions를 수동으로 실행해야 함
+
+## 📄 PDF 다운로드
+
+**웹사이트에서 바로 PDF 다운로드 버튼을 누르면 끝!**
+
+- 웹사이트와 똑같은 PDF가 생성됩니다
+- Notion에서 내용을 바꾸면 새로고침 후 PDF도 업데이트됩니다
+- A4 크기로 인쇄하기 좋게 만들어집니다
