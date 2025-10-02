@@ -908,3 +908,39 @@ body {
 .pdf-mode .center-section {
   display: none !important;
 }
+
+/* PDF 모드에서 Vercel PDF 다운로드 버튼 숨기기 */
+.pdf-mode .pdf-download-container {
+  display: none !important;
+}
+
+/* Vercel PDF 다운로드 버튼 반응형 디자인 */
+@media (max-width: 768px) {
+  .pdf-download-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 8px;
+    z-index: 1000;
+  }
+
+  .pdf-download-container button {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf-download-container {
+    top: 5px;
+    right: 5px;
+    left: 5px;
+    padding: 6px;
+  }
+
+  .pdf-download-container button {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

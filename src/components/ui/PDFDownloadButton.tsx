@@ -50,69 +50,93 @@ export default function PDFDownloadButton() {
     };
 
     return (
-        <button
-            ref={buttonRef}
-            className="pdf-download-button"
-            onClick={handleDownloadPDF}
-            disabled={isLoading}
+        <div
             style={{
-                background: 'transparent',
-                color: 'var(--color-accent)',
-                border: 'none',
-                padding: '6px 10px',
-                borderRadius: '6px',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s ease',
-                opacity: '1',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '14px',
-                fontWeight: '500'
+                position: 'fixed',
+                top: '20px',
+                right: '20px',
+                zIndex: 1000,
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                padding: '12px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
             }}
-            onMouseOver={(e) => {
-                if (!isLoading) {
-                    e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)';
-                }
-            }}
-            onMouseOut={(e) => {
-                e.currentTarget.style.background = 'transparent';
-            }}
-            title="PDF 다운로드"
+            className="pdf-download-container"
         >
-            {isLoading ? (
-                <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                >
-                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
-                    <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0 12 12;360 12 12" />
-                    </path>
-                </svg>
-            ) : (
-                <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7,10 12,15 17,10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-            )}
-            <span>{isLoading ? '생성 중...' : 'PDF'}</span>
-        </button>
+            <button
+                ref={buttonRef}
+                className="pdf-download-button"
+                onClick={handleDownloadPDF}
+                disabled={isLoading}
+                style={{
+                    background: 'var(--color-accent)',
+                    color: 'white',
+                    border: 'none',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s ease',
+                    opacity: isLoading ? 0.7 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    transform: 'translateY(0)',
+                    width: '100%',
+                    justifyContent: 'center'
+                }}
+                onMouseOver={(e) => {
+                    if (!isLoading) {
+                        e.currentTarget.style.background = 'var(--color-accent-dark, #4a90e2)';
+                        e.currentTarget.style.transform = 'translateY(-1px)';
+                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                    }
+                }}
+                onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'var(--color-accent)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                }}
+                title="2열 이력서 포맷으로 PDF 다운로드"
+            >
+                {isLoading ? (
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+                        <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0 12 12;360 12 12" />
+                        </path>
+                    </svg>
+                ) : (
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7,10 12,15 17,10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                )}
+                <span>{isLoading ? '생성 중...' : '2열 이력서 PDF 출력'}</span>
+            </button>
+        </div>
     );
 }
