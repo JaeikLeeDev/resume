@@ -71,7 +71,7 @@ export default function ProjectItem({
             )}
 
             {(github || website || ios || android || post) && (
-                <p className="text-meta margin-top-sm">
+                <p className="text-meta" style={{ marginTop: 'var(--space-xs)', marginBottom: 'var(--space-xs)' }}>
                     {github && (
                         <>
                             <a href={github} className="link" target="_blank" rel="noopener noreferrer">GitHub</a>
