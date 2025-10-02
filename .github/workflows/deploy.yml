@@ -35,6 +35,7 @@ jobs:
     - name: Debug Environment Variables
       run: |
         echo "NOTION_TOKEN is set: ${{ secrets.NOTION_TOKEN != '' }}"
+        echo "NEXT_PUBLIC_PDF_URL is set: ${{ secrets.NEXT_PUBLIC_PDF_URL != '' }}"
         echo "NOTION_PERSONAL_INFO_DB_ID is set: ${{ secrets.NOTION_PERSONAL_INFO_DB_ID != '' }}"
         echo "NOTION_SKILL_DB_ID is set: ${{ secrets.NOTION_SKILL_DB_ID != '' }}"
         echo "NOTION_CORE_COMPETENCY_DB_ID is set: ${{ secrets.NOTION_CORE_COMPETENCY_DB_ID != '' }}"
@@ -72,6 +73,8 @@ jobs:
       env:
         NODE_ENV: production
         ESLINT_NO_DEV_ERRORS: true
+        GITHUB_PAGES: true
+        NEXT_PUBLIC_PDF_URL: ${{ secrets.NEXT_PUBLIC_PDF_URL }}
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         NOTION_PERSONAL_INFO_DB_ID: ${{ secrets.NOTION_PERSONAL_INFO_DB_ID }}
         NOTION_SKILL_DB_ID: ${{ secrets.NOTION_SKILL_DB_ID }}

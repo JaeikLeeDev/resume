@@ -9,8 +9,43 @@ import { useState } from 'react';
 export default function PDFLinkButton() {
     const [isHovered, setIsHovered] = useState(false);
 
-    // 환경변수에서 PDF URL 가져오기, 없으면 기본값 사용
-    const pdfUrl = process.env.NEXT_PUBLIC_PDF_URL || 'https://your-resume-pdf.vercel.app/';
+    // 환경변수에서 PDF URL 가져오기, 없으면 현재 도메인 기반으로 생성
+    const getPdfUrl = () => {
+        // 환경변수가 있으면 사용
+        if (process.env.NEXT_PUBLIC_PDF_URL) {
+            return process.env.NEXT_PUBLIC_PDF_URL;
+        }
+
+        // 클라이언트 사이드에서 현재 도메인 기반으로 생성
+        if (typeof window !== 'undefined') {
+            const origin = window.location.origin;
+            const pathname = window.location.pathname;
+
+            // GitHub Pages인지 확인 (basePath가 /resume인 경우)
+            if (pathname.startsWith('/resume')) {
+                return `${origin}/resume/`;
+            }
+
+            return `${origin}/`;
+        }
+
+        // 서버 사이드에서는 GitHub Pages 환경변수 확인
+        if (process.env.GITHUB_PAGES === 'true') {
+            return 'https://jaeiklee.github.io/resume/';
+        }
+
+        // 기본값 (Vercel)
+        return 'https://jaeiklee-resume.vercel.app/';
+    };
+
+    const pdfUrl = getPdfUrl();
+
+    // 디버깅용 로그
+    console.log('PDF URL Debug:', {
+        env: process.env.NEXT_PUBLIC_PDF_URL,
+        currentOrigin: typeof window !== 'undefined' ? window.location.origin : 'server',
+        finalUrl: pdfUrl
+    });
 
     return (
         <a
