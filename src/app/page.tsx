@@ -94,8 +94,9 @@ export default async function NotionResumePage() {
     const transformSkillData = (skillDB: any[]) => {
         return skillDB
             .filter(skill => skill.show === 'show')
-            .reduce((acc: Array<{ category: string; skills: Array<{ name: string[]; summary: string }> }>, skill) => {
-                const category = skill.title || 'Other';
+            .reduce((acc: Array<{ category: string; skills: Array<{ name: string[]; summary: string }> }>, skill, index) => {
+                // title이 없으면 고유한 식별자로 설정 (각 row별로 그룹핑 유지)
+                const category = skill.title || `no-title-${index}`;
                 let categoryObj = acc.find(cat => cat.category === category);
 
                 if (!categoryObj) {

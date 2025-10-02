@@ -19,7 +19,10 @@ export default function SkillSection({ categories }: SkillSectionProps) {
     <div>
       {categories.map((category, categoryIndex) => (
         <div key={categoryIndex} className="details-section">
-          <h3 className="text-details-title">{category.category}</h3>
+          {/* title이 있고 'no-title-'으로 시작하지 않을 때만 표시 */}
+          {category.category && !category.category.startsWith('no-title-') && (
+            <h3 className="text-details-title">{category.category}</h3>
+          )}
 
           {/* 기술들을 TechChips로 표시 */}
           <TechChips

@@ -441,7 +441,7 @@ export async function getSkillDB(): Promise<SkillDB[]> {
         return await queryDatabase('skillDB', PROPERTY_MAPPINGS.skillDB, (page) => {
             return {
                 skills: extractMultiSelect(page.properties.skills),
-                title: extractTitle(page.properties.title) || 'other',
+                title: extractTitle(page.properties.title) || '', // title이 없으면 빈 문자열
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
