@@ -805,13 +805,76 @@ body {
 
 /* PDF 모드에서 업무 경험 간격 조정 */
 .pdf-mode .pdf-mobile-layout .work-experience-item {
+  display: flex;
+  flex-direction: column;
   gap: 0.4rem;
   /* position | period와 description 사이 간격 줄임 */
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* 업무 경험 부분만 break-inside 제거 */
+.pdf-mode .pdf-mobile-layout .work-experience-item .text-subsection-title,
+.pdf-mode .pdf-mobile-layout .work-experience-item .text-body,
+.pdf-mode .pdf-mobile-layout .work-experience-item .text-meta {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* PDF 모드에서 업무 경험 좌우 섹션을 세로로 배치 */
+.pdf-mode .pdf-mobile-layout .work-experience-left {
+  flex: none;
+  min-width: auto;
+  order: 1;
+}
+
+.pdf-mode .pdf-mobile-layout .work-experience-right {
+  flex: none;
+  order: 2;
 }
 
 /* PDF 모드에서도 position 중복 방지 */
 .pdf-mode .pdf-mobile-layout .work-experience-right .text-subsection-title {
   display: none;
+}
+
+/* PDF 모드에서 업무 경험 세부 조정 */
+.pdf-mode .pdf-mobile-layout .work-experience-item .text-body {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.pdf-mode .pdf-mobile-layout .work-experience-item .text-meta {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* 업무 성과 섹션은 페이지 분할 허용 */
+.pdf-mode .pdf-mobile-layout .details-section {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* 업무 성과의 개별 항목들도 분할 허용 */
+.pdf-mode .pdf-mobile-layout .details-section .text-details-title {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.pdf-mode .pdf-mobile-layout .details-section .list {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.pdf-mode .pdf-mobile-layout .details-section .list-item {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* Tech Chips도 분할 허용 */
+.pdf-mode .pdf-mobile-layout .tech-container {
+  break-inside: auto;
+  page-break-inside: auto;
 }
 
 /* PDF 모드에서 링크 wrapping 처리 */
