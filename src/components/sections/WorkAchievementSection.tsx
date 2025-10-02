@@ -36,7 +36,6 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
                     {section.skills && section.skills.length > 0 && (
                         <TechChips
                             technologies={section.skills}
-                            marginBottom="var(--space-sm)"
                         />
                     )}
 

@@ -37,7 +37,6 @@ export default function CoreCompetencySection({ competencies }: CoreCompetencySe
                     {competency.skills && competency.skills.length > 0 && (
                         <TechChips
                             technologies={competency.skills}
-                            marginBottom="var(--space-sm)"
                         />
                     )}
 

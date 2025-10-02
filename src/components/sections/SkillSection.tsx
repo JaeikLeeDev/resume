@@ -27,7 +27,6 @@ export default function SkillSection({ categories }: SkillSectionProps) {
           {/* 기술들을 TechChips로 표시 */}
           <TechChips
             technologies={category.skills.flatMap(skill => skill.name)}
-            marginBottom="var(--space-sm)"
           />
         </div>
       ))}

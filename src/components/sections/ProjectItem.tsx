@@ -63,7 +63,6 @@ export default function ProjectItem({
             {skills.length > 0 && (
                 <TechChips
                     technologies={skills}
-                    marginBottom="var(--space-md)"
                 />
             )}
 
