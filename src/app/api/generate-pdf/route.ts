@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
             // PDF 레이아웃 적용
             const container = document.querySelector('.container');
-            if (container) {
+            if (container && container instanceof HTMLElement) {
                 container.classList.add('pdf-mobile-layout');
 
                 // 성경책처럼 2열 텍스트 흐름 적용
@@ -105,7 +105,24 @@ export async function POST(request: NextRequest) {
                 personalHeader.classList.add('personal-info-header');
             }
 
-            console.log('PDF mode activated with manual 2-column layout');
+            // PDF 출력 시 GitHub Pages 전용 버튼들 숨김 처리
+            const pdfButtons = document.querySelectorAll('.pdf-download-button, .pdf-link-button');
+            pdfButtons.forEach(button => {
+                if (button instanceof HTMLElement) {
+                    button.style.display = 'none';
+                }
+            });
+
+            // PDF 출력 버튼 섹션 전체 숨김 처리
+            const pdfButtonSection = document.querySelector('.center-section');
+            if (pdfButtonSection && pdfButtonSection instanceof HTMLElement) {
+                const sectionText = pdfButtonSection.querySelector('p');
+                if (sectionText && sectionText.textContent?.includes('PDF 버전으로 이력서를 다운로드하세요')) {
+                    pdfButtonSection.style.display = 'none';
+                }
+            }
+
+            console.log('PDF mode activated with manual 2-column layout and button hiding');
         });
 
         // PDF 생성 설정 (A4 크기, 배경색 포함)

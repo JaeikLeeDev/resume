@@ -17,6 +17,7 @@ export default function PDFLinkButton() {
             href={pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
+            className="pdf-link-button"
             style={{
                 display: 'inline-flex',
                 alignItems: 'center',

@@ -637,3 +637,13 @@ body {
 .pdf-mode .pdf-download-button {
   display: none !important;
 }
+
+/* PDF 모드에서 GitHub Pages 전용 PDF 버튼들 숨기기 */
+.pdf-mode .pdf-link-button {
+  display: none !important;
+}
+
+/* PDF 모드에서 PDF 출력 버튼 섹션 전체 숨기기 */
+.pdf-mode .center-section {
+  display: none !important;
+}
