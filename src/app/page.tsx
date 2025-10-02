@@ -75,7 +75,6 @@ export default async function NotionResumePage() {
     const transformContactInfo = (personalInfoDB: any) => ({
         email: personalInfoDB.email,
         phone: personalInfoDB.phone,
-        photo: personalInfoDB.photo,
         // 웹사이트/깃허브 링크를 URL과 표시용 텍스트로 분리
         ...(personalInfoDB.website && {
             blog: {

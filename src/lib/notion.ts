@@ -1,7 +1,6 @@
 import { Client } from '@notionhq/client';
 import { ResumeData, PersonalInfoDB, SkillDB, CoreCompetencyDB, WorkSummaryDB, WorkAchievementDB, ProjectDB, PortfolioDB, ValueDB, OtherToolDB, EducationDB, CertificationDB, MilitaryServiceDB } from '@/types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { downloadAndSaveImage, isNotionImageUrl } from './image-downloader';
 
 // Notion API 클라이언트 초기화
 const notion = new Client({
@@ -11,31 +10,6 @@ const notion = new Client({
 // 정렬을 위한 기본값
 const DEFAULT_ORDER_VALUE = 999;
 
-/**
- * Notion 이미지 URL을 안전하게 처리하는 함수
- * Build-time에 이미지를 다운로드하여 정적 파일로 저장
- */
-async function processImageUrl(url: string | null): Promise<string | null> {
-    if (!url) return null;
-
-    // Notion 이미지 URL인지 확인
-    if (isNotionImageUrl(url)) {
-        console.log(`🔄 Processing Notion image: ${url}`);
-
-        // Build-time에 이미지 다운로드하여 저장
-        const staticPath = await downloadAndSaveImage(url);
-
-        if (staticPath) {
-            console.log(`✅ Image processed: ${url} → ${staticPath}`);
-            return staticPath;
-        } else {
-            console.warn(`❌ Failed to process image: ${url}`);
-            return null;
-        }
-    }
-
-    return url;
-}
 
 
 // Notion 데이터베이스 설정을 위한 타입 정의
@@ -220,7 +194,9 @@ function extractNumber(property: any): number {
 
 // Notion Files 프로퍼티에서 파일 URL 추출
 async function extractFiles(property: any): Promise<string> {
-    if (!property || !property.files || property.files.length === 0) return '';
+    if (!property || !property.files || property.files.length === 0) {
+        return '';
+    }
 
     const file = property.files[0];
     let url = '';
@@ -229,11 +205,11 @@ async function extractFiles(property: any): Promise<string> {
         url = file.external.url;
     } else if (file.type === 'file' && file.file?.url) {
         url = file.file.url;
+    } else {
+        return '';
     }
 
-    // 이미지 URL 처리 (Build-time 다운로드)
-    const processedUrl = await processImageUrl(url);
-    return processedUrl || '';
+    return url;
 }
 
 // Notion 페이지 유효성 검사
@@ -261,7 +237,6 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         email: 'email', // 이메일 (Email)
         phone: 'phone', // 전화번호 (Phone Number)
         location: 'location', // 위치 (Rich Text)
-        photo: 'photo', // 프로필 사진 (Files & media)
         introduction: 'introduction', // 짧은 소개 (Rich Text)
         github: 'github', // 깃허브 (URL)
         linkedin: 'linkedin', // 링크드인 (URL)

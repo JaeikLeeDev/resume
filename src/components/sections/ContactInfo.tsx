@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
 interface ContactInfoProps {
   email: string;
   phone: string;
-  photo?: string;
   blog?: {
     url: string;
     display: string;
@@ -14,29 +15,26 @@ interface ContactInfoProps {
   };
 }
 
-export default function ContactInfo({ email, phone, photo, blog, github }: ContactInfoProps) {
-  // photo는 이미 Notion API에서 처리된 정적 파일 경로
-  // 추가 URL 변환 불필요
+export default function ContactInfo({ email, phone, blog, github }: ContactInfoProps) {
+  // 프로필 사진은 repo 내 정적 파일로 관리
+  // public/images/profile.jpg 파일이 있으면 표시, 없으면 표시하지 않음
+  const [showPhoto, setShowPhoto] = useState(true);
+
+  const handleImageError = () => {
+    // 이미지 로드 실패 시 프로필 사진 섹션 자체를 숨김
+    setShowPhoto(false);
+  };
 
   return (
     <div className="margin-bottom-lg">
       <div className="contact-container">
-        {photo && (
+        {showPhoto && (
           <div className="photo-container">
             <img
-              src={photo}
+              src="/images/profile.jpg"
               alt="Profile"
               className="profile-photo"
-              onError={(e) => {
-                console.error('Image load error:', photo);
-                console.error('Error details:', e);
-                // 이미지 로딩 실패 시 기본 이미지로 대체
-                const target = e.target as HTMLImageElement;
-                target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDE2MCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiBmaWxsPSIjRjBGMEYwIi8+CjxjaXJjbGUgY3g9IjgwIiBjeT0iNjAiIHI9IjIwIiBmaWxsPSIjQ0NDQ0NDIi8+CjxwYXRoIGQ9Ik00MCAxMjBDNDAgMTAwIDU4IDEwMCA4MCAxMDBDMTIyIDEwMCAxNDAgMTAwIDE0MCAxMjBIMTQwVjE2MEg0MFYxMjBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPgo=';
-              }}
-              onLoad={() => {
-                console.log('Image loaded successfully:', photo);
-              }}
+              onError={handleImageError}
             />
           </div>
         )}

@@ -5,7 +5,6 @@ export interface PersonalInfoDB {
     email: string;
     phone: string;
     location: string;
-    photo?: string;
     introduction?: string;
     github?: string;
     linkedin?: string;

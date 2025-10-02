@@ -69,7 +69,16 @@ duplicate as template 실패하는 경우가 많습니다. 다양한 브라우�
 > [!IMPORTANT]
 > **각 property 이름은 소문자**로 해주세요. **notion.ts의 interface와 정확히 동일**해야 합니다.
 
-### 3. Rich Text, Multi-select 필드의 데이터 입력 및 파싱 규칙
+### 3. 프로필 사진 설정하기
+
+프로필 사진은 Notion DB가 아닌 **repo 내 정적 파일**로 관리됩니다:
+
+1. **프로필 사진 준비**: `profile.jpg` 파일을 준비합니다 (권장 크기: 160x160px)
+2. **파일 위치**: `public/images/profile.jpg`에 저장합니다
+3. **파일 형식**: JPG, PNG, WebP 등 웹에서 지원하는 이미지 형식
+4. **파일이 없는 경우**: 프로필 사진 섹션이 자동으로 숨겨집니다
+
+### 4. Rich Text, Multi-select 필드의 데이터 입력 및 파싱 규칙
 
 - **[Rich Text]** Bullet point: 줄 맨 앞에 '- ' (대시 + 공백) 입력
 - **[Rich Text]** 줄바꿈: Notion에서 입력한 그대로 줄바꿈이 유지되어 표시
@@ -85,7 +94,7 @@ duplicate as template 실패하는 경우가 많습니다. 다양한 브라우�
 
 ![Screenshot](template_guide/img/Screenshot_text_parsing_rule_2.png)
 
-### 4. 업무 경험 성과 나열하기
+### 5. 업무 경험 성과 나열하기
 
 **여러 회사에서 근무한 경험이 있고, 각 회사별로 여러 성과를 보여주고 싶다면** 이렇게 구성하세요:
 
@@ -107,7 +116,7 @@ DB 구성
 
 ![Screenshot](template_guide/img/Screenshot_work_DB_2.png)
 
-### 5. 사용하지 않는 섹션(DB)/프로퍼티
+### 6. 사용하지 않는 섹션(DB)/프로퍼티
 
 내용이 없는 데이터베이스/프로퍼티는 페이지에 표시하지 않도록 설계
 
@@ -121,7 +130,7 @@ DB 구성
 
 ![Screenshot](template_guide/img/Screenshot_empty_data_result.png)
 
-### 6. DB의 각 row를 원하는 순서로 정렬하기
+### 7. DB의 각 row를 원하는 순서로 정렬하기
 
 Notion Database API는 순서를 보장하지 않습니다. 모든 데이터베이스(Personal Info, Military Service 제외)에서 **order** 프로퍼티를 사용하여 표시 순서를 제어합니다:
 
@@ -429,17 +438,18 @@ GitHub Pages는 정적 사이트이므로 Notion API를 사용할 수 없습니�
 
 #### Personal Info 데이터베이스
 
-| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스     | 설명                 |
-| ------------ | ------------- | ----------------------- | -------------------- |
-| name         | Title         | `.text-hero`            | 이름 (메인 제목)     |
-| position     | Rich Text     | `.text-secondary-title` | 직책/포지션          |
-| email        | Email         | `.text-contact`         | 이메일 (연락처)      |
-| phone        | Phone Number  | `.text-contact`         | 전화번호 (연락처)    |
-| location     | Rich Text     | `.text-meta`            | 위치 (메타 정보)     |
-| photo        | Files & media | -                       | 프로필 사진 (이미지) |
-| introduction | Rich Text     | `.text-body`            | 짧은 소개 (본문)     |
-| blog         | URL           | `.text-contact`         | 블로그 (링크)        |
-| github       | URL           | `.text-contact`         | 깃허브 (링크)        |
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스     | 설명              |
+| ------------ | ------------- | ----------------------- | ----------------- |
+| name         | Title         | `.text-hero`            | 이름 (메인 제목)  |
+| position     | Rich Text     | `.text-secondary-title` | 직책/포지션       |
+| email        | Email         | `.text-contact`         | 이메일 (연락처)   |
+| phone        | Phone Number  | `.text-contact`         | 전화번호 (연락처) |
+| location     | Rich Text     | `.text-meta`            | 위치 (메타 정보)  |
+| introduction | Rich Text     | `.text-body`            | 짧은 소개 (본문)  |
+| blog         | URL           | `.text-contact`         | 블로그 (링크)     |
+| github       | URL           | `.text-contact`         | 깃허브 (링크)     |
+
+> **프로필 사진**: Notion DB가 아닌 `public/images/profile.jpg` 파일로 관리됩니다. 해당 파일이 있으면 표시되고, 없으면 프로필 사진 섹션이 숨겨집니다.
 
 #### Skill 데이터베이스
 
