@@ -331,12 +331,21 @@ body {
 .work-experience-item {
   display: flex;
   gap: var(--space-lg);
-  margin-bottom: var(--space-lg);
+  margin-top: calc(var(--space-sm) * 2);
+  margin-bottom: var(--space-sm);
 }
 
 .work-experience-left {
   flex: 0 0 200px;
   min-width: 200px;
+}
+
+.work-experience-left .text-subsection-title {
+  margin-top: 0;
+}
+
+.work-experience-right .text-subsection-title {
+  margin-top: 0;
 }
 
 .work-experience-right {
@@ -444,6 +453,10 @@ body {
   .work-experience-left {
     flex: none;
     min-width: auto;
+  }
+
+  .work-experience-left .text-subsection-title {
+    margin-top: 0;
   }
 
   /* Mobile: Show mobile position-period, hide desktop elements */
