@@ -14,10 +14,10 @@ function renderTextWithBullets(text: string) {
       );
     } catch (error) {
       console.error('Error parsing bullet list:', error);
-      return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+      return <div className="text-body text-pre-line">{text}</div>;
     }
   }
-  return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+  return <div className="text-body text-pre-line">{text}</div>;
 }
 
 interface ValueSectionProps {
@@ -28,8 +28,8 @@ export default function ValueSection({ values }: ValueSectionProps) {
   return (
     <div>
       {values.map((value, index) => (
-        <div key={index} className="item">
-          <h3 className="text-item-title">{value.title}</h3>
+        <div key={index} className="details-section">
+          <h3 className="text-details-title">{value.title}</h3>
           {value.details && (
             renderTextWithBullets(value.details)
           )}

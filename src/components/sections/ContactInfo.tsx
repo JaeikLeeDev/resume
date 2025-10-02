@@ -19,7 +19,7 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
   // 추가 URL 변환 불필요
 
   return (
-    <div style={{ marginBottom: 'var(--space-lg)' }}>
+    <div className="margin-bottom-lg">
       <div className="contact-container">
         {photo && (
           <div className="photo-container">
@@ -44,19 +44,19 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
           {email && (
             <div className="contact-row">
               <span className="text-meta">Email.</span>
-              <span className="text-body">{email}</span>
+              <span className="text-contact">{email}</span>
             </div>
           )}
           {phone && (
             <div className="contact-row">
               <span className="text-meta">Phone.</span>
-              <span className="text-body">{phone}</span>
+              <span className="text-contact">{phone}</span>
             </div>
           )}
           {blog && (
             <div className="contact-row">
               <span className="text-meta">Blog.</span>
-              <a href={blog.url} className="text-body link" target="_blank" rel="noopener noreferrer">
+              <a href={blog.url} className="text-contact link" target="_blank" rel="noopener noreferrer">
                 {blog.display}
               </a>
             </div>
@@ -64,7 +64,7 @@ export default function ContactInfo({ email, phone, photo, blog, github }: Conta
           {github && (
             <div className="contact-row">
               <span className="text-meta">Github.</span>
-              <a href={github.url} className="text-body link" target="_blank" rel="noopener noreferrer">
+              <a href={github.url} className="text-contact link" target="_blank" rel="noopener noreferrer">
                 {github.display}
               </a>
             </div>

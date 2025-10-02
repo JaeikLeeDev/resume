@@ -30,10 +30,10 @@ function renderTextWithBullets(text: string) {
             );
         } catch (error) {
             console.error('Error parsing bullet list:', error);
-            return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+            return <div className="text-body text-pre-line">{text}</div>;
         }
     }
-    return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+    return <div className="text-body text-pre-line">{text}</div>;
 }
 
 /**
@@ -148,10 +148,10 @@ export default async function NotionResumePage() {
 
                     {/* 개인정보 섹션 */}
                     <div className="section personal-info-section">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-lg)' }}>
+                        <div className="flex-between margin-bottom-lg">
                             <div>
                                 <h1 className="text-hero">{personalInfoDB.name} 이력서</h1>
-                                <p className="text-item-subtitle">{personalInfoDB.position}</p>
+                                <p className="text-secondary-title">{personalInfoDB.position}</p>
                             </div>
                             {/* Vercel 모드에서만 PDF 다운로드 버튼 표시 */}
                             {!isGitHubPages && <PDFDownloadButton />}
@@ -188,24 +188,24 @@ export default async function NotionResumePage() {
                             {workSummaryDB.filter(experience => experience.show === 'show').map((experience: any, index: number) => (
                                 <div key={index} className="work-experience-item">
                                     <div className="work-experience-left">
-                                        <div className="work-company text-subsection-title">{experience.company}</div>
+                                        <div className="text-subsection-title">{experience.company}</div>
                                         <div className="work-period-desktop text-meta">{experience.period}</div>
                                         <div className="work-position-period-mobile text-meta">
                                             {experience.position} | {experience.period}
                                         </div>
                                     </div>
                                     <div className="work-experience-right">
-                                        <div className="work-position text-subsection-title">{experience.position}</div>
-                                        <div className="work-description text-body">{experience.description}</div>
+                                        <div className="text-subsection-title">{experience.position}</div>
+                                        <div className="text-body">{experience.description}</div>
 
                                         {/* Work Achievements - Show achievements for this specific company */}
                                         {workAchievementDB.filter(ach => ach.show === 'show' && ach.company === experience.company).length > 0 && (
-                                            <div className="work-achievements text-body">
+                                            <div className="text-body">
                                                 {workAchievementDB
                                                     .filter(ach => ach.show === 'show' && ach.company === experience.company)
                                                     .map((achievement: any, achIndex: number) => (
-                                                        <div key={achIndex} className="achievement-item text-body">
-                                                            <h4 className="text-item-title">{achievement.title}</h4>
+                                                        <div key={achIndex} className="details-section">
+                                                            <h4 className="text-details-title">{achievement.title}</h4>
                                                             {achievement.details && (
                                                                 renderTextWithBullets(achievement.details)
                                                             )}
@@ -309,7 +309,7 @@ export default async function NotionResumePage() {
 
                     {/* PDF 출력 버튼 섹션 - 깃헙 페이지에서만 표시 */}
                     {isGitHubPages && (
-                        <div className="section" style={{ textAlign: 'center', marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-2xl)', borderTop: '1px solid var(--color-border)' }}>
+                        <div className="section center-section">
                             <PDFLinkButton />
                             <p style={{
                                 marginTop: '12px',

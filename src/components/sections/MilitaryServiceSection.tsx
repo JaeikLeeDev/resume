@@ -6,8 +6,8 @@ interface MilitaryServiceSectionProps {
 
 export default function MilitaryServiceSection({ militaryService }: MilitaryServiceSectionProps) {
     return (
-        <div className="item">
-            <h3 className="text-item-title">{militaryService.title}</h3>
+        <div className="details-section">
+            <h3 className="text-details-title">{militaryService.title}</h3>
             <div className="text-meta">
                 <p>{militaryService.period}</p>
             </div>

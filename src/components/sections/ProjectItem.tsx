@@ -14,10 +14,10 @@ function renderTextWithBullets(text: string) {
             );
         } catch (error) {
             console.error('Error parsing bullet list:', error);
-            return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+            return <div className="text-body text-pre-line">{text}</div>;
         }
     }
-    return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+    return <div className="text-body text-pre-line">{text}</div>;
 }
 
 interface ProjectItemProps {
@@ -48,14 +48,14 @@ export default function ProjectItem({
     post
 }: ProjectItemProps) {
     return (
-        <div className="item">
+        <div className="details-section">
             <h3 className="text-subsection-title">{title}</h3>
             <p className="text-meta">{period}</p>
 
             <p className="text-body">{description}</p>
 
             {contribution && (
-                <p className="text-meta contribution-text">
+                <p className="text-meta margin-top-xxs">
                     {contribution}
                 </p>
             )}
@@ -72,33 +72,33 @@ export default function ProjectItem({
             )}
 
             {(github || website || ios || android || post) && (
-                <p className="text-meta" style={{ marginTop: 'var(--space-sm)' }}>
+                <p className="text-meta margin-top-sm">
                     {github && (
                         <>
-                            <a href={github} className="text-meta" target="_blank" rel="noopener noreferrer">GitHub</a>
+                            <a href={github} className="link" target="_blank" rel="noopener noreferrer">GitHub</a>
                             {(website || ios || android || post) && ' | '}
                         </>
                     )}
                     {website && (
                         <>
-                            <a href={website} className="text-meta" target="_blank" rel="noopener noreferrer">Website</a>
+                            <a href={website} className="link" target="_blank" rel="noopener noreferrer">Website</a>
                             {(ios || android || post) && ' | '}
                         </>
                     )}
                     {ios && (
                         <>
-                            <a href={ios} className="text-meta" target="_blank" rel="noopener noreferrer">iOS</a>
+                            <a href={ios} className="link" target="_blank" rel="noopener noreferrer">iOS</a>
                             {(android || post) && ' | '}
                         </>
                     )}
                     {android && (
                         <>
-                            <a href={android} className="text-meta" target="_blank" rel="noopener noreferrer">Android</a>
+                            <a href={android} className="link" target="_blank" rel="noopener noreferrer">Android</a>
                             {post && ' | '}
                         </>
                     )}
                     {post && (
-                        <a href={post} className="text-meta" target="_blank" rel="noopener noreferrer">Post</a>
+                        <a href={post} className="link" target="_blank" rel="noopener noreferrer">Post</a>
                     )}
                 </p>
             )}

@@ -8,8 +8,8 @@ export default function CertificationSection({ certifications }: CertificationSe
     return (
         <div>
             {certifications.map((cert, index) => (
-                <div key={index} className="item">
-                    <h3 className="text-item-title">{cert.title}</h3>
+                <div key={index} className="details-section">
+                    <h3 className="text-details-title">{cert.title}</h3>
                     <div className="text-meta">
                         <p>{[cert.date, cert.number, cert.issuer].filter(Boolean).join(' | ')}</p>
                     </div>

@@ -16,10 +16,10 @@ function renderTextWithBullets(text: string) {
             );
         } catch (error) {
             console.error('Error parsing bullet list:', error);
-            return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+            return <div className="text-body text-pre-line">{text}</div>;
         }
     }
-    return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+    return <div className="text-body text-pre-line">{text}</div>;
 }
 
 interface CoreCompetencySectionProps {
@@ -30,8 +30,8 @@ export default function CoreCompetencySection({ competencies }: CoreCompetencySe
     return (
         <div>
             {competencies.map((competency, index) => (
-                <div key={index} className="item">
-                    <h3 className="text-item-title">{competency.title}</h3>
+                <div key={index} className="details-section">
+                    <h3 className="text-details-title">{competency.title}</h3>
 
                     {/* Skills를 Tech Chips로 표시 */}
                     {competency.skills && competency.skills.length > 0 && (

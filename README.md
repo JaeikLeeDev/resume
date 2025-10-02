@@ -48,126 +48,6 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 ## 📋 Notion DB 구성하기
 
-### DB별 필드
-
-각 필드(Notion의 property)를 '프로퍼티명 (프로퍼티 타입)'으로 표시.
-
-> [!NOTE] 프로퍼티 타입 종류 (Notion 앱에서 설정하는 방법)
-> - **Title**: 데이터베이스 생성 시 기본으로 제공되는 "Name" 필드 (이름 변경 가능)
-> - **Rich Text**: 프로퍼티 추가 → "Text" 선택 (앱에서는 "Text"로 표시)
-> - **Multi-select**: 프로퍼티 추가 → "Multi-select" 선택 → 옵션 추가
-> - **Select**: 프로퍼티 추가 → "Select" 선택 → 옵션 추가
-> - **Number**: 프로퍼티 추가 → "Number" 선택
-> - **URL**: 프로퍼티 추가 → "URL" 선택
-> - **Email**: 프로퍼티 추가 → "Email" 선택
-> - **Phone**: 프로퍼티 추가 → "Phone" 선택
-> - **Files & media**: 프로퍼티 추가 → "Files & media" 선택 
-
-#### Personal Info 데이터베이스
-- **name** (Title) - 이름
-- **position** (Rich Text) - 직책/포지션
-- **email** (Email) - 이메일
-- **phone** (Phone Number) - 전화번호
-- **location** (Rich Text) - 위치
-- **photo** (Files & media) - 프로필 사진
-- **introduction** (Rich Text) - 짧은 소개
-- **github** (URL) - 깃허브
-- **linkedin** (URL) - 링크드인
-- **website** (URL) - 웹사이트
-
-#### Skill 데이터베이스
-- **title** (Title) - 카테고리 분류를 위한 필드. 화면에는 나타나지 않음.
-- **skills** (Multi-select) - 기술 스택
-- **order** (Number) - 정렬 순서 (1이 맨 위로)
-- **show** (Select) - 표시 여부
-
-#### Core Competency 데이터베이스
-- **title** (Title) - 제목
-- **description** (Rich Text) - 설명
-- **skills** (Multi-select) - 관련 기술 스택
-- **details** (Rich Text) - 사례, bullet point 설명
-- **order** (Number)
-- **show** (Select)
-
-#### Work Summary 데이터베이스
-- **company** (Title) - 회사
-- **position** (Rich Text) - 직책
-- **period** (Rich Text) - 근무 기간
-- **description** (Rich Text) - 회사 설명
-- **order** (Number)
-- **show** (Select)
-
-#### Work Achievement 데이터베이스
-- **title** (Title) - 성과 소제목
-- **details** (Rich Text) - 성과 디테일
-- **skills** (Multi-select) - 해당 성과 관련 기술 스택
-- **company** (Rich Text) - Work Summary DB > 'company'와 같은 값
-- **order** (Number)
-- **show** (Select)
-
-#### Project 데이터베이스
-- **title** (Title) - 프로젝트 제목
-- **description** (Rich Text) - 프로젝트 설명
-- **period** (Rich Text) - 개발 기간
-- **skills** (Multi-select) - 사용한 기술 스택
-- **details** (Rich Text) - 성과 상세
-- **contribution** (Rich Text) - 기여도 정보
-- **github** (URL) - GitHub 저장소 링크
-- **website** (URL) - 웹사이트 링크
-- **ios** (URL) - iOS 앱스토어 링크
-- **android** (URL) - Android 플레이스토어 링크
-- **post** (URL) - 블로그 글 링크
-- **order** (Number)
-- **show** (Select)
-
-#### Portfolio 데이터베이스
-- **title** (Title) - 포트폴리오 제목
-- **description** (Rich Text) - 포트폴리오 설명
-- **period** (Rich Text) - 개발 기간
-- **skills** (Multi-select) - 사용한 기술 스택
-- **details** (Rich Text) - 주요 기능들
-- **github** (URL) - GitHub 저장소 링크
-- **website** (URL) - 웹사이트 링크
-- **ios** (URL) - iOS 앱스토어 링크
-- **android** (URL) - Android 플레이스토어 링크
-- **post** (URL) - 블로그 글 링크
-- **contribution** (Rich Text) - 기여도 정보
-- **order** (Number)
-- **show** (Select)
-
-#### Value 데이터베이스
-- **title** (Title) - 가치관 제목
-- **details** (Rich Text) - 상세 내용
-- **order** (Number)
-- **show** (Select)
-
-#### Other Tool 데이터베이스
-- **title** (Title) - 도구명
-- **category** (Select) - 카테고리
-- **description** (Rich Text) - 숙련도 및 경험 설명
-- **order** (Number)
-- **show** (Select)
-
-#### Education 데이터베이스
-- **title** (Title) - 학교명
-- **degree** (Rich Text) - 학위/전공
-- **period** (Rich Text) - 학력 기간
-- **location** (Rich Text) - 위치
-- **order** (Number)
-- **show** (Select)
-
-#### Certification 데이터베이스
-- **title** (Title) - 자격증명
-- **date** (Rich Text) - 취득일
-- **number** (Rich Text) - 자격증 번호
-- **issuer** (Rich Text) - 발행기관
-- **order** (Number)
-- **show** (Select)
-
-#### Military Service 데이터베이스
-- **title** (Title) - 병역 정보
-- **period** (Rich Text) - 복무기간
-
 ### 1. Notion Integration 생성하기
 
 1. [Notion Developers](https://www.notion.so/my-integrations)에서 새 Integration 생성
@@ -184,7 +64,7 @@ React와 Next.js로 구축된 공개 이력서 사이트입 템플릿입니다. 
 
 duplicate as template 실패하는 경우가 많습니다. 다양한 브라우저, 시크릿 모드, 모바일에서 캐시 삭제 후 시도해보시길 바랍니다.
 
-그래도 안 되는 경우, [이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)와 위의 'Notion DB 구성' 참고해서 직접 구성해주시면 됩니다. 
+그래도 안 되는 경우, [이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)와 아래 부록의 'Notion DB 구성' 참고해서 직접 구성해주시면 됩니다. 
 
 > [!IMPORTANT]
 > **각 property 이름은 소문자**로 해주세요. **notion.ts의 interface와 정확히 동일**해야 합니다.
@@ -261,11 +141,6 @@ Skill 데이터베이스:
 ![Screenshot](template_guide/img/Screenshot_sorting_system_2.png)
 
 
-
-
-
-
-
 ## 🚀 Getting Started
 ### 1. 템플릿 복사
 - **Fork** 이 리포지토리를 fork 또는 클론하여 로컬 환경에 다운로드
@@ -294,6 +169,9 @@ NOTION_SKILL_DB_ID=your_skill_database_id_here
 NOTION_VALUE_DB_ID=your_value_database_id_here
 NOTION_WORK_ACHIEVEMENT_DB_ID=your_work_achievement_database_id_here
 NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
+
+# PDF 출력 페이지 URL (선택사항)
+NEXT_PUBLIC_PDF_URL=https://your-resume-pdf.vercel.app/
 ```
 각 ID는 다음과 같이 복사해옵니다.
 
@@ -448,3 +326,243 @@ GitHub Pages는 정적 사이트이므로 Notion API를 사용할 수 없습니�
 - 웹사이트와 똑같은 PDF가 생성됩니다
 - Notion에서 내용을 바꾸면 새로고침 후 PDF도 업데이트됩니다
 - A4 크기로 인쇄하기 좋게 만들어집니다
+
+## 🎨 부록 1: 타이포그래피 디자인 시스템
+
+### 타이포그래피 클래스 목록
+
+| 클래스명                 | 폰트 크기       | 폰트 웨이트 | 라인 높이 | 마진 하단 | 주 사용처                                                                                                   |
+| ------------------------ | --------------- | ----------- | --------- | --------- | ----------------------------------------------------------------------------------------------------------- |
+| `.text-hero`             | 2.5rem (40px)   | 800         | 1.2       | 2rem      | Personal Info > name                                                                                        |
+| `.text-section-title`    | 2.25rem (36px)  | 700         | 1.2       | 2rem      | 모든 섹션 제목                                                                                              |
+| `.text-subsection-title` | 1.625rem (26px) | 600         | 1.4       | 1rem      | • Project/Protfolio > title<br>• Work Summary > company/position                                            |
+| `.text-details-title`    | 1.25rem (20px)  | 600         | 1.3       | 0.5rem    | • details-section의 제목<br>• 모든 DB의 title 필드<br>• Education > title+degree<br>• Other Tool > category |
+| `.text-secondary-title`  | 1.125rem (18px) | 500         | 1.4       | 0.5rem    | • Personal Info > position<br>• Other Tool > title                                                          |
+| `.text-body`             | 1rem (16px)     | 400         | 1.6       | 1rem      | • 모든 DB의 description 필드<br>• Personal Info > introduction<br>• 모든 details 필드                       |
+| `.text-meta`             | 0.875rem (14px) | 400         | 1.4       | 1rem      | • 모든 DB의 period 필드<br>• Project > contribution<br>• Personal Info의 라벨 (Email., Phone. 등)           |
+| `.text-contact`          | 0.9rem (14.4px) | 400         | 1.6       | 0         | • Personal Info > email/phone/blog/github (contact-row 내부)                                                |
+| `.list-item`             | 1rem (16px)     | 400         | 1.6       | 0.375rem  | • 모든 details 필드 (BULLET_LIST)                                                                           |
+| `.tech-chip`             | 0.75rem (12px)  | 400         | 1.4       | 0         | • 모든 DB의 skills 필드                                                                                     |
+
+#### 컴포넌트 시스템
+
+| 클래스명          | 스타일 속성     | 주 사용처                                            |
+| ----------------- | --------------- | ---------------------------------------------------- |
+| `.link`           | 링크 스타일     | 모든 외부 링크 (GitHub, Website, iOS, Android, Post) |
+| `.list`           | 리스트 컨테이너 | bullet point 리스트 컨테이너                         |
+| `.tech-container` | 플렉스 컨테이너 | 기술 스택 칩들을 감싸는 컨테이너                     |
+
+#### 유틸리티 클래스
+
+| 클래스명             | 스타일 속성                                   | 주 사용처                      |
+| -------------------- | --------------------------------------------- | ------------------------------ |
+| `.text-pre-line`     | white-space: pre-line                         | 줄바꿈이 포함된 텍스트         |
+| `.margin-top-xxs`    | margin-top: 0.375rem                          | 최소 상단 마진                 |
+| `.margin-top-sm`     | margin-top: 1rem                              | 중간 상단 마진                 |
+| `.margin-bottom-xxs` | margin-bottom: 0.375rem                       | 최소 하단 마진                 |
+| `.margin-bottom-lg`  | margin-bottom: 2rem                           | 큰 하단 마진                   |
+| `.flex-between`      | display: flex, justify-content: space-between | 양쪽 정렬 플렉스 레이아웃      |
+| `.center-section`    | text-align: center, border-top                | 센터 정렬된 섹션 (PDF 링크 등) |
+| `.page-break-before` | page-break-before: always                     | PDF에서 페이지 브레이크        |
+
+#### 레이아웃 시스템
+
+| 클래스명                | 마진 하단 | 주 사용처                                     |
+| ----------------------- | --------- | --------------------------------------------- |
+| `.section`              | 6rem      | 모든 섹션 (Skill, Work Summary, Project 등)   |
+| `.details-section`      | 1rem      | 섹션 내 개별 항목 (프로젝트, 학력, 자격증 등) |
+| `.contact-container`    | -         | 연락처 정보 컨테이너 (프로필 사진 + 연락처)   |
+| `.work-experience-item` | -         | 업무 경험 항목 (회사명 + 직책 + 설명)         |
+| `.tech-container`       | -         | 기술 스택 칩들을 감싸는 플렉스 컨테이너       |
+
+#### 폰트 패밀리
+
+- **주요 폰트**: Pretendard (한글 최적화)
+- **코드/기술 스택**: JetBrains Mono, SF Mono, Monaco, Cascadia Code, Roboto Mono, Consolas, Courier New
+- **폴백**: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif
+
+#### 색상 시스템
+
+- **Primary**: #000000 (주요 텍스트)
+- **Secondary**: #666666 (보조 텍스트)
+- **Tertiary**: #999999 (메타 정보)
+- **Accent**: #4A90E2 (섹션 제목)
+
+#### 간격 시스템
+
+- **XXS**: 0.375rem (6px) - 최소 간격
+- **XS**: 0.5rem (8px) - 작은 간격
+- **SM**: 1rem (16px) - 중간 간격
+- **MD**: 1.5rem (24px) - 큰 간격
+- **LG**: 2rem (32px) - 매우 큰 간격
+- **XL**: 3rem (48px) - 섹션 간격
+- **2XL**: 4rem (64px) - 주요 섹션 간격
+- **3XL**: 6rem (96px) - 페이지 섹션 간격
+
+#### 특별한 스타일링
+
+- **Letter Spacing**: -0.01em ~ -0.03em (폰트 크기에 따라 조정)
+- **Font Smoothing**: antialiased (macOS), grayscale (Windows)
+- **Bullet Points**: CSS `::before` 가상 요소로 구현
+- **Links**: 밑줄 스타일, hover 시 색상 변경 (`.link` 클래스)
+- **Tech Chips**: 둥근 모서리, 배경색, 패딩 적용
+- **Contact Links**: 밑줄 없음, hover 시 색상 변경 (`.text-contact.link`)
+- **Pre-line Text**: 줄바꿈 보존 (`.text-pre-line` 클래스)
+- **Responsive Design**: 모바일에서 Work Experience position 중복 방지
+
+#### CSS 구조 개선
+
+- **논리적 그룹화**: CSS Variables → Base Styles → Typography → Layout → Components → Responsive → PDF Mode
+- **위계순 정렬**: 타이포그래피 클래스들을 위계에 따라 정렬
+- **인라인 스타일 최소화**: 자주 사용되는 스타일을 CSS 클래스로 추출
+- **유틸리티 클래스**: 마진, 플렉스 레이아웃 등 재사용 가능한 유틸리티 제공
+
+## 부록 2: Notion DB 구성
+
+### Notion property
+
+> [!NOTE] Notion 프로퍼티 타입은 프로퍼티 이름 앞 아이콘으로 구별할 수 있습니다.
+
+![Screenshot](template_guide/img/Screenshot_property_types.png)
+
+### Notion 이력서 데이터베이스 구성
+
+#### Personal Info 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스     | 설명                 |
+| ------------ | ------------- | ----------------------- | -------------------- |
+| name         | Title         | `.text-hero`            | 이름 (메인 제목)     |
+| position     | Rich Text     | `.text-secondary-title` | 직책/포지션          |
+| email        | Email         | `.text-contact`         | 이메일 (연락처)      |
+| phone        | Phone Number  | `.text-contact`         | 전화번호 (연락처)    |
+| location     | Rich Text     | `.text-meta`            | 위치 (메타 정보)     |
+| photo        | Files & media | -                       | 프로필 사진 (이미지) |
+| introduction | Rich Text     | `.text-body`            | 짧은 소개 (본문)     |
+| blog         | URL           | `.text-contact`         | 블로그 (링크)        |
+| github       | URL           | `.text-contact`         | 깃허브 (링크)        |
+
+#### Skill 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스 | 설명                             |
+| ---------- | ------------- | ------------------- | -------------------------------- |
+| title      | Title         | -                   | 카테고리 분류 (화면에 표시 안됨) |
+| skills     | Multi-select  | `.tech-chip`        | 기술 스택 (칩 형태)              |
+| order      | Number        | -                   | 정렬 순서 (1이 맨 위)            |
+| show       | Select        | -                   | 표시 여부                        |
+
+#### Core Competency 데이터베이스
+
+| 프로퍼티명  | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                             |
+| ----------- | ------------- | --------------------------- | -------------------------------- |
+| title       | Title         | `.text-details-title`       | 제목                             |
+| description | Rich Text     | `.text-body`                | 설명                             |
+| skills      | Multi-select  | `.tech-chip`                | 관련 기술 스택                   |
+| details     | Rich Text     | `.text-body` / `.list-item` | 사례, bullet point 설명 (조건부) |
+| order       | Number        | -                           | 정렬 순서                        |
+| show        | Select        | -                           | 표시 여부                        |
+
+#### Work Summary 데이터베이스
+
+| 프로퍼티명  | 프로퍼티 타입 | 타이포그래피 클래스      | 설명      |
+| ----------- | ------------- | ------------------------ | --------- |
+| company     | Title         | `.text-subsection-title` | 회사명    |
+| position    | Rich Text     | `.text-subsection-title` | 직책      |
+| period      | Rich Text     | `.text-meta`             | 근무 기간 |
+| description | Rich Text     | `.text-body`             | 회사 설명 |
+| order       | Number        | -                        | 정렬 순서 |
+| show        | Select        | -                        | 표시 여부 |
+
+#### Work Achievement 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                                  |
+| ---------- | ------------- | --------------------------- | ------------------------------------- |
+| title      | Title         | `.text-details-title`       | 성과 소제목                           |
+| details    | Rich Text     | `.text-body` / `.list-item` | 성과 디테일 (조건부)                  |
+| skills     | Multi-select  | `.tech-chip`                | 해당 성과 관련 기술 스택              |
+| company    | Rich Text     | -                           | Work Summary DB > 'company'와 같은 값 |
+| order      | Number        | -                           | 정렬 순서                             |
+| show       | Select        | -                           | 표시 여부                             |
+
+#### Project 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                      |
+| ------------ | ------------- | --------------------------- | ------------------------- |
+| title        | Title         | `.text-subsection-title`    | 프로젝트 제목             |
+| description  | Rich Text     | `.text-body`                | 프로젝트 설명             |
+| period       | Rich Text     | `.text-meta`                | 개발 기간                 |
+| skills       | Multi-select  | `.tech-chip`                | 사용한 기술 스택          |
+| details      | Rich Text     | `.text-body` / `.list-item` | 성과 상세 (조건부)        |
+| contribution | Rich Text     | `.text-meta`                | 기여도 정보               |
+| github       | URL           | `.link`                     | GitHub 저장소 링크        |
+| website      | URL           | `.link`                     | 웹사이트 링크             |
+| ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
+| android      | URL           | `.link`                     | Android 플레이스토어 링크 |
+| post         | URL           | `.link`                     | 블로그 글 링크            |
+| order        | Number        | -                           | 정렬 순서                 |
+| show         | Select        | -                           | 표시 여부                 |
+
+#### Portfolio 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                      |
+| ------------ | ------------- | --------------------------- | ------------------------- |
+| title        | Title         | `.text-subsection-title`    | 포트폴리오 제목           |
+| description  | Rich Text     | `.text-body`                | 포트폴리오 설명           |
+| period       | Rich Text     | `.text-meta`                | 개발 기간                 |
+| skills       | Multi-select  | `.tech-chip`                | 사용한 기술 스택          |
+| details      | Rich Text     | `.text-body` / `.list-item` | 주요 기능들 (조건부)      |
+| github       | URL           | `.link`                     | GitHub 저장소 링크        |
+| website      | URL           | `.link`                     | 웹사이트 링크             |
+| ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
+| android      | URL           | `.link`                     | Android 플레이스토어 링크 |
+| post         | URL           | `.link`                     | 블로그 글 링크            |
+| contribution | Rich Text     | `.text-meta`                | 기여도 정보               |
+| order        | Number        | -                           | 정렬 순서                 |
+| show         | Select        | -                           | 표시 여부                 |
+
+#### Value 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스         | 설명               |
+| ---------- | ------------- | --------------------------- | ------------------ |
+| title      | Title         | `.text-details-title`       | 가치관 제목        |
+| details    | Rich Text     | `.text-body` / `.list-item` | 상세 내용 (조건부) |
+| order      | Number        | -                           | 정렬 순서          |
+| show       | Select        | -                           | 표시 여부          |
+
+#### Other Tool 데이터베이스
+
+| 프로퍼티명  | 프로퍼티 타입 | 타이포그래피 클래스     | 설명                           |
+| ----------- | ------------- | ----------------------- | ------------------------------ |
+| title       | Title         | `.text-secondary-title` | 도구명 (카테고리 내 개별 도구) |
+| category    | Select        | `.text-details-title`   | 카테고리 (섹션 제목)           |
+| description | Rich Text     | `.text-body`            | 숙련도 및 경험 설명            |
+| order       | Number        | -                       | 정렬 순서                      |
+| show        | Select        | -                       | 표시 여부                      |
+
+#### Education 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스   | 설명                                      |
+| ---------- | ------------- | --------------------- | ----------------------------------------- |
+| title      | Title         | `.text-details-title` | 학교명 + 학위/전공 (하나의 제목으로 결합) |
+| degree     | Rich Text     | -                     | title과 함께 표시됨                       |
+| period     | Rich Text     | `.text-meta`          | 학력 기간                                 |
+| location   | Rich Text     | `.text-meta`          | 위치                                      |
+| order      | Number        | -                     | 정렬 순서                                 |
+| show       | Select        | -                     | 표시 여부                                 |
+
+#### Certification 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스   | 설명               |
+| ---------- | ------------- | --------------------- | ------------------ |
+| title      | Title         | `.text-details-title` | 자격증명           |
+| date       | Rich Text     | `.text-meta`          | 취득일             | 자격증 번호 | 발행기관 (하나의 메타 정보로 결합) |
+| number     | Rich Text     | -                     | date와 함께 표시됨 |
+| issuer     | Rich Text     | -                     | date와 함께 표시됨 |
+| order      | Number        | -                     | 정렬 순서          |
+| show       | Select        | -                     | 표시 여부          |
+
+#### Military Service 데이터베이스
+
+| 프로퍼티명 | 프로퍼티 타입 | 타이포그래피 클래스   | 설명      |
+| ---------- | ------------- | --------------------- | --------- |
+| title      | Title         | `.text-details-title` | 병역 정보 |
+| period     | Rich Text     | `.text-meta`          | 복무기간  |

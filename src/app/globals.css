@@ -80,8 +80,7 @@
   --contact-font-size: var(--font-size-contact);
 }
 
-/* Tailwind CSS theme integration */
-
+/* ===== BASE STYLES ===== */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -95,7 +94,7 @@ body {
 
 /* ===== TYPOGRAPHY SYSTEM ===== */
 
-/* Base Typography */
+/* Hero Text (Highest Hierarchy) */
 .text-hero {
   font-size: var(--font-size-hero);
   font-weight: 800;
@@ -105,6 +104,7 @@ body {
   color: var(--color-foreground);
 }
 
+/* Section Title (Second Hierarchy) */
 .text-section-title {
   font-size: var(--font-size-section-title);
   font-weight: 700;
@@ -114,6 +114,7 @@ body {
   color: var(--color-accent);
 }
 
+/* Subsection Title (Third Hierarchy) */
 .text-subsection-title {
   font-size: var(--font-size-subsection-title);
   font-weight: 600;
@@ -124,7 +125,8 @@ body {
   letter-spacing: -0.01em;
 }
 
-.text-item-title {
+/* Details Title (Fourth Hierarchy) */
+.text-details-title {
   font-size: var(--font-size-item-title);
   font-weight: 600;
   line-height: 1.3;
@@ -133,7 +135,8 @@ body {
   letter-spacing: -0.01em;
 }
 
-.text-item-subtitle {
+/* Secondary Title (Fourth Hierarchy - Alternative) */
+.text-secondary-title {
   font-size: var(--font-size-item-subtitle);
   font-weight: 500;
   line-height: var(--line-height-normal);
@@ -142,6 +145,7 @@ body {
   letter-spacing: -0.005em;
 }
 
+/* Body Text (Fifth Hierarchy) */
 .text-body {
   font-size: var(--font-size-body);
   font-weight: 400;
@@ -152,6 +156,7 @@ body {
   letter-spacing: -0.005em;
 }
 
+/* Meta Text (Sixth Hierarchy) */
 .text-meta {
   font-size: var(--font-size-meta);
   font-weight: 400;
@@ -161,13 +166,38 @@ body {
   letter-spacing: -0.005em;
 }
 
-.text-tech {
-  font-size: var(--font-size-tech);
-  font-weight: 500;
+/* Contact Text (Specialized) */
+.text-contact {
+  font-size: var(--font-size-contact);
+  font-weight: 400;
   line-height: var(--line-height-normal);
-  color: var(--color-foreground-secondary);
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  letter-spacing: -0.005em;
+  margin-bottom: 0;
+}
+
+.text-contact.link {
+  color: var(--color-foreground) !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: color 0.2s ease;
+}
+
+.text-contact.link:hover {
+  color: var(--color-foreground-secondary) !important;
+  border-bottom: none !important;
+}
+
+/* List Item (Specialized) */
+.list-item {
+  margin-bottom: var(--space-xxs);
+  position: relative;
+  padding-left: var(--space-sm);
+}
+
+.list-item::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-foreground-tertiary);
 }
 
 /* ===== LAYOUT SYSTEM ===== */
@@ -197,16 +227,14 @@ body {
   margin-bottom: 0;
 }
 
-/* Item Spacing */
-.item {
-  margin-bottom: var(--space-lg);
+/* Details Section Spacing */
+.details-section {
+  margin-bottom: var(--space-sm);
 }
 
-.item:last-child {
+.details-section:last-child {
   margin-bottom: 0;
 }
-
-/* ===== COMPONENT STYLES ===== */
 
 /* List Component */
 .list {
@@ -215,18 +243,7 @@ body {
   margin: 0;
 }
 
-.list-item {
-  margin-bottom: var(--space-xxs);
-  position: relative;
-  padding-left: var(--space-sm);
-}
-
-.list-item::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: var(--color-foreground-tertiary);
-}
+/* ===== COMPONENT STYLES ===== */
 
 /* Link Component */
 .link {
@@ -240,23 +257,18 @@ body {
   border-bottom-color: var(--color-foreground);
 }
 
-/* Tech Stack Component */
-.tech-stack {
-  display: inline;
-  color: var(--color-foreground-secondary);
-  font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: var(--font-size-tech);
-}
-
 /* Tech Chip Component */
 .tech-chip {
   display: inline-block;
   background-color: var(--color-tech-chip-bg);
-  color: var(--color-tech-chip-text);
+  color: var(--color-foreground-secondary);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.75rem;
-  font-weight: var(--font-weight-medium);
+  font-weight: 400;
+  line-height: var(--line-height-normal);
+  font-family: var(--font-jetbrains-mono), 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  letter-spacing: -0.005em;
 }
 
 .tech-container {
@@ -290,7 +302,12 @@ body {
 .contact-row {
   display: flex;
   align-items: baseline;
-  margin-bottom: var(--space-xxs);
+  margin-bottom: 0.25rem;
+  /* Email, Blog, GitHub 사이 간격 줄임 */
+}
+
+.contact-row:last-child {
+  margin-bottom: 0;
 }
 
 .contact-row .text-meta {
@@ -298,37 +315,12 @@ body {
   margin-bottom: 0 !important;
 }
 
-.contact-row .text-body,
-.contact-row .link {
-  margin-bottom: 0 !important;
-  font-size: var(--font-size-contact);
-}
-
-
-/* ===== SKILL COMPONENTS ===== */
-.skill-item {
-  margin-bottom: var(--space-xxs);
-}
-
+/* Skill Components */
 .skill-separator {
   margin: 0 var(--space-xs);
 }
 
-.skill-category-item {
-  margin-bottom: var(--space-sm);
-}
-
-.skill-category-item:last-child {
-  margin-bottom: 0;
-}
-
-/* ===== UTILITY CLASSES ===== */
-.contribution-text {
-  margin-top: var(--space-xxs) !important;
-  margin-bottom: var(--space-sm) !important;
-}
-
-/* ===== WORK EXPERIENCE COMPONENT ===== */
+/* Work Experience Component */
 .work-experience-item {
   display: flex;
   gap: var(--space-lg);
@@ -344,16 +336,6 @@ body {
   flex: 1;
 }
 
-.work-company {
-  margin-bottom: var(--space-xs);
-}
-
-.work-position {
-  margin-bottom: var(--space-xs);
-  display: block;
-  /* Show by default on desktop */
-}
-
 .work-period-desktop {
   display: block;
   /* Show on desktop */
@@ -366,26 +348,49 @@ body {
   margin-bottom: 0;
 }
 
-.work-period {
-  margin-bottom: 0;
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Text with pre-line whitespace */
+.text-pre-line {
+  white-space: pre-line;
 }
 
-.work-description {
-  margin-bottom: var(--space-md);
+/* Bullet point styles for text starting with dash */
+.text-body[style*="white-space: pre-line"] {
+  line-height: 1.6;
 }
 
-.work-achievements {
-  margin-top: var(--space-md);
+/* Margin utilities */
+.margin-top-xxs {
+  margin-top: var(--space-xxs);
 }
 
-.achievement-item {
-  margin-bottom: var(--space-md);
+.margin-top-sm {
+  margin-top: var(--space-sm);
 }
 
-.achievement-item:last-child {
-  margin-bottom: 0;
+.margin-bottom-xxs {
+  margin-bottom: var(--space-xxs);
 }
 
+.margin-bottom-lg {
+  margin-bottom: var(--space-lg);
+}
+
+/* Layout utilities */
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.center-section {
+  text-align: center;
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+}
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
@@ -443,7 +448,7 @@ body {
     display: block;
   }
 
-  .work-experience-right .work-position {
+  .work-experience-right .text-subsection-title {
     display: none;
   }
 }
@@ -466,12 +471,23 @@ body {
   background: var(--color-foreground-secondary);
 }
 
-/* Bullet point styles for text starting with dash */
-.text-body[style*="white-space: pre-line"] {
-  line-height: 1.6;
+/* ===== PDF MODE STYLES ===== */
+
+/* PDF Layout Classes */
+.pdf-layout {
+  display: block;
 }
 
-/* ===== PDF MODE STYLES ===== */
+.pdf-column {
+  display: block;
+}
+
+/* Page Break Utility */
+.page-break-before {
+  page-break-before: always;
+  break-before: page;
+}
+
 /* PDF 모드에서 컨테이너 조정 (성경책처럼 2열 텍스트 흐름) */
 .pdf-mode .container {
   column-count: 2;
@@ -509,15 +525,13 @@ body {
 .pdf-mode .pdf-mobile-layout .text-hero,
 .pdf-mode .pdf-mobile-layout .text-section-title,
 .pdf-mode .pdf-mobile-layout .text-subsection-title,
-.pdf-mode .pdf-mobile-layout .text-item-title,
-.pdf-mode .pdf-mobile-layout .text-item-subtitle,
+.pdf-mode .pdf-mobile-layout .text-details-title,
+.pdf-mode .pdf-mobile-layout .text-secondary-title,
 .pdf-mode .pdf-mobile-layout .text-body,
 .pdf-mode .pdf-mobile-layout .text-meta {
   break-inside: avoid;
   page-break-inside: avoid;
 }
-
-
 
 /* PDF 모드에서 텍스트 크기 및 위계별 마진 시스템 */
 .pdf-mode .pdf-mobile-layout .text-hero {
@@ -546,7 +560,7 @@ body {
   /* 중간 위계 - 중간 마진 */
 }
 
-.pdf-mode .pdf-mobile-layout .text-item-title {
+.pdf-mode .pdf-mobile-layout .text-details-title {
   font-size: 1rem;
   line-height: 1.4;
   margin-top: 0.6rem;
@@ -555,7 +569,7 @@ body {
   /* 낮은 위계 - 작은 마진 */
 }
 
-.pdf-mode .pdf-mobile-layout .text-item-subtitle {
+.pdf-mode .pdf-mobile-layout .text-secondary-title {
   font-size: 0.9rem;
   line-height: 1.4;
   margin-top: 0.4rem;
@@ -582,7 +596,7 @@ body {
   /* 가장 낮은 위계 - 가장 작은 마진 */
 }
 
-.pdf-mode .pdf-mobile-layout .text-tech {
+.pdf-mode .pdf-mobile-layout .tech-chip {
   font-size: 0.65rem;
   line-height: 1.4;
   margin-top: 0.1rem;
@@ -607,14 +621,9 @@ body {
   /* position | period와 description 사이 간격 줄임 */
 }
 
-.pdf-mode .pdf-mobile-layout .work-position {
-  margin-bottom: 0.2rem;
-  /* text-body와 동일한 마진 */
-}
-
-.pdf-mode .pdf-mobile-layout .work-description {
-  margin-bottom: 0.2rem;
-  /* text-body와 동일한 마진 */
+/* PDF 모드에서도 position 중복 방지 */
+.pdf-mode .pdf-mobile-layout .work-experience-right .text-subsection-title {
+  display: none;
 }
 
 /* PDF 모드에서 링크 wrapping 처리 */
@@ -622,16 +631,6 @@ body {
   word-wrap: break-word;
   word-break: break-all;
   overflow-wrap: break-word;
-}
-
-/* ContactInfo 간격 조정 */
-.contact-row {
-  margin-bottom: 0.25rem;
-  /* Email, Blog, GitHub 사이 간격 줄임 */
-}
-
-.contact-row:last-child {
-  margin-bottom: 0;
 }
 
 /* PDF 모드에서 PDF 다운로드 버튼 숨기기 */

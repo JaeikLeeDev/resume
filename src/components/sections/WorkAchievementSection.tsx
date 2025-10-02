@@ -1,4 +1,5 @@
 import { WorkAchievementDB } from '@/types';
+import TechChips from '@/components/ui/TechChips';
 
 // Bullet point 텍스트를 렌더링하는 헬퍼 함수
 function renderTextWithBullets(text: string) {
@@ -14,10 +15,10 @@ function renderTextWithBullets(text: string) {
             );
         } catch (error) {
             console.error('Error parsing bullet list:', error);
-            return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+            return <div className="text-body text-pre-line">{text}</div>;
         }
     }
-    return <div className="text-body" style={{ whiteSpace: 'pre-line' }}>{text}</div>;
+    return <div className="text-body text-pre-line">{text}</div>;
 }
 
 interface WorkAchievementSectionProps {
@@ -28,8 +29,16 @@ export default function WorkAchievementSection({ sections }: WorkAchievementSect
     return (
         <div>
             {sections.map((section, index) => (
-                <div key={index} className="item">
-                    <h3 className="text-item-title">{section.title}</h3>
+                <div key={index} className="details-section">
+                    <h3 className="text-details-title">{section.title}</h3>
+
+                    {/* Skills */}
+                    {section.skills && section.skills.length > 0 && (
+                        <TechChips
+                            technologies={section.skills}
+                            marginBottom="var(--space-sm)"
+                        />
+                    )}
 
                     {/* Achievements */}
                     {section.details && (
