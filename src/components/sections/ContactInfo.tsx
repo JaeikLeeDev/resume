@@ -20,6 +20,21 @@ export default function ContactInfo({ email, phone, blog, github }: ContactInfoP
   // public/images/profile.jpg 파일이 있으면 표시, 없으면 표시하지 않음
   const [showPhoto, setShowPhoto] = useState(true);
 
+  // GitHub Pages에서는 basePath가 적용되므로 동적으로 경로 설정
+  const getImagePath = () => {
+    if (typeof window !== 'undefined') {
+      // 클라이언트 사이드에서는 현재 경로를 기반으로 판단
+      // 개발 모드에서는 basePath가 없으므로 /images/profile.jpg 사용
+      return window.location.pathname.startsWith('/resume') && process.env.NODE_ENV === 'production'
+        ? '/resume/images/profile.jpg'
+        : '/images/profile.jpg';
+    }
+    // 서버 사이드에서는 환경변수와 빌드 모드로 판단
+    return process.env.GITHUB_PAGES === 'true' && process.env.NODE_ENV === 'production'
+      ? '/resume/images/profile.jpg'
+      : '/images/profile.jpg';
+  };
+
   const handleImageError = () => {
     // 이미지 로드 실패 시 프로필 사진 섹션 자체를 숨김
     setShowPhoto(false);
@@ -31,7 +46,7 @@ export default function ContactInfo({ email, phone, blog, github }: ContactInfoP
         {showPhoto && (
           <div className="photo-container">
             <img
-              src="/images/profile.jpg"
+              src={getImagePath()}
               alt="Profile"
               className="profile-photo"
               onError={handleImageError}
