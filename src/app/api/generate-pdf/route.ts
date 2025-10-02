@@ -91,8 +91,8 @@ export async function POST(request: NextRequest) {
             document.body.classList.add('pdf-mode');
 
             // PDF 레이아웃 적용
-            const container = document.querySelector('.container');
-            if (container && container instanceof HTMLElement) {
+            const container = document.querySelector('.container') as HTMLElement;
+            if (container) {
                 container.classList.add('pdf-mobile-layout');
 
                 // 성경책처럼 2열 텍스트 흐름 적용
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
             }
 
             // 개인정보 헤더에 PDF 모드 클래스 추가
-            const personalHeader = document.querySelector('[style*="display: flex"][style*="justify-content: space-between"]');
+            const personalHeader = document.querySelector('[style*="display: flex"][style*="justify-content: space-between"]') as HTMLElement;
             if (personalHeader) {
                 personalHeader.classList.add('personal-info-header');
             }
@@ -108,14 +108,13 @@ export async function POST(request: NextRequest) {
             // PDF 출력 시 GitHub Pages 전용 버튼들 숨김 처리
             const pdfButtons = document.querySelectorAll('.pdf-download-button, .pdf-link-button');
             pdfButtons.forEach(button => {
-                if (button instanceof HTMLElement) {
-                    button.style.display = 'none';
-                }
+                const htmlButton = button as HTMLElement;
+                htmlButton.style.display = 'none';
             });
 
             // PDF 출력 버튼 섹션 전체 숨김 처리
-            const pdfButtonSection = document.querySelector('.center-section');
-            if (pdfButtonSection && pdfButtonSection instanceof HTMLElement) {
+            const pdfButtonSection = document.querySelector('.center-section') as HTMLElement;
+            if (pdfButtonSection) {
                 const sectionText = pdfButtonSection.querySelector('p');
                 if (sectionText && sectionText.textContent?.includes('PDF 버전으로 이력서를 다운로드하세요')) {
                     pdfButtonSection.style.display = 'none';
