@@ -69,10 +69,10 @@ export async function POST(request: NextRequest) {
 
         const page = await browser.newPage();
 
-        // Vercel 환경에서는 VERCEL_URL 자동 사용, 로컬에서는 localhost 사용
+        // Vercel 환경에서는 VERCEL_URL 자동 사용, 로컬에서는 현재 포트 사용
         const baseUrl = process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
-            : 'http://localhost:3000';
+            : `http://localhost:${process.env.PORT || 3000}`;
         const targetUrl = `${baseUrl}/`;
 
         console.log('Navigating to:', targetUrl);
@@ -130,8 +130,8 @@ export async function POST(request: NextRequest) {
             format: 'A4',
             printBackground: true,      // CSS 배경색 포함
             margin: {
-                top: '1cm',
-                bottom: '1cm',
+                top: '2cm',
+                bottom: '2cm',
                 left: '1cm',
                 right: '1cm'
             },

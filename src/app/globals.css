@@ -818,6 +818,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  margin-top: 0.6rem;
+  /* 다른 섹션들과 동일한 간격으로 조정 */
   /* position | period와 description 사이 간격 줄임 */
   break-inside: auto;
   page-break-inside: auto;
