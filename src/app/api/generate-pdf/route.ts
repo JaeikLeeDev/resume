@@ -14,37 +14,63 @@ export async function POST(request: NextRequest) {
     try {
         let browser;
 
-        if (process.env.VERCEL) {
-            // Vercel 환경: @sparticuz/chromium 사용
+        // 먼저 @sparticuz/chromium 시도 (Vercel 환경에서 최적화됨)
+        try {
             browser = await puppeteer.launch({
                 args: chromium.args,
                 defaultViewport: chromium.defaultViewport,
                 executablePath: await chromium.executablePath(),
                 headless: chromium.headless,
             });
-        } else {
-            // 로컬 환경: 시스템 Chrome 자동 감지
+            console.log('Using @sparticuz/chromium');
+        } catch (chromiumError) {
+            console.log('@sparticuz/chromium failed, falling back to system Chrome:', chromiumError.message);
+
+            // Fallback: 시스템 Chrome 사용
             let executablePath;
-            try {
-                // macOS에서 Chrome 경로 찾기
-                executablePath = execSync('which google-chrome-stable || which google-chrome || which chromium || which chromium-browser || which chrome', { encoding: 'utf8' }).trim();
-            } catch (error) {
-                // 기본 경로들 시도
+
+            if (process.platform === 'win32') {
+                // Windows 환경에서 Chrome 경로 찾기
                 const possiblePaths = [
-                    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-                    '/Applications/Chromium.app/Contents/MacOS/Chromium',
-                    '/usr/bin/google-chrome',
-                    '/usr/bin/chromium-browser',
-                    '/usr/bin/chromium'
+                    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+                    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+                    'C:\\Users\\' + process.env.USERNAME + '\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe',
+                    'C:\\Users\\' + process.env.USERNAME + '\\AppData\\Local\\Chromium\\Application\\chrome.exe',
+                    'C:\\Program Files\\Chromium\\Application\\chrome.exe',
+                    'C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe'
                 ];
 
                 for (const path of possiblePaths) {
                     try {
-                        execSync(`test -f "${path}"`, { encoding: 'utf8' });
+                        execSync(`if exist "${path}" echo found`, { encoding: 'utf8', shell: 'cmd' });
                         executablePath = path;
                         break;
                     } catch (e) {
                         // 다음 경로 시도
+                    }
+                }
+            } else {
+                // macOS/Linux 환경에서 Chrome 경로 찾기
+                try {
+                    executablePath = execSync('which google-chrome-stable || which google-chrome || which chromium || which chromium-browser || which chrome', { encoding: 'utf8' }).trim();
+                } catch (error) {
+                    // 기본 경로들 시도
+                    const possiblePaths = [
+                        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                        '/Applications/Chromium.app/Contents/MacOS/Chromium',
+                        '/usr/bin/google-chrome',
+                        '/usr/bin/chromium-browser',
+                        '/usr/bin/chromium'
+                    ];
+
+                    for (const path of possiblePaths) {
+                        try {
+                            execSync(`test -f "${path}"`, { encoding: 'utf8' });
+                            executablePath = path;
+                            break;
+                        } catch (e) {
+                            // 다음 경로 시도
+                        }
                     }
                 }
             }
@@ -65,6 +91,7 @@ export async function POST(request: NextRequest) {
                     '--disable-features=VizDisplayCompositor',
                 ]
             });
+            console.log('Using system Chrome at:', executablePath);
         }
 
         const page = await browser.newPage();
