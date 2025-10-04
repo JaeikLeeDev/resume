@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
             });
             console.log('Using @sparticuz/chromium');
         } catch (chromiumError) {
-            console.log('@sparticuz/chromium failed, falling back to system Chrome:', chromiumError.message);
+            console.log('@sparticuz/chromium failed, falling back to system Chrome:', chromiumError instanceof Error ? chromiumError.message : String(chromiumError));
 
             // Fallback: 시스템 Chrome 사용
             let executablePath;
