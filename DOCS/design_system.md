@@ -6,13 +6,13 @@
 | ------------------------ | --------------- | ----------- | --------- | --------- | ----------------------------------------------------------------------------------------------------------- |
 | `.text-hero`             | 2.5rem (40px)   | 800         | 1.2       | 2rem      | Personal Info > name                                                                                        |
 | `.text-section-title`    | 2.25rem (36px)  | 700         | 1.2       | 2rem      | 모든 섹션 제목                                                                                              |
-| `.text-subsection-title` | 1.625rem (26px) | 600         | 1.4       | 1rem      | • Project/Protfolio > title<br>• Work Summary > company/position                                            |
+| `.text-subsection-title` | 1.625rem (26px) | 600         | 1.4       | 1rem      | • Project/Portfolio > title<br>• Work Summary > company/position                                            |
 | `.text-details-title`    | 1.25rem (20px)  | 600         | 1.3       | 0.5rem    | • details-section의 제목<br>• 모든 DB의 title 필드<br>• Education > title+degree<br>• Other Tool > category |
 | `.text-secondary-title`  | 1.125rem (18px) | 500         | 1.4       | 0.5rem    | • Personal Info > position<br>• Other Tool > title                                                          |
 | `.text-body`             | 1rem (16px)     | 400         | 1.6       | 1rem      | • 모든 DB의 description 필드<br>• Personal Info > introduction<br>• 모든 details 필드                       |
 | `.text-meta`             | 0.875rem (14px) | 400         | 1.4       | 1rem      | • 모든 DB의 period 필드<br>• Project > contribution<br>• Personal Info의 라벨 (Email., Phone. 등)           |
 | `.text-contact`          | 0.9rem (14.4px) | 400         | 1.6       | 0         | • Personal Info > email/phone/blog/github (contact-row 내부)                                                |
-| `.list-item`             | 1rem (16px)     | 400         | 1.6       | 0.375rem  | • 모든 details 필드 (BULLET_LIST)                                                                           |
+| `.list-item`             | 1rem (16px)     | 400         | 1.6       | 0.375rem  | • 모든 details 필드 (bullet point)                                                                           |
 | `.tech-chip`             | 0.75rem (12px)  | 400         | 1.4       | 0         | • 모든 DB의 skills 필드                                                                                     |
 
 ## 컴포넌트 시스템
@@ -33,7 +33,7 @@
 | `.margin-bottom-xxs` | margin-bottom: 0.375rem                       | 최소 하단 마진                 |
 | `.margin-bottom-lg`  | margin-bottom: 2rem                           | 큰 하단 마진                   |
 | `.flex-between`      | display: flex, justify-content: space-between | 양쪽 정렬 플렉스 레이아웃      |
-| `.center-section`    | text-align: center, border-top                | 센터 정렬된 섹션 (PDF 링크 등) |
+| `.center-section`    | text-align: center, border-top                | 중앙 정렬된 섹션 (PDF 링크 등) |
 | `.page-break-before` | page-break-before: always                     | PDF에서 페이지 브레이크        |
 | `.resume-container`  | box-shadow: none                              | 이력서 컨테이너 (그림자 제거)  |
 

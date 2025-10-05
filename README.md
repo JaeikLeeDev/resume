@@ -1,6 +1,6 @@
 # Notion DB 연동 개발자 이력서 사이트
 
-React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연동된 Notion 데이터베이스를 수정 후 재배포하면 이력서 페이지에 반영되도록 구현했습니다.
+React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연동된 Notion 데이터베이스를 수정한 후 재배포하면 이력서 페이지에 반영되도록 구현했습니다.
 
 ### Notion DB 및 이력서 사이트 예시
 
@@ -15,7 +15,7 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
    <figcaption align="center">이력서 페이지 및 PDF 출력 결과</figcaption>
 </p>
 
-- 🔄 **Notion API 연동**: Notion에서 이력서 내용을 수정 후 재배포하면 페이지에 반영
+- 🔄 **Notion API 연동**: Notion에서 이력서 내용을 수정한 후 재배포하면 페이지에 반영
 - 📄 **2열 포맷 PDF**: 이력서를 컴팩트한 2열 포맷으로 PDF 다운로드 가능
 - 📱 **반응형 디자인**: 모바일과 데스크톱 화면 모두 최적화
 - 👨‍💻 **개발자 최적화**: 기술 스택, 포트폴리오 등 개발자 이력에 최적화된 구성
@@ -65,7 +65,7 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
 
 ### 1. Notion 데이터베이스 페이지 생성하기
 
-[이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)를 'duplicate as template' 하여 본인 Notion **워크스페이스 최상위**에 둡니다.
+[이재익 이력서 Notion Database](https://fluorescent-airplane-153.notion.site/Jaeik-Lee-Resume-Database-278b61feddfe80628aadf4982bcb492a)를 'duplicate as template' 하여 본인의 Notion **워크스페이스 최상위**에 둡니다.
 
 ![Screenshot](/DOCS/img/Screenshot_notion-template-duplicate.png)
 
@@ -156,14 +156,14 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 ### 6. 프로필 사진 설정하기
 
 1. **프로필 사진 준비**: `profile.jpg` 파일을 준비합니다 (권장 크기: 160x160px)
-2. **프로필 이미지 위치로 이동**: 리포지토리의 'Code' 탭탭 > public/images
+2. **프로필 이미지 위치로 이동**: 리포지토리의 'Code' 탭 > public/images
 3. **기존 이미지 덮어쓰기**: Add file > Upload files > profile.jpg 업로드 
-   - 기존 이미지를 미리 지우지 않습니다. 지우면 public 폴더가 사라져버립니다.
+   - 기존 이미지를 미리 지우지 마세요. 지우면 public 폴더가 사라집니다.
    - 기존 profile.jpg와 동일한 이름의 파일을 업로드하면 자동으로 덮어씁니다.
 4. **Commit changes** 하시면 자동으로 GitHub Actions가 실행되고 배포됩니다.
 
->[!TIP] 프로필 사진 안 쓰고 싶어!
-> 사진을 삭제하시면 프로필 섹션이 자동으로 숨겨집니다. profile.jpg를 GitHub 상에서 'Delete file' 하실 수 있습니다.
+>[!TIP] 프로필 사진을 사용하지 않으려면!
+> 사진을 삭제하면 프로필 섹션이 자동으로 숨겨집니다. profile.jpg를 GitHub에서 'Delete file' 할 수 있습니다.
 
 ### 7. favicon 설정하기
 
@@ -182,7 +182,7 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 4. Only select repositories > fork/클론한 리포지토리 선택 > Install
 5. Import
 
-### 2. 배포 설정 & 환경변수 추가
+### 2. 배포 설정 및 환경변수 추가
 
 ![Screenshot](/DOCS/img/Screenshot_vercel_new_project.png)
 
@@ -190,10 +190,10 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 2. **Root Directory**: `./` (기본값)
 3. **Build Command**: `npm run build` (기본값)
 4. **Output Directory**: `.next` (기본값)
-5. '**Environment Variables**'를 열어 로컬의 GitHub과 동일한 환경변수를 등록
+5. '**Environment Variables**'를 열어 GitHub Actions와 동일한 환경변수를 등록
 
 
-환경변수는 Deploy 후 Vercel 프로젝트 설정에서 **"Environment Variables"** 섹션에서도 추가할 수 있습니다.
+환경변수는 Deploy 후 Vercel 프로젝트 설정의 **"Environment Variables"** 섹션에서도 추가할 수 있습니다.
 
 ### 3. 배포 실행
 
@@ -237,18 +237,18 @@ Actions > Deploy to GitHub Pages > Run workflow
 
 ## 🔄 이력서 수정하고 반영하기
 
-### 1. Notion DB에서 이력서 내용을 수정
+### 1. Notion DB에서 이력서 내용 수정
 
-### 2. 공개 이력서 페이지에 반영
+### 2. 공개 이력서 페이지에 반영하기
 
 1. GitHub 리포지토리 > Actions
 2. Deploy to GitHub Pages > Run workflow
 
-### 3. PDF 출력 기능용 페이지에 반영
+### 3. PDF 출력 기능용 페이지에 반영하기
 
 1. Vercel 대시보드 > 이력서 프로젝트 선택
 
-2. 대시보드/프로젝트 선택 > 상단의 Deployments 탭에서 마지막 Deployment 선택
+2. 대시보드 또는 프로젝트 선택 > 상단의 Deployments 탭 > 마지막 Deployment 선택
 ![Screenshot](/DOCS/img/Screenshot_vercel_last_deploy_1.png)
 
 3. 점 세 개 메뉴 > Redeploy
