@@ -179,6 +179,8 @@ body {
   margin-bottom: calc(var(--space-xs) / 1.8);
   white-space: pre-line;
   letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 /* Meta Text (Sixth Hierarchy) */
@@ -217,6 +219,8 @@ body {
   margin-bottom: var(--space-xxs);
   position: relative;
   padding-left: var(--space-sm);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .list-item::before {
