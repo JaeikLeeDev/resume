@@ -7,8 +7,8 @@ const notion = new Client({
     auth: process.env.NOTION_TOKEN,
 });
 
-// 정렬을 위한 기본값
-const DEFAULT_ORDER_VALUE = 999;
+// 정렬을 위한 기본값 (order 값이 없거나 잘못된 경우 맨 아래에 표시)
+const DEFAULT_ORDER_VALUE = -99;
 
 
 
@@ -402,12 +402,12 @@ async function queryDatabase(
             }));
         }
 
-        // order 프로퍼티가 있으면 정렬
+        // order 프로퍼티가 있으면 정렬 (높은 값이 위로)
         if (propertyMapping.order) {
             return results.sort((a, b) => {
                 const orderA = typeof a.order === 'number' ? a.order : (parseInt(a.order) || DEFAULT_ORDER_VALUE);
                 const orderB = typeof b.order === 'number' ? b.order : (parseInt(b.order) || DEFAULT_ORDER_VALUE);
-                return orderA - orderB;
+                return orderB - orderA;
             });
         }
 

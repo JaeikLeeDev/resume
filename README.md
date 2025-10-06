@@ -276,7 +276,7 @@ Actions > Deploy to GitHub Pages > Run workflow
 | URL           | 웹사이트 링크         | GitHub, 웹사이트, 앱스토어, 블로그 링크 |
 | Select        | 단일 선택 옵션        | 카테고리, 표시여부 (show/hide) |
 | Multi-select  | 다중 선택 옵션 (칩 형태로 표시) | 기술 스택, 관련 기술 |
-| Number        | 숫자 값 (정렬 순서 제어용) | order 필드 (1이 맨 위) |
+| Number        | 숫자 값 (정렬 순서 제어용) | order 필드 (높은 값이 맨 위) |
 
 > [!TIP]
 > - **[Rich Text] Bullet point**: DB의 details 필드의 경우, 줄 맨 앞에 '- ' (대시 + 공백) 입력하면 Bullet point로 표시
@@ -330,20 +330,10 @@ DB 구성
 
 Notion Database API는 순서를 보장하지 않습니다. 모든 데이터베이스(Personal Info, Military Service 제외)에서 **order** 프로퍼티를 사용하여 표시 순서를 제어합니다:
 
-- **order 1** → 맨 위에 표시
+- **order 3** → 맨 위에 표시
 - **order 2** → 두 번째에 표시
-- **order 3** → 세 번째에 표시
-- **order 값이 없거나 잘못된 경우** → 맨 아래에 표시
-
-**정렬 예시:**
-
-Skill 데이터베이스:
-
-![Screenshot](/DOCS/img/Screenshot_sorting_system_1.png)
-
-웹사이트 화면
-
-![Screenshot](/DOCS/img/Screenshot_sorting_system_2.png)
+- **order 1** → 세 번째에 표시
+- **order 값이 없거나 잘못된 경우** → -99가 할당되어 맨 아래에 표시
 
 ## 🔧 내 입맛대로 커스텀하기
 

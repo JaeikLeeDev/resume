@@ -41,7 +41,7 @@
 | ---------- | ------------- | ------------------- | -------------------------------- |
 | title      | Title         | -                   | 카테고리 분류 (화면에 표시되지 않음) |
 | skills     | Multi-select  | `.tech-chip`        | 기술 스택 (칩 형태)              |
-| order      | Number        | -                   | 정렬 순서 (1이 맨 위)            |
+| order      | Number        | -                   | 정렬 순서 (높은 값이 맨 위)      |
 | show       | Select        | -                   | 표시 여부                        |
 
 ### Core Competency 데이터베이스
@@ -52,7 +52,7 @@
 | description | Rich Text     | `.text-body`                | 설명                             |
 | skills      | Multi-select  | `.tech-chip`                | 관련 기술 스택                   |
 | details     | Rich Text     | `.text-body` / `.list-item` | 사례, bullet point 설명 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
-| order       | Number        | -                           | 정렬 순서                        |
+| order       | Number        | -                           | 정렬 순서 (높은 값이 맨 위)      |
 | show        | Select        | -                           | 표시 여부                        |
 
 ### Work Summary 데이터베이스
@@ -63,7 +63,7 @@
 | position    | Rich Text     | `.text-subsection-title` | 직책      |
 | period      | Rich Text     | `.text-meta`             | 근무 기간 |
 | description | Rich Text     | `.text-body`             | 회사 설명 |
-| order       | Number        | -                        | 정렬 순서 |
+| order       | Number        | -                        | 정렬 순서 (높은 값이 맨 위) |
 | show        | Select        | -                        | 표시 여부 |
 
 ### Work Achievement 데이터베이스
@@ -74,7 +74,7 @@
 | details    | Rich Text     | `.text-body` / `.list-item` | 성과 디테일 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
 | skills     | Multi-select  | `.tech-chip`                | 해당 성과 관련 기술 스택              |
 | company    | Rich Text     | -                           | Work Summary DB > 'company'와 연결    |
-| order      | Number        | -                           | 정렬 순서                             |
+| order      | Number        | -                           | 정렬 순서 (높은 값이 맨 위)          |
 | show       | Select        | -                           | 표시 여부                             |
 
 ### Project 데이터베이스
@@ -92,7 +92,7 @@
 | ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
 | android      | URL           | `.link`                     | Android 플레이스토어 링크 |
 | post         | URL           | `.link`                     | 블로그 글 링크            |
-| order        | Number        | -                           | 정렬 순서                 |
+| order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
 | show         | Select        | -                           | 표시 여부                 |
 
 ### Portfolio 데이터베이스
@@ -110,7 +110,7 @@
 | android      | URL           | `.link`                     | Android 플레이스토어 링크 |
 | post         | URL           | `.link`                     | 블로그 글 링크            |
 | contribution | Rich Text     | `.text-meta`                | 기여도 정보               |
-| order        | Number        | -                           | 정렬 순서                 |
+| order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
 | show         | Select        | -                           | 표시 여부                 |
 
 ### Value 데이터베이스
@@ -119,7 +119,7 @@
 | ---------- | ------------- | --------------------------- | ------------------ |
 | title      | Title         | `.text-details-title`       | 가치관 제목        |
 | details    | Rich Text     | `.text-body` / `.list-item` | 상세 내용 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
-| order      | Number        | -                           | 정렬 순서          |
+| order      | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
 | show       | Select        | -                           | 표시 여부          |
 
 ### Other Tool 데이터베이스
@@ -129,7 +129,7 @@
 | title       | Title         | `.text-secondary-title` | 도구명 (카테고리 내 개별 도구) |
 | category    | Select        | `.text-details-title`   | 카테고리 (섹션 제목)           |
 | description | Rich Text     | `.text-body`            | 숙련도 및 경험 설명            |
-| order       | Number        | -                       | 정렬 순서                      |
+| order       | Number        | -                       | 정렬 순서 (높은 값이 맨 위)    |
 | show        | Select        | -                       | 표시 여부                      |
 
 ### Education 데이터베이스
@@ -140,7 +140,7 @@
 | degree     | Rich Text     | -                     | title과 함께 표시됨                   |
 | period     | Rich Text     | `.text-meta`          | 학력 기간                                 |
 | location   | Rich Text     | `.text-meta`          | 위치                                      |
-| order      | Number        | -                     | 정렬 순서                                 |
+| order      | Number        | -                     | 정렬 순서 (높은 값이 맨 위)               |
 | show       | Select        | -                     | 표시 여부                                 |
 
 ### Certification 데이터베이스
@@ -151,7 +151,7 @@
 | date       | Rich Text     | `.text-meta`          | 취득일 (자격증 번호, 발행기관과 함께 표시) |
 | number     | Rich Text     | -                     | date와 함께 표시됨                       |
 | issuer     | Rich Text     | -                     | date와 함께 표시됨                       |
-| order      | Number        | -                     | 정렬 순서          |
+| order      | Number        | -                     | 정렬 순서 (높은 값이 맨 위) |
 | show       | Select        | -                     | 표시 여부          |
 
 ### Military Service 데이터베이스
