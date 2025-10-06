@@ -113,8 +113,8 @@ function extractTitle(property: any): string {
         .trim();
 }
 
-// Notion Rich Text 프로퍼티에서 텍스트 추출 (대시로 구분된 bullet point 지원)
-function extractRichText(property: any): string {
+// Notion Rich Text 프로퍼티에서 텍스트 추출 (bullet point 지원)
+function extractRichTextWithBullet(property: any): string {
     if (!property || !property.rich_text) return '';
 
     const fullText = property.rich_text
@@ -126,19 +126,11 @@ function extractRichText(property: any): string {
         // 문장을 줄바꿈으로 분리하고, 각 줄을 처리
         const lines = fullText.split('\n').map((line: string) => line.trim()).filter((line: string) => line.length > 0);
 
-        // 각 줄이 '- '로 시작하면 bullet point로 처리
-        const processedLines = lines.map((line: string) => {
-            if (line.startsWith('- ')) {
-                return line.substring(2).trim(); // '- ' 제거하고 앞뒤 공백 제거
-            }
-            return line;
-        });
-
         // bullet point가 있는 경우와 없는 경우를 구분
         const hasBulletPoints = lines.some((line: string) => line.startsWith('- '));
 
         if (hasBulletPoints) {
-            // bullet point가 있는 경우: HTML 형태로 반환
+            // bullet point가 있는 경우: BULLET_LIST 형태로 반환
             const bulletItems = lines
                 .filter((line: string) => line.startsWith('- '))
                 .map((line: string) => line.substring(2).trim())
@@ -154,6 +146,18 @@ function extractRichText(property: any): string {
     }
 
     return '';
+}
+
+// Notion Rich Text 프로퍼티에서 텍스트 추출 (일반 텍스트만)
+function extractRichText(property: any): string {
+    if (!property || !property.rich_text) return '';
+
+    const fullText = property.rich_text
+        .map((item: any) => item.text?.content || '')
+        .join('')
+        .trim();
+
+    return fullText;
 }
 
 // Notion Multi-select 프로퍼티에서 배열 추출
@@ -460,7 +464,7 @@ export async function getCoreCompetencyDB(): Promise<CoreCompetencyDB[]> {
                 title: extractTitle(page.properties.title),
                 description: extractRichText(page.properties.description),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichText(page.properties.details),
+                details: extractRichTextWithBullet(page.properties.details),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -506,7 +510,7 @@ export async function getWorkAchievementDB(): Promise<WorkAchievementDB[]> {
 
             return {
                 title: extractTitle(page.properties.title),
-                details: extractRichText(page.properties.details),
+                details: extractRichTextWithBullet(page.properties.details),
                 skills: skillsArray,
                 company: extractRichText(page.properties.company),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
@@ -528,7 +532,7 @@ export async function getProjectDB(): Promise<ProjectDB[]> {
                 description: extractRichText(page.properties.description),
                 period: extractRichText(page.properties.period),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichText(page.properties.details),
+                details: extractRichTextWithBullet(page.properties.details),
                 github: extractUrl(page.properties.github),
                 website: extractUrl(page.properties.website),
                 ios: extractUrl(page.properties.ios),
@@ -554,7 +558,7 @@ export async function getPortfolioDB(): Promise<PortfolioDB[]> {
                 description: extractRichText(page.properties.description),
                 period: extractRichText(page.properties.period),
                 skills: extractMultiSelect(page.properties.skills),
-                details: extractRichText(page.properties.details),
+                details: extractRichTextWithBullet(page.properties.details),
                 github: extractUrl(page.properties.github),
                 website: extractUrl(page.properties.website),
                 ios: extractUrl(page.properties.ios),
@@ -577,7 +581,7 @@ export async function getValueDB(): Promise<ValueDB[]> {
         return await queryDatabase('valueDB', PROPERTY_MAPPINGS.valueDB, (page) => {
             return {
                 title: extractTitle(page.properties.title),
-                details: extractRichText(page.properties.details),
+                details: extractRichTextWithBullet(page.properties.details),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };

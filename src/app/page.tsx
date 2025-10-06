@@ -12,29 +12,7 @@ import PDFLinkButton from '@/components/ui/PDFLinkButton';
 import PDFDownloadButton from '@/components/ui/PDFDownloadButton';
 import { ResumeData } from '@/types';
 import { getResumeData } from '@/lib/notion';
-
-/**
- * Bullet point 텍스트를 렌더링하는 헬퍼 함수
- * Notion에서 가져온 텍스트를 HTML 리스트로 변환
- */
-function renderTextWithBullets(text: string) {
-    if (text.startsWith('BULLET_LIST:')) {
-        try {
-            const bulletItems = JSON.parse(text.substring(12));
-            return (
-                <ul className="list">
-                    {bulletItems.map((item: string, index: number) => (
-                        <li key={index} className="list-item">{item}</li>
-                    ))}
-                </ul>
-            );
-        } catch (error) {
-            console.error('Error parsing bullet list:', error);
-            return <div className="text-body text-pre-line">{text}</div>;
-        }
-    }
-    return <div className="text-body text-pre-line">{text}</div>;
-}
+import { renderTextWithBullets } from '@/lib/textUtils';
 
 /**
  * 메인 이력서 페이지 컴포넌트
@@ -160,7 +138,7 @@ export default async function NotionResumePage() {
                         <ContactInfo {...contactInfo} />
 
                         {personalInfoDB.introduction && (
-                            renderTextWithBullets(personalInfoDB.introduction)
+                            <div className="text-body text-pre-line">{personalInfoDB.introduction}</div>
                         )}
                     </div>
 
