@@ -7,7 +7,7 @@ interface ProjectItemProps {
     period: string;
     skills: string[];
     details: string;
-    contribution?: string;
+    remark?: string;
     github?: string;
     website?: string;
     ios?: string;
@@ -21,7 +21,7 @@ export default function ProjectItem({
     period,
     skills,
     details,
-    contribution,
+    remark,
     github,
     website,
     ios,
@@ -35,9 +35,9 @@ export default function ProjectItem({
 
             <p className="text-body">{description}</p>
 
-            {contribution && (
+            {remark && (
                 <p className="text-meta margin-top-xxs">
-                    {contribution}
+                    {remark}
                 </p>
             )}
 

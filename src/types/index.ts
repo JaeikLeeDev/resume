@@ -73,7 +73,7 @@ export interface ProjectDB {
     ios?: string;
     android?: string;
     post?: string;
-    contribution?: string;
+    remark?: string;
     order: number;
     show: 'show' | 'hide';
 }
@@ -90,7 +90,7 @@ export interface PortfolioDB {
     ios?: string;
     android?: string;
     post?: string;
-    contribution?: string;
+    remark?: string;
     order: number;
     show: 'show' | 'hide';
 }
@@ -138,6 +138,57 @@ export interface MilitaryServiceDB {
     period: string;
 }
 
+// 수상 경력 타입
+export interface AwardDB {
+    title: string;
+    description: string;
+    period: string;
+    skills: string[];
+    details: string;
+    github?: string;
+    website?: string;
+    ios?: string;
+    android?: string;
+    post?: string;
+    remark?: string;
+    order: number;
+    show: 'show' | 'hide';
+}
+
+// 활동 경험 타입
+export interface ActivityDB {
+    title: string;
+    description: string;
+    period: string;
+    skills: string[];
+    details: string;
+    github?: string;
+    website?: string;
+    ios?: string;
+    android?: string;
+    post?: string;
+    remark?: string;
+    order: number;
+    show: 'show' | 'hide';
+}
+
+// 기타 경험 타입
+export interface OtherExperienceDB {
+    title: string;
+    description: string;
+    period: string;
+    skills: string[];
+    details: string;
+    github?: string;
+    website?: string;
+    ios?: string;
+    android?: string;
+    post?: string;
+    remark?: string;
+    order: number;
+    show: 'show' | 'hide';
+}
+
 // 전체 이력서 데이터 타입
 export interface ResumeData {
     personalInfoDB: PersonalInfoDB;
@@ -147,6 +198,9 @@ export interface ResumeData {
     workAchievementDB: WorkAchievementDB[];
     projectDB: ProjectDB[];
     portfolioDB: PortfolioDB[];
+    awardDB: AwardDB[];
+    activityDB: ActivityDB[];
+    otherExperienceDB: OtherExperienceDB[];
     valueDB: ValueDB[];
     otherToolDB: OtherToolDB[];
     educationDB: EducationDB[];

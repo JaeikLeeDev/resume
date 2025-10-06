@@ -47,7 +47,7 @@ export default async function NotionResumePage() {
     }
 
     // 이력서 데이터 구조분해할당
-    const { personalInfoDB, skillDB, coreCompetencyDB, workSummaryDB, workAchievementDB, projectDB, portfolioDB, valueDB, otherToolDB, educationDB, certificationDB, militaryServiceDB } = resumeData;
+    const { personalInfoDB, skillDB, coreCompetencyDB, workSummaryDB, workAchievementDB, projectDB, portfolioDB, awardDB, activityDB, otherExperienceDB, valueDB, otherToolDB, educationDB, certificationDB, militaryServiceDB } = resumeData;
 
     // 개인정보를 ContactInfo 컴포넌트 형식으로 변환
     const transformContactInfo = (personalInfoDB: any) => ({
@@ -210,7 +210,7 @@ export default async function NotionResumePage() {
                                     period={project.period}
                                     skills={project.skills}
                                     details={project.details}
-                                    contribution={project.contribution}
+                                    remark={project.remark}
                                     github={project.github}
                                     website={project.website}
                                     ios={project.ios}
@@ -234,7 +234,79 @@ export default async function NotionResumePage() {
                                     period={item.period}
                                     skills={item.skills}
                                     details={item.details}
-                                    contribution={item.contribution}
+                                    remark={item.remark}
+                                    github={item.github}
+                                    website={item.website}
+                                    ios={item.ios}
+                                    android={item.android}
+                                    post={item.post}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* 수상 섹션 */}
+                    {awardDB.some(item => item.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">수상.</h2>
+
+                            {awardDB.filter(item => item.show === 'show').map((item: any, index: number) => (
+                                <ProjectItem
+                                    key={index}
+                                    title={item.title}
+                                    description={item.description}
+                                    period={item.period}
+                                    skills={item.skills}
+                                    details={item.details}
+                                    remark={item.remark}
+                                    github={item.github}
+                                    website={item.website}
+                                    ios={item.ios}
+                                    android={item.android}
+                                    post={item.post}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* 활동 섹션 */}
+                    {activityDB.some(item => item.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">활동.</h2>
+
+                            {activityDB.filter(item => item.show === 'show').map((item: any, index: number) => (
+                                <ProjectItem
+                                    key={index}
+                                    title={item.title}
+                                    description={item.description}
+                                    period={item.period}
+                                    skills={item.skills}
+                                    details={item.details}
+                                    remark={item.remark}
+                                    github={item.github}
+                                    website={item.website}
+                                    ios={item.ios}
+                                    android={item.android}
+                                    post={item.post}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* 기타 경험 섹션 */}
+                    {otherExperienceDB.some(item => item.show === 'show') && (
+                        <div className="section">
+                            <h2 className="text-section-title">기타 경험.</h2>
+
+                            {otherExperienceDB.filter(item => item.show === 'show').map((item: any, index: number) => (
+                                <ProjectItem
+                                    key={index}
+                                    title={item.title}
+                                    description={item.description}
+                                    period={item.period}
+                                    skills={item.skills}
+                                    details={item.details}
+                                    remark={item.remark}
                                     github={item.github}
                                     website={item.website}
                                     ios={item.ios}

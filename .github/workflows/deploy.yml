@@ -44,6 +44,9 @@ jobs:
         echo "NOTION_WORK_ACHIEVEMENT_DB_ID is set: ${{ secrets.NOTION_WORK_ACHIEVEMENT_DB_ID != '' }}"
         echo "NOTION_PROJECT_DB_ID is set: ${{ secrets.NOTION_PROJECT_DB_ID != '' }}"
         echo "NOTION_PORTFOLIO_DB_ID is set: ${{ secrets.NOTION_PORTFOLIO_DB_ID != '' }}"
+        echo "NOTION_AWARD_DB_ID is set: ${{ secrets.NOTION_AWARD_DB_ID != '' }}"
+        echo "NOTION_ACTIVITY_DB_ID is set: ${{ secrets.NOTION_ACTIVITY_DB_ID != '' }}"
+        echo "NOTION_OTHER_EXPERIENCE_DB_ID is set: ${{ secrets.NOTION_OTHER_EXPERIENCE_DB_ID != '' }}"
         echo "NOTION_VALUE_DB_ID is set: ${{ secrets.NOTION_VALUE_DB_ID != '' }}"
         echo "NOTION_OTHER_TOOL_DB_ID is set: ${{ secrets.NOTION_OTHER_TOOL_DB_ID != '' }}"
         echo "NOTION_EDUCATION_DB_ID is set: ${{ secrets.NOTION_EDUCATION_DB_ID != '' }}"
@@ -84,6 +87,9 @@ jobs:
         NOTION_WORK_ACHIEVEMENT_DB_ID: ${{ secrets.NOTION_WORK_ACHIEVEMENT_DB_ID }}
         NOTION_PROJECT_DB_ID: ${{ secrets.NOTION_PROJECT_DB_ID }}
         NOTION_PORTFOLIO_DB_ID: ${{ secrets.NOTION_PORTFOLIO_DB_ID }}
+        NOTION_AWARD_DB_ID: ${{ secrets.NOTION_AWARD_DB_ID }}
+        NOTION_ACTIVITY_DB_ID: ${{ secrets.NOTION_ACTIVITY_DB_ID }}
+        NOTION_OTHER_EXPERIENCE_DB_ID: ${{ secrets.NOTION_OTHER_EXPERIENCE_DB_ID }}
         NOTION_VALUE_DB_ID: ${{ secrets.NOTION_VALUE_DB_ID }}
         NOTION_OTHER_TOOL_DB_ID: ${{ secrets.NOTION_OTHER_TOOL_DB_ID }}
         NOTION_EDUCATION_DB_ID: ${{ secrets.NOTION_EDUCATION_DB_ID }}

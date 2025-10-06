@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { ResumeData, PersonalInfoDB, SkillDB, CoreCompetencyDB, WorkSummaryDB, WorkAchievementDB, ProjectDB, PortfolioDB, ValueDB, OtherToolDB, EducationDB, CertificationDB, MilitaryServiceDB } from '@/types';
+import { ResumeData, PersonalInfoDB, SkillDB, CoreCompetencyDB, WorkSummaryDB, WorkAchievementDB, ProjectDB, PortfolioDB, AwardDB, ActivityDB, OtherExperienceDB, ValueDB, OtherToolDB, EducationDB, CertificationDB, MilitaryServiceDB } from '@/types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 // Notion API 클라이언트 초기화
@@ -54,6 +54,21 @@ const DATABASE_CONFIGS: Record<string, DatabaseConfig> = {
     portfolioDB: {
         id: process.env.NOTION_PORTFOLIO_DB_ID || '',
         name: 'Portfolio',
+        required: false
+    },
+    awardDB: {
+        id: process.env.NOTION_AWARD_DB_ID || '',
+        name: 'Award',
+        required: false
+    },
+    activityDB: {
+        id: process.env.NOTION_ACTIVITY_DB_ID || '',
+        name: 'Activity',
+        required: false
+    },
+    otherExperienceDB: {
+        id: process.env.NOTION_OTHER_EXPERIENCE_DB_ID || '',
+        name: 'Other Experience',
         required: false
     },
     valueDB: {
@@ -284,7 +299,7 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         period: 'period', // 개발 기간 (Rich Text)
         skills: 'skills', // 사용한 기술 스택 (Multi-select)
         details: 'details', // 성과 상세 (Rich Text)
-        contribution: 'contribution', // 기여도 정보 (Rich Text)
+        remark: 'remark', // 비고 (Rich Text)
         github: 'github',   // GitHub 저장소 링크 (URL)
         website: 'website',
         ios: 'ios', // iOS 앱스토어 링크 (URL)
@@ -304,7 +319,52 @@ const PROPERTY_MAPPINGS: Record<string, PropertyMapping> = {
         ios: 'ios', // iOS 앱스토어 링크 (URL)
         android: 'android', // Android 플레이스토어 링크 (URL)
         post: 'post', // 블로그 글 링크 (URL)
-        contribution: 'contribution', // 기여도 정보 (Rich Text)
+        remark: 'remark', // 비고 (Rich Text)
+        order: 'order',
+        show: 'show'
+    },
+    awardDB: {
+        title: 'title', // 수상 경력 제목 (Title)
+        description: 'description', // 수상 경력 설명 (Rich Text)
+        period: 'period', // 기간 (Rich Text)
+        skills: 'skills', // 사용한 기술 스택 (Multi-select)
+        details: 'details', // 상세 내용 (Rich Text)
+        github: 'github', // GitHub 저장소 링크 (URL)
+        website: 'website', // 웹사이트 링크 (URL)
+        ios: 'ios', // iOS 앱스토어 링크 (URL)
+        android: 'android', // Android 플레이스토어 링크 (URL)
+        post: 'post', // 블로그 글 링크 (URL)
+        remark: 'remark', // 비고 (Rich Text)
+        order: 'order',
+        show: 'show'
+    },
+    activityDB: {
+        title: 'title', // 활동 경험 제목 (Title)
+        description: 'description', // 활동 경험 설명 (Rich Text)
+        period: 'period', // 기간 (Rich Text)
+        skills: 'skills', // 사용한 기술 스택 (Multi-select)
+        details: 'details', // 상세 내용 (Rich Text)
+        github: 'github', // GitHub 저장소 링크 (URL)
+        website: 'website', // 웹사이트 링크 (URL)
+        ios: 'ios', // iOS 앱스토어 링크 (URL)
+        android: 'android', // Android 플레이스토어 링크 (URL)
+        post: 'post', // 블로그 글 링크 (URL)
+        remark: 'remark', // 비고 (Rich Text)
+        order: 'order',
+        show: 'show'
+    },
+    otherExperienceDB: {
+        title: 'title', // 기타 경험 제목 (Title)
+        description: 'description', // 기타 경험 설명 (Rich Text)
+        period: 'period', // 기간 (Rich Text)
+        skills: 'skills', // 사용한 기술 스택 (Multi-select)
+        details: 'details', // 상세 내용 (Rich Text)
+        github: 'github', // GitHub 저장소 링크 (URL)
+        website: 'website', // 웹사이트 링크 (URL)
+        ios: 'ios', // iOS 앱스토어 링크 (URL)
+        android: 'android', // Android 플레이스토어 링크 (URL)
+        post: 'post', // 블로그 글 링크 (URL)
+        remark: 'remark', // 비고 (Rich Text)
         order: 'order',
         show: 'show'
     },
@@ -538,7 +598,7 @@ export async function getProjectDB(): Promise<ProjectDB[]> {
                 ios: extractUrl(page.properties.ios),
                 android: extractUrl(page.properties.android),
                 post: extractUrl(page.properties.post),
-                contribution: extractRichText(page.properties.contribution),
+                remark: extractRichText(page.properties.remark),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
@@ -564,13 +624,91 @@ export async function getPortfolioDB(): Promise<PortfolioDB[]> {
                 ios: extractUrl(page.properties.ios),
                 android: extractUrl(page.properties.android),
                 post: extractUrl(page.properties.post),
-                contribution: extractRichText(page.properties.contribution),
+                remark: extractRichText(page.properties.remark),
                 order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
                 show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
             };
         });
     } catch (error) {
         console.error('Error fetching portfolio DB:', error);
+        return [];
+    }
+}
+
+// Notion에서 수상 경력 데이터 조회
+export async function getAwardDB(): Promise<AwardDB[]> {
+    try {
+        return await queryDatabase('awardDB', PROPERTY_MAPPINGS.awardDB, (page) => {
+            return {
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                period: extractRichText(page.properties.period),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextWithBullet(page.properties.details),
+                github: extractUrl(page.properties.github),
+                website: extractUrl(page.properties.website),
+                ios: extractUrl(page.properties.ios),
+                android: extractUrl(page.properties.android),
+                post: extractUrl(page.properties.post),
+                remark: extractRichText(page.properties.remark),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
+    } catch (error) {
+        console.error('Error fetching award DB:', error);
+        return [];
+    }
+}
+
+// Notion에서 활동 경험 데이터 조회
+export async function getActivityDB(): Promise<ActivityDB[]> {
+    try {
+        return await queryDatabase('activityDB', PROPERTY_MAPPINGS.activityDB, (page) => {
+            return {
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                period: extractRichText(page.properties.period),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextWithBullet(page.properties.details),
+                github: extractUrl(page.properties.github),
+                website: extractUrl(page.properties.website),
+                ios: extractUrl(page.properties.ios),
+                android: extractUrl(page.properties.android),
+                post: extractUrl(page.properties.post),
+                remark: extractRichText(page.properties.remark),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
+    } catch (error) {
+        console.error('Error fetching activity DB:', error);
+        return [];
+    }
+}
+
+// Notion에서 기타 경험 데이터 조회
+export async function getOtherExperienceDB(): Promise<OtherExperienceDB[]> {
+    try {
+        return await queryDatabase('otherExperienceDB', PROPERTY_MAPPINGS.otherExperienceDB, (page) => {
+            return {
+                title: extractTitle(page.properties.title),
+                description: extractRichText(page.properties.description),
+                period: extractRichText(page.properties.period),
+                skills: extractMultiSelect(page.properties.skills),
+                details: extractRichTextWithBullet(page.properties.details),
+                github: extractUrl(page.properties.github),
+                website: extractUrl(page.properties.website),
+                ios: extractUrl(page.properties.ios),
+                android: extractUrl(page.properties.android),
+                post: extractUrl(page.properties.post),
+                remark: extractRichText(page.properties.remark),
+                order: extractNumber(page.properties.order) || DEFAULT_ORDER_VALUE,
+                show: extractSelect(page.properties.show) as 'show' | 'hide' || 'show',
+            };
+        });
+    } catch (error) {
+        console.error('Error fetching other experience DB:', error);
         return [];
     }
 }
@@ -674,6 +812,9 @@ export async function getResumeData(): Promise<ResumeData> {
             workAchievementDB,
             projectDB,
             portfolioDB,
+            awardDB,
+            activityDB,
+            otherExperienceDB,
             valueDB,
             otherToolDB,
             educationDB,
@@ -687,6 +828,9 @@ export async function getResumeData(): Promise<ResumeData> {
             getWorkAchievementDB(),
             getProjectDB(),
             getPortfolioDB(),
+            getAwardDB(),
+            getActivityDB(),
+            getOtherExperienceDB(),
             getValueDB(),
             getOtherToolDB(),
             getEducationDB(),
@@ -702,6 +846,9 @@ export async function getResumeData(): Promise<ResumeData> {
             workAchievementDB,
             projectDB,
             portfolioDB,
+            awardDB,
+            activityDB,
+            otherExperienceDB,
             valueDB,
             otherToolDB,
             educationDB,

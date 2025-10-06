@@ -10,7 +10,7 @@
 | `.text-details-title`    | 1.25rem (20px)  | 600         | 1.3       | 0.5rem    | • details-section의 제목<br>• 모든 DB의 title 필드<br>• Education > title+degree<br>• Other Tool > category |
 | `.text-secondary-title`  | 1.125rem (18px) | 500         | 1.4       | 0.5rem    | • Personal Info > position<br>• Other Tool > title                                                          |
 | `.text-body`             | 1rem (16px)     | 400         | 1.6       | 1rem      | • 모든 DB의 description 필드<br>• Personal Info > introduction<br>• 모든 details 필드                       |
-| `.text-meta`             | 0.875rem (14px) | 400         | 1.4       | 1rem      | • 모든 DB의 period 필드<br>• Project > contribution<br>• Personal Info의 라벨 (Email., Phone. 등)           |
+| `.text-meta`             | 0.875rem (14px) | 400         | 1.4       | 1rem      | • 모든 DB의 period 필드<br>• Project, Portfolio, Award, Activity, Other Experience > remark<br>• Personal Info의 라벨 (Email., Phone. 등)           |
 | `.text-contact`          | 0.9rem (14.4px) | 400         | 1.6       | 0         | • Personal Info > email/phone/blog/github (contact-row 내부)                                                |
 | `.list-item`             | 1rem (16px)     | 400         | 1.6       | 0.375rem  | • 모든 details 필드 (bullet point)                                                                           |
 | `.tech-chip`             | 0.75rem (12px)  | 400         | 1.4       | 0         | • 모든 DB의 skills 필드                                                                                     |

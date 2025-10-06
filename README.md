@@ -40,11 +40,14 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
 4. 업무 경험
 5. 프로젝트 경험
 6. 포트폴리오
-7. 가치관
-8. 개발 외 툴 활용 역량
-9. 학력
-10. 자격증 및 어학
-11. 병역
+7. 수상
+8. 활동
+9. 기타 경험
+10. 가치관
+11. 개발 외 툴 활용 역량
+12. 학력
+13. 자격증 및 어학
+14. 병역
 
 ## ✅ 코딩 한 줄 없이 모든 기능을 사용할 수 있습니다!
 
@@ -101,10 +104,13 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
 | 환경변수명 | 값 |
 |-----------|-----|
 | NOTION_TOKEN | your_notion_integration_token_here |
+| NOTION_ACTIVITY_DB_ID | your_activity_database_id_here |
+| NOTION_AWARD_DB_ID | your_award_database_id_here |
 | NOTION_CERTIFICATION_DB_ID | your_certification_database_id_here |
 | NOTION_CORE_COMPETENCY_DB_ID | your_core_competency_database_id_here |
 | NOTION_EDUCATION_DB_ID | your_education_database_id_here |
 | NOTION_MILITARY_SERVICE_DB_ID | your_military_service_database_id_here |
+| NOTION_OTHER_EXPERIENCE_DB_ID | your_other_experience_database_id_here |
 | NOTION_OTHER_TOOL_DB_ID | your_other_tool_database_id_here |
 | NOTION_PERSONAL_INFO_DB_ID | your_personal_info_database_id_here |
 | NOTION_PORTFOLIO_DB_ID | your_portfolio_database_id_here |
@@ -133,10 +139,13 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
 
 ```env
 NOTION_TOKEN=your_notion_integration_token_here
+NOTION_ACTIVITY_DB_ID=your_activity_database_id_here
+NOTION_AWARD_DB_ID=your_award_database_id_here
 NOTION_CERTIFICATION_DB_ID=your_certification_database_id_here
 NOTION_CORE_COMPETENCY_DB_ID=your_core_competency_database_id_here
 NOTION_EDUCATION_DB_ID=your_education_database_id_here
 NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
+NOTION_OTHER_EXPERIENCE_DB_ID=your_other_experience_database_id_here
 NOTION_OTHER_TOOL_DB_ID=your_other_tool_database_id_here
 NOTION_PERSONAL_INFO_DB_ID=your_personal_info_database_id_here
 NOTION_PORTFOLIO_DB_ID=your_portfolio_database_id_here
@@ -352,12 +361,15 @@ Notion Database API는 순서를 보장하지 않습니다. 모든 데이터베�
 NOTION_TOKEN=your_notion_integration_token_here
 
 # Notion Database IDs (각 데이터베이스 URL에서 32자리 ID 추출)
+NOTION_ACTIVITY_DB_ID=your_activity_database_id_here
+NOTION_AWARD_DB_ID=your_award_database_id_here
 NOTION_CERTIFICATION_DB_ID=your_certification_database_id_here
 NOTION_CORE_COMPETENCY_DB_ID=your_core_competency_database_id_here
 NOTION_EDUCATION_DB_ID=your_education_database_id_here
 NOTION_MILITARY_SERVICE_DB_ID=your_military_service_database_id_here
+NOTION_OTHER_EXPERIENCE_DB_ID=your_other_experience_database_id_here
 NOTION_OTHER_TOOL_DB_ID=your_other_tool_database_id_here
-NOTION_PERSONAL_INFO_DB_ID=youㄴㄴr_personal_info_database_id_here
+NOTION_PERSONAL_INFO_DB_ID=your_personal_info_database_id_here
 NOTION_PORTFOLIO_DB_ID=your_portfolio_database_id_here
 NOTION_PROJECT_DB_ID=your_project_database_id_here
 NOTION_SKILL_DB_ID=your_skill_database_id_here

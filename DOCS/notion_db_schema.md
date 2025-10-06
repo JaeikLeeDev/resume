@@ -86,7 +86,7 @@
 | period       | Rich Text     | `.text-meta`                | 개발 기간                 |
 | skills       | Multi-select  | `.tech-chip`                | 사용한 기술 스택          |
 | details      | Rich Text     | `.text-body` / `.list-item` | 성과 상세 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
-| contribution | Rich Text     | `.text-meta`                | 기여도 정보               |
+| remark       | Rich Text     | `.text-meta`                | 비고               |
 | github       | URL           | `.link`                     | GitHub 저장소 링크        |
 | website      | URL           | `.link`                     | 웹사이트 링크             |
 | ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
@@ -104,12 +104,66 @@
 | period       | Rich Text     | `.text-meta`                | 개발 기간                 |
 | skills       | Multi-select  | `.tech-chip`                | 사용한 기술 스택          |
 | details      | Rich Text     | `.text-body` / `.list-item` | 주요 기능들 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
+| remark       | Rich Text     | `.text-meta`                | 비고               |
 | github       | URL           | `.link`                     | GitHub 저장소 링크        |
 | website      | URL           | `.link`                     | 웹사이트 링크             |
 | ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
 | android      | URL           | `.link`                     | Android 플레이스토어 링크 |
 | post         | URL           | `.link`                     | 블로그 글 링크            |
-| contribution | Rich Text     | `.text-meta`                | 기여도 정보               |
+| order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
+| show         | Select        | -                           | 표시 여부                 |
+
+### Award 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                      |
+| ------------ | ------------- | --------------------------- | ------------------------- |
+| title        | Title         | `.text-subsection-title`    | 수상 제목           |
+| description  | Rich Text     | `.text-body`                | 수상 설명           |
+| period       | Rich Text     | `.text-meta`                | 수상 시기                 |
+| skills       | Multi-select  | `.tech-chip`                | 관련 기술 스택          |
+| details      | Rich Text     | `.text-body` / `.list-item` | 수상 상세 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
+| remark       | Rich Text     | `.text-meta`                | 비고               |
+| github       | URL           | `.link`                     | GitHub 저장소 링크        |
+| website      | URL           | `.link`                     | 웹사이트 링크             |
+| ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
+| android      | URL           | `.link`                     | Android 플레이스토어 링크 |
+| post         | URL           | `.link`                     | 블로그 글 링크            |
+| order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
+| show         | Select        | -                           | 표시 여부                 |
+
+### Activity 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                      |
+| ------------ | ------------- | --------------------------- | ------------------------- |
+| title        | Title         | `.text-subsection-title`    | 활동 제목           |
+| description  | Rich Text     | `.text-body`                | 활동 설명           |
+| period       | Rich Text     | `.text-meta`                | 활동 기간                 |
+| skills       | Multi-select  | `.tech-chip`                | 관련 기술 스택          |
+| details      | Rich Text     | `.text-body` / `.list-item` | 활동 상세 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
+| remark       | Rich Text     | `.text-meta`                | 비고               |
+| github       | URL           | `.link`                     | GitHub 저장소 링크        |
+| website      | URL           | `.link`                     | 웹사이트 링크             |
+| ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
+| android      | URL           | `.link`                     | Android 플레이스토어 링크 |
+| post         | URL           | `.link`                     | 블로그 글 링크            |
+| order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
+| show         | Select        | -                           | 표시 여부                 |
+
+### Other Experience 데이터베이스
+
+| 프로퍼티명   | 프로퍼티 타입 | 타이포그래피 클래스         | 설명                      |
+| ------------ | ------------- | --------------------------- | ------------------------- |
+| title        | Title         | `.text-subsection-title`    | 기타 경험 제목           |
+| description  | Rich Text     | `.text-body`                | 기타 경험 설명           |
+| period       | Rich Text     | `.text-meta`                | 경험 기간                 |
+| skills       | Multi-select  | `.tech-chip`                | 관련 기술 스택          |
+| details      | Rich Text     | `.text-body` / `.list-item` | 경험 상세 (조건부)<br/>**문장 맨 앞에 '- '를 붙이면 bullet list로 변환** |
+| remark       | Rich Text     | `.text-meta`                | 비고               |
+| github       | URL           | `.link`                     | GitHub 저장소 링크        |
+| website      | URL           | `.link`                     | 웹사이트 링크             |
+| ios          | URL           | `.link`                     | iOS 앱스토어 링크         |
+| android      | URL           | `.link`                     | Android 플레이스토어 링크 |
+| post         | URL           | `.link`                     | 블로그 글 링크            |
 | order        | Number        | -                           | 정렬 순서 (높은 값이 맨 위) |
 | show         | Select        | -                           | 표시 여부                 |
 
