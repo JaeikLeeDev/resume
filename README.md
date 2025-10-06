@@ -60,6 +60,7 @@ React와 Next.js로 구축된 공개 이력서 사이트 템플릿입니다. 연
 
 1. Notion과 Vercel 연동
 2. GitHub repo와 Vercel 연동
+3. GitHub Actions secret에 `NEXT_PUBLIC_PDF_URL` 환경변수 추가
 
 ## 🚀 공개 이력서 페이지 배포하기
 
@@ -144,6 +145,9 @@ NOTION_SKILL_DB_ID=your_skill_database_id_here
 NOTION_VALUE_DB_ID=your_value_database_id_here
 NOTION_WORK_ACHIEVEMENT_DB_ID=your_work_achievement_database_id_here
 NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
+
+# PDF 출력용 페이지 URL (선택사항 - 설정하지 않으면 PDF 버튼이 표시되지 않음)
+NEXT_PUBLIC_PDF_URL=https://your-resume-pdf.vercel.app/
 ```
 
 ### 5. 배포: **GitHub Actions 실행**
@@ -212,15 +216,16 @@ NOTION_WORK_SUMMARY_DB_ID=your_work_summary_database_id_here
 ![Screenshot](/DOCS/img/Screenshot_check_vercel_domain.png)
 
 2. 확인한 Domain을 GitHub Actions secret에 추가해줍니다.
-   ```env
-   NEXT_PUBLIC_PDF_URL=https://your-resume-pdf.vercel.app/
-   ```
+   - GitHub 리포지토리 > Settings > Secrets and variables > Actions
+   - New repository secret > Name: `NEXT_PUBLIC_PDF_URL`, Value: `https://your-resume-pdf.vercel.app/`
 
 ### 6. GitHub Pages 재배포
 
 Actions > Deploy to GitHub Pages > Run workflow
 
 재배포가 완료되면, GitHub Pages에 배포된 공개용 이력서 사이트 최하단에 PDF 출력 버튼이 나타납니다.
+
+> [!NOTE] `NEXT_PUBLIC_PDF_URL` 환경변수가 설정되지 않은 경우, PDF 출력 버튼은 표시되지 않습니다.
 
 ![Screenshot](/DOCS/img/Screenshot_export_pdf_button.png)
 

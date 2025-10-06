@@ -285,8 +285,8 @@ export default async function NotionResumePage() {
                         </div>
                     )}
 
-                    {/* PDF 출력 버튼 섹션 - 깃헙 페이지에서만 표시 */}
-                    {isGitHubPages && (
+                    {/* PDF 출력 버튼 섹션 - 깃헙 페이지에서만 표시 (NEXT_PUBLIC_PDF_URL이 정의된 경우만) */}
+                    {isGitHubPages && process.env.NEXT_PUBLIC_PDF_URL && (
                         <div className="section center-section">
                             <PDFLinkButton />
                             <p style={{
